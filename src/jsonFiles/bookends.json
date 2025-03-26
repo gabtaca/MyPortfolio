@@ -1,0 +1,22 @@
+[
+  {
+    "id": "blank-start",
+    "img": "/images/projects/column_end_btn.png",
+    "date": "Début"
+  },
+  {
+    "id": "blank-start2",
+    "img": "/images/projects/column_pre-end_btn.png",
+    "date": ""
+  },
+  {
+    "id": "blank-end2",
+    "img": "/images/projects/column_pre-end_btn.png",
+    "date": ""
+  },
+  {
+    "id": "blank-end",
+    "img": "/images/projects/column_end_btn.png",
+    "date": "Fin"
+  }
+]

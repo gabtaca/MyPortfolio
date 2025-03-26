@@ -1,0 +1,156 @@
+[
+  {
+    "id": "1",
+    "name": "Projet 1",
+    "still": "/images/projects/project1.jpg",
+    "img": "/images/projects/project1.gif",
+    "imgAlt": "image du projet 1",
+    "description": "Ce projet vise à développer une application web moderne et intuitive permettant aux utilisateurs d'interagir facilement avec les dernieres technologies.",
+    "date": "2022",
+    "type": "SiteWeb",
+    "lien": {
+      "github": "https://betterplaceholder.com/"
+    },
+    "stack": ["HTML", "SASS", "Javascript", "Npm"]
+  },
+  {
+    "id": "2",
+    "name": "Projet 2",
+    "still": "/images/projects/project2.jpg",
+    "img": "/images/projects/project2.gif",
+    "imgAlt": "image du projet 2",
+    "description": "Ce projet vise à développer une application web moderne et intuitive permettant aux utilisateurs d'interagir facilement avec les dernieres technologies.",
+    "date": "2022",
+    "type": "App",
+    "lien": {
+      "github": "https://betterplaceholder.com/"
+    },
+    "stack": ["HTML", "SASS", "Javascript", "Npm"]
+  },
+  {
+    "id": "3",
+    "name": "Projet 3",
+    "still": "/images/projects/project3.jpg",
+    "img": "/images/projects/project3.gif",
+    "imgAlt": "image du projet 3",
+    "description": "Ce projet vise à développer une application web moderne et intuitive permettant aux utilisateurs d'interagir facilement avec les dernieres technologies.",
+    "date": "2023",
+    "type": "SiteWeb",
+    "lien": {
+      "github": "https://betterplaceholder.com/"
+    },
+    "stack": ["HTML", "SASS", "Javascript", "Npm"]
+  },
+  {
+    "id": "4",
+    "name": "Projet 4",
+    "still": "/images/projects/project4.jpg",
+    "img": "/images/projects/project4.gif",
+    "imgAlt": "image du projet 4",
+    "description": "Ce projet vise à développer une application web moderne et intuitive permettant aux utilisateurs d'interagir facilement avec les dernieres technologies.",
+    "date": "2023",
+    "type": "Extension",
+    "lien": {
+      "github": "https://betterplaceholder.com/"
+    },
+    "stack": ["HTML", "SASS", "Javascript", "Npm"]
+  },
+  {
+    "id": "5",
+    "name": "Projet 5",
+    "still": "/images/projects/project5.jpg",
+    "img": "/images/projects/project5.gif",
+    "imgAlt": "image du projet 5",
+    "description": "Ce projet vise à développer une application web moderne et intuitive permettant aux utilisateurs d'interagir facilement avec les dernieres technologies.",
+    "date": "2024",
+    "type": "SiteWeb",
+    "lien": {
+      "github": "https://betterplaceholder.com/"
+    },
+    "stack": ["HTML", "SASS", "Javascript", "Npm"]
+  },
+  {
+    "id": "6",
+    "name": "Projet 6",
+    "still": "/images/projects/project6.jpg",
+    "img": "/images/projects/project6.gif",
+    "imgAlt": "image du projet 6",
+    "description": "Ce projet vise à développer une application web moderne et intuitive permettant aux utilisateurs d'interagir facilement avec les dernieres technologies.",
+    "date": "2024",
+    "type": "Librairie",
+    "lien": {
+      "github": "https://betterplaceholder.com/"
+    },
+    "stack": ["HTML", "SASS", "Javascript", "Npm"]
+  },
+  {
+    "id": "7",
+    "name": "Projet 7",
+    "still": "/images/projects/project7.jpg",
+    "img": "/images/projects/project7.gif",
+    "imgAlt": "image du projet 7",
+    "description": "Ce projet vise à développer une application web moderne et intuitive permettant aux utilisateurs d'interagir facilement avec les dernieres technologies.",
+    "date": "2024",
+    "type": "SiteWeb",
+    "lien": {
+      "github": "https://betterplaceholder.com/"
+    },
+    "stack": ["HTML", "SASS", "Javascript", "Npm"]
+  },
+  {
+    "id": "8",
+    "name": "Projet 8",
+    "still": "/images/projects/project8.jpg",
+    "img": "/images/projects/project8.gif",
+    "imgAlt": "image du projet 8",
+    "description": "Ce projet vise à développer une application web moderne et intuitive permettant aux utilisateurs d'interagir facilement avec les dernieres technologies.",
+    "date": "2024",
+    "type": "SiteWeb",
+    "lien": {
+      "github": "https://betterplaceholder.com/"
+    },
+    "stack": ["HTML", "SASS", "Javascript", "Npm"]
+  },
+  {
+    "id": "9",
+    "name": "Projet 9",
+    "still": "/images/projects/project9.jpg",
+    "img": "/images/projects/project9.gif",
+    "imgAlt": "image du projet 9",
+    "description": "Ce projet vise à développer une application web moderne et intuitive permettant aux utilisateurs d'interagir facilement avec les dernieres technologies.",
+    "date": "2024",
+    "type": "SiteWeb",
+    "lien": {
+      "github": "https://betterplaceholder.com/"
+    },
+    "stack": ["HTML", "SASS", "Javascript", "Npm"]
+  },
+  {
+    "id": "10",
+    "name": "Projet 10",
+    "still": "/images/projects/project10.jpg",
+    "img": "/images/projects/project10.gif",
+    "imgAlt": "image du projet 10",
+    "description": "Ce projet vise à développer une application web moderne et intuitive permettant aux utilisateurs d'interagir facilement avec les dernieres technologies.",
+    "date": "2025",
+    "type": "App",
+    "lien": {
+      "github": "https://betterplaceholder.com/"
+    },
+    "stack": ["HTML", "SASS", "Javascript", "Npm"]
+  },
+  {
+    "id": "11",
+    "name": "Icitte CLOUD",
+    "still": "/images/projects/icitte_landing.jpg",
+    "img": "/images/projects/icitte_landing.gif",
+    "imgAlt": "image du projet de landing page de Icitte CLOUD",
+    "description": "Landing page pour un site de stockage infonuagique 100% québécois.",
+    "date": "2025",
+    "type": "SiteWeb",
+    "lien": {
+      "github": "https://icitte-landing.vercel.app/"
+    },
+    "stack": ["HTML", "Svelte", "Javascript", "Npm", "Vanta Clouds"]
+  }
+]

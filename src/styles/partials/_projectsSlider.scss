@@ -1,0 +1,164 @@
+@use "../partials/variables";
+
+//bouton projets
+
+.project-motion-wrapper {
+  overflow: visible;
+}
+
+.project-column {
+  transition: transform 0.3s ease, height 0.3s ease;
+  width: 60px;
+  transform-origin: bottom;
+  border: none;
+  background: none;
+  position: relative;
+  padding: 0;
+  min-width: 55px;
+  height: 350px;
+  border-radius: 2.5px;
+  position: "relative";
+  margin: 0 10px;
+  transform-origin: bottom;
+  overflow: visible;
+  cursor: pointer;
+
+  .project-image {
+    height: 345px;
+    width: 60px;
+    border-radius: 2.5px;
+    object-fit: cover;
+    position: relative;
+    border: 0.5px solid var(--btnBlank);
+    border-radius: 2.5px;
+    
+  }
+}
+
+/* Styles pour le triangle de profondeur */
+.triangle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50px;
+  height: 350px;
+  background-image: url(/images/triangle.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.triangle-left {
+  left: -49px; /* Adjust for alignment if needed */
+  transform: rotateY(180deg);
+}
+
+.triangle-right {
+  right: -49px; /* Adjust for alignment if needed */
+}
+
+/* Mode Sombre */
+.triangle.dark-mode {
+  background-image: url("/images/triangleDarkMode.svg");
+}
+
+/* Mode Clair */
+.triangle.light-mode {
+  background-image: url("/images/triangle.svg");
+}
+
+// Slider
+
+.projects-slider-menu {
+  display: flex;
+  overscroll-behavior: none;
+  display: flex;
+  overflow-x: scroll;
+  position: relative;
+  scrollbar-width: none;
+  height: 355px;
+}
+
+.projects-slider-menu::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .projects-slider-menu {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: auto;
+    scroll-snap-type: none;
+  }
+}
+
+// Dates
+
+.project-dates-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 150px;
+  overflow: hidden;
+  font-weight: 400;
+}
+
+.date-button {
+  font-size: 20px;
+  color: #cecdcd;
+  transform: translateY(20px);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  font-family: "Jockey One", sans-serif;
+  font-weight: lighter;
+}
+
+.project-type {
+  color: var(--h2Color);
+  font-size: 25px;
+  font-family: "Italiana";
+}
+
+.project-name {
+  color: var(--h2Color);
+  font-size: 35px;
+  font-family: "Italiana";
+  font-weight: 600;
+}
+
+@media (orientation: landscape) and (max-width: 1200px) {
+  .projects-slider-menu {
+    height: 140px;
+    display: flex;
+    align-items: center;
+
+    .project-column {
+      transition: transform 0.3s ease, height 0.3s ease;
+      width: 120px;
+      border: none;
+      background: none;
+      position: relative;
+      padding: 0;
+      min-width: 55px;
+      height: 120px;
+      border-radius: 2.5px;
+      position: "relative";
+      margin: 0 10px;
+      transform-origin: center;
+
+      .project-container {
+        .project-image {
+          height: 120px;
+          width: 120px;
+          border-radius: 2.5px;
+          object-fit: cover;
+          position: relative;
+          border: 0.5px solid var(--btnBlank);
+          border-radius: 100%;
+        }
+      }
+    }
+  }
+
+  .triangle {
+    display: none;
+  }
+}

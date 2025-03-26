@@ -1,0 +1,30 @@
+{
+  "name": "portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev ",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "animate.css": "^4.1.1",
+    "classnames": "^2.5.1",
+    "css-loader": "^7.1.2",
+    "framer-motion": "^11.12.0",
+    "next": "^15.0.4",
+    "prop-types": "^15.8.1",
+    "react": "^18",
+    "react-dom": "^18",
+    "sass": "^1.81.0",
+    "sass-loader": "^16.0.3",
+    "simplex-noise": "^4.0.3",
+    "style-loader": "^4.0.0"
+  },
+  "devDependencies": {
+    "postcss": "^8.4.49",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-preset-env": "^10.1.1"
+  }
+}

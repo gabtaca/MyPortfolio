@@ -1,0 +1,48 @@
+{
+  "formations": [
+    {
+      "id": "1",
+      "programName": "Production en médias interactifs NWE.2N",
+      "school": "CÉGEP Limoilou",
+      "redDot": "•",
+      "period": "Septembre 2023 à terminer en avril 2025",
+      "description": "Design, intégration et développement de projets Web basés sur la compréhension du besoin des clients et du message à communiquer."
+    },
+    {
+      "id": "2",
+      "programName": "Animation 3D NWE.2G",
+      "school": "CÉGEP Limoilou",
+      "redDot": "•",
+      "period": "Septembre 2008 terminé en novembre 2010",
+      "description": "Conceptualisation, modélisation et texturisation d’environnements. Rigging et animation de personnages. Conceptualisation et façonnage d’effets spéciaux."
+    }
+  ],
+  "emplois": [
+    {
+      "id": "3",
+      "jobTitle": "Entrepreneur + Carreleur",
+      "company": "Les entreprises GATACA inc.",
+      "redDot": "•",
+      "period": "Août 2012 à août 2023",
+      "description": "Maître carreleur qui a contribué à rendre l’environnement de vie de centaines de personnes un monde d’esthétisme et de confort."
+    },
+    {
+      "id": "4",
+      "jobTitle": "Animateur + Spécialiste en effets spéciaux",
+      "company": "Studio Z3D",
+      "redDot": "•",
+      "period": "Mai 2012 à juillet 2013",
+      "description": "Création de jeux vidéo mobile pour le marché international. Animation de personnages et production d’effets spéciaux dans l’environnement UNITY."
+    },
+    {
+      "id": "5",
+      "jobTitle": "Testeur de jeux vidéo",
+      "company": "Activision",
+      "redDot": "•",
+      "period": "Décembre 2010 à juillet 2012",
+      "description": "Chargé de détecter les bugs et problèmes de gameplay tout en documentant les observations et en fournissant des rapports détaillés aux développeurs."
+    }
+  ],
+  "hard_skills": ["JIRA", "Figma", "Tailwind", "Texturing", "Suite Autodesk / Adobe", "Effets spéciaux", "CSS / HTML", "Animation", "Unity"],
+  "soft_skills": ["Idéation", "Autonomie", "Soucis du détail", "Conceptualisation", "Sens de l'observation", "Résolution de problèmes", "Gestion de projets simultanés", "Réceptivité aux retours et critiques", "Développement des employés", "Gestion d’horaires chargées", "Communications clients", "Gestion des ressources", "Tests A/B"]
+}

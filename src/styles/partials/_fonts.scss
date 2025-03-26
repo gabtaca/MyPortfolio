@@ -1,0 +1,30 @@
+/* src/styles/partials/_fonts.scss */
+
+/* Déclaration de la police Italiana */
+@font-face {
+  font-family: "Italiana";
+  src: url("/fonts/Italiana-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Déclaration de la police Geist (Variable Font) */
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/GeistVF.woff2") format("woff2-variations"),
+    url("/fonts/GeistVF.woff") format("woff-variations");
+  font-weight: 1 999;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Déclaration de la police Geist Mono (Variable Font) */
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/GeistMonoVF.woff2") format("woff2-variations"),
+    url("/fonts/GeistMonoVF.woff") format("woff-variations");
+  font-weight: 1 999;
+  font-style: normal;
+  font-display: swap;
+}

@@ -1,0 +1,50 @@
+{
+    "Art": [
+      {
+        "id": 1,
+        "title": "Art-Idee-01",
+        "description": "Créer des sculptures en mouvement grâce à l'énergie solaire."
+      },
+      {
+        "id": 2,
+        "title": "Art-Idee-02",
+        "description": "Utiliser des matériaux recyclés pour peindre des fresques géantes."
+      }
+    ],
+    "Société": [
+      {
+        "id": 1,
+        "title": "Société-Idee-01",
+        "description": "Plateforme d'échange pour services locaux gratuits."
+      }
+    ],
+    "Produits": [
+      {
+        "id": 1,
+        "title": "Produit-Idee-01",
+        "description": "Un parapluie pliable à une main."
+      }
+    ],
+    "Applications": [
+      {
+        "id": 1,
+        "title": "Application-Idee-01",
+        "description": "Application de suivi des habitudes positives."
+      }
+    ],
+    "Jouets & Jeux": [
+      {
+        "id": 1,
+        "title": "Jeu-Idee-01",
+        "description": "Puzzle en réalité augmentée."
+      }
+    ],
+    "Design & Architecture": [
+      {
+        "id": 1,
+        "title": "Design-Idee-01",
+        "description": "Maisons modulaires pour des espaces flexibles."
+      }
+    ]
+  }
+  

@@ -1,0 +1,134 @@
+/*Imports*/
+@use 'partials/variables' as vars;
+@use "partials/mixins";
+@use "partials/fonts";
+@use "partials/base";
+@use "partials/components";
+@use "partials/animations";
+@use "partials/projectModal";
+@use "partials/projectsSlider";
+@use "partials/cv";
+@use "partials/ideesMobile";
+@use "partials/LightningHeader"; 
+
+/* Déclaration de la police Italiana */
+@font-face {
+  font-family: "Italiana";
+  src: url("/fonts/Italiana-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Déclaration de la police Geist (Variable Font) */
+@font-face {
+  font-family: "Geist";
+  src: url("/fonts/GeistVF.woff2") format("woff2-variations"),
+    url("/fonts/GeistVF.woff") format("woff-variations");
+  font-weight: 1 999;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Déclaration de la police Geist Mono (Variable Font) */
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/GeistMonoVF.woff2") format("woff2-variations"),
+    url("/fonts/GeistMonoVF.woff") format("woff-variations");
+  font-weight: 1 999;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Jockey One";
+  src: url("/fonts/JockeyOne-Regular.woff") format("woff");
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter-VariableFont_opsz_wght.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Déclaration de la police Livvic (Regular) */
+@font-face {
+  font-family: "Livvic";
+  src: url("/fonts/Livvic-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Déclaration de la police Livvic (Bold) */
+@font-face {
+  font-family: "Livvic";
+  src: url("/fonts/Livvic-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Déclaration de la police Livvic (Italic) */
+@font-face {
+  font-family: "Livvic";
+  src: url("/fonts/Livvic-Italic.woff") format("woff");
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Déclaration de la police Livvic (Medium) */
+@font-face {
+  font-family: "Livvic";
+  src: url("/fonts/Livvic-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Déclaration de la police Livvic (SemiBold) */
+@font-face {
+  font-family: "Livvic";
+  src: url("/fonts/Livvic-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Déclaration de la police Livvic (SemiBold) */
+@font-face {
+  font-family: "PlaywriteCA";
+  src: url("/fonts/PlaywriteCA-VariableFont_wght.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Déclaration de la police Shadows Into Light (Regular) */
+.shadows-into-light-regular {
+  font-family: "Shadows Into Light", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+nav {
+  margin: 0;
+}
+
+:root {
+  @include set-theme($light-colors);
+}
+
+// Dark theme
+body.dark-mode {
+  @include set-theme($dark-colors);
+}
+@function theme-color($name) {
+  @return var(--#{$name});
+}

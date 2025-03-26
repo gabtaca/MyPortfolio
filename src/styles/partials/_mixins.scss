@@ -1,0 +1,6 @@
+@mixin set-theme($theme-colors) {
+  @each $name, $color in $theme-colors {
+    --#{$name}: #{$color};
+  }
+}
+

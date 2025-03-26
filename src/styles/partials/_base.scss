@@ -1,0 +1,50 @@
+/* src/styles/partials/_base.scss */
+
+nav {
+  margin: 0;
+}
+
+/* Autres styles globaux */
+
+
+html, body, #__next {
+  height: calc(var(--vh, 1vh) * 100);
+  margin: 0;
+  background-color: var(--bgBody);
+  
+}
+
+p {
+  margin: 0%;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.no-scroll {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+.div_body {
+  touch-action: none;
+}
+
+html, body, #__next {
+  height: calc(var(--vh, 1vh) * 100);
+  margin: 0;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.hidden {
+  display: none;
+}

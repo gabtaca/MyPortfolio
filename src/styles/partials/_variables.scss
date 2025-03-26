@@ -1,0 +1,78 @@
+$colors: (
+  'background': #FBFDFF,
+  'bgBody': #FBFDFF,
+  'foreground': #D2DDE8,
+  'mainTextColor': #000000,
+  'h2Color': #677684,
+  'bgBtnModal': #292f35,
+  'bgBtnSeeProject': #7ab3eb,
+  'bgModal': #f5f9fc,
+  'h1Icons': #194967,
+  'textColor': #163F59,
+  'datesColor': #95A5AF,
+  'bgDetailsModal': #D2DDE8,
+  'linkColor': #D2DDE8,
+  'btnBlank': #C9D5E1,
+  'btnBlankEnd': #EBF1F6,
+  'postItPink': #FFA9D0,
+  'postItYellow': #FFFFB2,
+  'postItBlue': #C5FEFF,
+  'postItGreen': #C8F06E,
+  'postItOrange': #FFC551,
+  'errors': #ff000082,
+  'boxShadow': rgba(0, 0, 0, 0.3),
+  'gradientStart': #C9D5E1,
+  'gradientEnd': white,
+  'bgH1Desktop': #A3DAFE, 
+  'bgCvDesktop': #c1e3fa,
+  'bgProjectsDesktop': #def0fd,
+  'bgIdeesDesktop': #ebf6fd,
+  'h1Desktop': #FBFDFF,
+  'desktopPcolor': #5C5A4E, 
+  'desktopBtnCloseColor': #ffffff,
+  'desktopBtnCloseBg': #ff8282,  
+);
+
+
+$light-colors: $colors;
+
+$dark-colors: (
+  'background': #121212,
+  'bgBody': #191614,
+  'foreground': #1E1E1E,
+  'mainTextColor': #FFFFFF,
+  'h2Color': #c9c7c7,
+  'bgBtnModal': #3A3A3A,
+  'bgBtnSeeProject': #b36e4e,
+  'bgModal': #1E1E1E,
+  'h1Icons': #FFFFFF,
+  'textColor': #E0E0E0,
+  'datesColor': #AAAAAA,
+  'bgDetailsModal': #2A2A2A,
+  'linkColor': #4A90E2,
+  'btnBlank': #3A3A3A,
+  'btnBlankEnd': #2A2A2A,
+  'postItPink': #48071f,
+  'postItYellow': #5a4510,
+  'postItBlue': #03314a,
+  'postItGreen': #153517,
+  'postItOrange': #533920,
+  'errors': #5a2222,
+  'boxShadow': rgba(255, 255, 255, 0.2),
+  'gradientStart': #2C3E50, 
+  'gradientEnd': rgba(44, 62, 80, 0.8),
+  'bgH1Desktop': #2b3a42,
+  'bgCvDesktop': #606a70,
+  'bgProjectsDesktop': #7a8792,
+  'bgIdeesDesktop': #8a9ca8,
+  'h1Desktop': #7b99b7,
+  'desktopPcolor': #898673,
+  'desktopBtnCloseColor': #63521d,
+);
+
+@mixin set-theme($theme-colors) {
+  @each $name, $color in $theme-colors {
+    --#{$name}: #{$color};
+  }
+}
+
