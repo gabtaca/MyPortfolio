@@ -203,7 +203,7 @@ const HomeDesktop = () => {
                   className="close-drawer-btn close-projects"
                   onClick={() => setIsProjectsOpen(false)}
                 >
-                  Fermer les projets
+                  <p>Fermer</p>
                 </button>
                 <ProjectsSlider forceLandscapeFooter />
               </motion.div>
@@ -233,8 +233,8 @@ const HomeDesktop = () => {
                 <button
                   className="close-drawer-btn close-ideas"
                   onClick={() => setIsIdeesOpen(false)}
-                >
-                  Fermer les idées
+                  >
+                  <p>Fermer</p>
                 </button>
                 <IdeesMobile />
               </motion.div>

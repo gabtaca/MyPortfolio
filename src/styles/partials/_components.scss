@@ -538,7 +538,7 @@ body.single-toggle .drop:nth-child(10) {
   justify-content: center;
   align-items: center;
   font-family: "Livvic";
-  z-index: 10;
+  z-index: 100;
   color: var(--h1Desktop);
   -webkit-border-bottom-right-radius: 60px;
   -webkit-border-bottom-left-radius: 60px;
@@ -551,10 +551,12 @@ body.single-toggle .drop:nth-child(10) {
     position: absolute;
     right: 4%;
     top: 80%;
+    z-index: 100;
     .btn_pull-chain {
       img {
         width: 15%;
         object-fit: contain;
+        z-index: 100;
       }
     }
   }
@@ -721,12 +723,14 @@ body.single-toggle .drop:nth-child(10) {
 }
 
 .close-drawer-btn {
+  justify-self: flex-end;
   z-index: 999;
   border: none;
   cursor: pointer;
   font-family: "Livvic", sans-serif;
   font-size: 1rem;
   font-weight: 500;
+  justify-content: center;
 
   &:hover {
     opacity: 0.8;
@@ -738,6 +742,48 @@ body.single-toggle .drop:nth-child(10) {
   padding: 5px;
   justify-content: flex-end;
   background-color: var(--bgCvDesktop);
+  color: var(--desktopBtnCloseColor);
+  border-right: solid white 1px ;
+
+  p {
+    display: flex;
+    padding: 3px;
+    background-color: var(--desktopBtnCloseBg);
+    border-radius: 5px;
+  }
+  .close_symbol {
+    padding-left: 5px;
+    font-weight: 800;
+  }
+}
+
+.close-projects {
+  display: flex;
+  padding: 5px;
+  width: 50vw;
+  align-self: center;
+  justify-content: flex-end;
+  background-color: var(--bgProjectsDesktop);
+  color: var(--desktopBtnCloseColor);
+  border-right: solid white 1px ;
+
+  p {
+    display: flex;
+    padding: 3px;
+    background-color: var(--desktopBtnCloseBg);
+    border-radius: 5px;
+  }
+  .close_symbol {
+    padding-left: 5px;
+    font-weight: 800;
+  }
+}
+
+.close-ideas {
+  display: flex;
+  padding: 5px;
+  justify-content: flex-end;
+  background-color: var(--bgideesDesktop);
   color: var(--desktopBtnCloseColor);
   border-right: solid white 1px ;
 
