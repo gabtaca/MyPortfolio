@@ -263,9 +263,8 @@ const HomeDesktop = () => {
           <p>Designer UI/UX,</p>
           <br></br>
           <p>
-            Fort de plus de vingt ans d’expérience dans la construction dont
-            une décennie en tant qu’entrepreneur général ainsi q'une immersion dans
-            l’immobilier, j’ai appris à concevoir et créer des espaces de vie où
+            Fort de plus de vingt ans d’expérience dans le domaine de la construction et l'immobilier.
+            Jumelé à une décennie en tant qu’entrepreneur général, j’ai appris à concevoir et créer des espaces de vie où
             l’harmonie, la fonctionnalité et l’esthétique se conjuguent et offrent des expériences uniques.
           </p>
           <br></br>
