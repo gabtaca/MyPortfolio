@@ -259,7 +259,7 @@ const HomeDesktop = () => {
           }
           alt="Portrait de Gabriel Taca"
         />
-        <text>
+        <span>
           <p>Designer UI/UX,</p>
           <br></br>
           <p>
@@ -280,7 +280,7 @@ const HomeDesktop = () => {
             élégantes. Des projets virtuels qui, à l’image d’une maison bien
             conçue, invitent à la découverte et au bien-être.
           </p>
-        </text>
+        </span>
       </div>
     </div>
   );

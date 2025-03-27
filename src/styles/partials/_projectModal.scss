@@ -117,6 +117,7 @@
           font-family: "Inter", sans-serif;
           color: var(--textColor);
           border-radius: 0 0 10px 10px;
+          width: 90%;
         }
 
         .modal_tech-stack {
@@ -150,7 +151,7 @@
         align-items: center;
         justify-content: space-between;
         width: 80%;
-        padding:10px;
+        padding: 10px;
 
         .modal_scrollIndex-cells {
           display: grid;
@@ -348,4 +349,192 @@
   }
 }
 
+// Version desktop
+.modal-wrapper.desktop {
+  width: 90%;
+  margin: 0 auto;
+}
 
+.desktop {
+  display: flex;
+  flex-direction: column;
+  height: 90%;
+
+  .modal_content-desktop {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 100%;
+    width: 100%;
+    gap: 20px;
+    padding: 10%;
+    
+    .modal_ctrl-infos {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      
+      .modal_iframe-container {
+        flex: 1;
+        position: relative;
+        width: 375px;
+        height: 500px;
+        &::before {
+          content: "";
+          display: block;
+        }
+        
+        .modal_iframe {
+          top: 0;
+          left: 0;
+          border: 1px solid var(--h2Color);
+          border-radius: 10px;
+        }
+        
+      }
+      
+      .iframe_mode_buttons {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        float: left;
+        
+        button {
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          
+          img {
+            width: 40px;
+            height: 40px;
+          }
+        }
+      }
+
+      // Project information container takes roughly 40% width on desktop
+      .modal_text-informations-desktop {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        width: 50%;
+        
+
+        
+        .modal_project-name-desktop {
+          font-family: Italiana;
+          color: var(--h2Color);
+          font-size: 2em;
+          margin: 0 0 10px 0;
+          padding: 20px;
+        }
+        
+        .modal_project-type-desktop {
+          font-family: Italiana;
+          color: var(--h2Color);
+          font-size: 1.5em;
+          margin: 0 0 10px 0;
+          padding: 20px;
+        }
+        
+        .modal_description-desktop {
+          font-family: "Inter", sans-serif;
+          color: var(--desktopPcolor);
+          margin-bottom: 10px;
+          line-height: 1.5;
+          padding: 20px;
+        }
+        
+        .modal_tech-stack-desktop {
+          display: flex;
+          flex-wrap: wrap;
+          list-style: none;
+          padding: 0;
+          gap: 6px;
+          margin-bottom: 10px;
+          font-family: "Inter", sans-serif;
+          font-size: 14px;
+          color: var(--h2Color);
+          padding: 20px;
+          
+          li {
+            padding: 3px 6px;
+            border-radius: 5px;
+            margin: 0 5px;
+          }
+        }
+        
+        .project-link {
+          font-family: "Inter", sans-serif;
+          color: var(--foreground);
+          text-decoration: none;
+          border: 1px solid var(--foreground);
+          padding: 6px 12px;
+          border-radius: 5px;
+          transition: background 0.3s, color 0.3s;
+          z-index: 100;
+          
+          &:hover {
+            background: var(--linkColor, #007bff);
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+
+  .modal_footer-desktop {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    
+    .modal_scrollIndex {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      
+      .arrow-icon {
+        cursor: pointer;
+        width: 50px;
+        height: 50px;
+      }
+      
+      .modal_scrollIndex-cells {
+        display: flex;
+        gap: 5px;
+        
+        .scrollIndex_cell {
+          width: 10px;
+          height: 10px;
+          background: var(--scrollInactive, #ccc);
+          border-radius: 50%;
+          
+          &.active {
+            background: var(--scrollActive, #333);
+          }
+        }
+      }
+    }
+  }
+}
+
+
+// Iframe classes pour switch mobile et desktop
+
+.iframe_mobile {
+  width: 50% !important;
+  height: 100% !important;
+}
+
+.modal_iframe.iframe_desktop {
+  transform: scalex(.5) scaley(.5);
+  transform-origin: 0 0;
+  width: 200% !important;
+  height: 200% !important;
+}

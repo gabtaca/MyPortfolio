@@ -13,11 +13,13 @@ import bookendsData from "../jsonFiles/bookends.json";
 import { AnimatePresence, motion } from "framer-motion";
 import ProjectsDatesFooterPortrait from "./ProjectsDatesFooterPortrait";
 import ProjectsDatesFooterLandscape from "./ProjectsDatesFooterLandscape";
+import ProjectsModalDesktop from "./ProjectsModalDesktop";
 
 // 1) IMPORT your IdeesMobile component
 import IdeesMobile from "./IdeesMobile"; // <-- adjust path if needed
 
-const ProjectsSlider = forwardRef(({ setHighlightedDate }, ref) => {
+const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode }, ref) => {
+  
   const sliderRef = useRef(null);
 
   // State for desktop or mobile transforms
@@ -375,34 +377,53 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate }, ref) => {
       </div>
 
       {/* Project Details Modal */}
-      <AnimatePresence>
-        {selectedProjectIndex !== null && (
-          <ProjectsModal
-            project={projectsData[selectedProjectIndex]}
-            currentIndex={selectedProjectIndex}
-            onClose={() => setSelectedProjectIndex(null)}
-            onNext={() => {
-              setSelectedProjectIndex((prevIndex) => {
-                const newIndex = Math.min(prevIndex + 1, projectsData.length - 1);
-                if (!isDesktop) {
-                  scrollToProjectIndex(newIndex + 2);
-                }
-                return newIndex;
-              });
-            }}
-            onPrevious={() => {
-              setSelectedProjectIndex((prevIndex) => {
-                const newIndex = Math.max(prevIndex - 1, 0);
-                if (!isDesktop) {
-                  scrollToProjectIndex(newIndex + 2);
-                }
-                return newIndex;
-              });
-            }}
-            projectsData={projectsData}
-          />
-        )}
-      </AnimatePresence>
+<AnimatePresence>
+  {selectedProjectIndex !== null &&
+    (isDesktop ? (
+      <ProjectsModalDesktop
+        project={projectsData[selectedProjectIndex]}
+        currentIndex={selectedProjectIndex}
+        onClose={() => setSelectedProjectIndex(null)}
+        onNext={() => {
+          setSelectedProjectIndex((prevIndex) => {
+            const newIndex = Math.min(prevIndex + 1, projectsData.length - 1);
+            if (!isDesktop) scrollToProjectIndex(newIndex + 2);
+            return newIndex;
+          });
+        }}
+        onPrevious={() => {
+          setSelectedProjectIndex((prevIndex) => {
+            const newIndex = Math.max(prevIndex - 1, 0);
+            if (!isDesktop) scrollToProjectIndex(newIndex + 2);
+            return newIndex;
+          });
+        }}
+        projectsData={projectsData}
+        isDarkMode={isDarkMode}
+      />
+    ) : (
+      <ProjectsModal
+        project={projectsData[selectedProjectIndex]}
+        currentIndex={selectedProjectIndex}
+        onClose={() => setSelectedProjectIndex(null)}
+        onNext={() => {
+          setSelectedProjectIndex((prevIndex) => {
+            const newIndex = Math.min(prevIndex + 1, projectsData.length - 1);
+            if (!isDesktop) scrollToProjectIndex(newIndex + 2);
+            return newIndex;
+          });
+        }}
+        onPrevious={() => {
+          setSelectedProjectIndex((prevIndex) => {
+            const newIndex = Math.max(prevIndex - 1, 0);
+            if (!isDesktop) scrollToProjectIndex(newIndex + 2);
+            return newIndex;
+          });
+        }}
+        projectsData={projectsData}
+      />
+    ))}
+</AnimatePresence>
 
       {/* Footer (landscape or portrait) */}
       {shouldUseLandscapeFooter ? (
