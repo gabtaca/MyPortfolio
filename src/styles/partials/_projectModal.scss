@@ -532,6 +532,17 @@
   height: 100% !important;
 }
 
+@media screen and (min-width: 1921px) {
+  .modal_content-desktop {
+    padding: 0px;
+  }
+  .iframe_mobile {
+    width: 50% !important;
+    height: 110% !important;
+  }
+  
+}
+
 .modal_iframe.iframe_desktop {
   transform: scalex(.5) scaley(.5);
   transform-origin: 0 0;
