@@ -4,7 +4,6 @@
   flex-direction: column;
   position: relative;
   font-family: "Livvic", sans-serif;
-  height: 80vh;
   justify-content: space-between;
   text-align: center;
   padding: 20px;
@@ -98,7 +97,6 @@
     height: 15px;
   }
 }
-
 
 .dropdown-menu-landscape {
   display: flex;
@@ -406,8 +404,129 @@
         font-family: "Inter";
         font-weight: bolder;
         font-size: 16px;
-
       }
     }
   }
+}
+
+// Version desktop
+
+// Styles pour la version desktop de la section Idées
+.idees-desktop-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  font-family: "Livvic", sans-serif;
+  padding: 20px;
+}
+
+.idees-desktop-button-container {
+  position: relative;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.idees-desktop-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  z-index: 10;
+}
+
+.idees-desktop-button img {
+  width: 60px;
+  height: auto;
+  box-shadow: var(--boxShadow) 3px 3px 7px;
+  border-radius: 50%;
+}
+
+.idees-desktop-ribbon {
+  position: absolute;
+  top: 15px; // Positionnez le ruban juste sous le bouton
+  left: 10%;
+  background-color: var(--btnRibbonBg, #333);
+  color: var(--bgBtnSeeProject);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  z-index: 9;
+}
+
+.idees-desktop-dropdown {
+  display: flex;
+  position: absolute;
+  top: 70px;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 20px;
+  z-index: 10;
+}
+
+.idees-desktop-dropdown-item {
+  background-color: var(--btnBlankEnd);
+  border: none;
+  width: 100%;
+  padding: 10px 20px;
+  margin: 2px;
+  font-size: 18px;
+  color: var(--textColor);
+  text-wrap: nowrap;
+  cursor: pointer;
+  border-radius: 20px;
+  transform: translateX(0);
+  transition: background 0.3s;
+  box-shadow: var(--boxShadow) 4px 4px 6px;
+  border-top: 2px solid var(--background);
+  border-left: 2px solid var(--background);
+}
+/*
+.idees-desktop-dropdown-item:nth-child(2) {
+  transform: translateX(30px) !important;
+}
+
+.idees-desktop-dropdown-item:nth-child(3) {
+  transform: translateX(60px) !important;
+}
+
+.idees-desktop-dropdown-item:nth-child(4) {
+  transform: translateX(60px) !important;
+}
+
+.idees-desktop-dropdown-item:nth-child(5) {
+  transform: translateX(30px) !important;
+}
+
+.idees-desktop-dropdown-item:nth-child(6) {
+  transform: translateX(0px) !important;
+}
+*/
+.idees-desktop-dropdown-item:hover {
+  background-color: var(--dropdownItemHoverBg, #ddd);
+}
+
+.idees-desktop-active-category {
+  width: 100%;
+  margin-top: 60px;
+  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  gap: 30px;
+}
+
+.idees-desktop-idea {
+  background: var(--ideaBg, #fff);
+  border: 1px solid var(--ideaBorder, #ccc);
+  padding: 15px;
+  width: 15rem;
+  height: 15rem;
+  margin-bottom: 10px;
+  border-radius: 5px;
 }

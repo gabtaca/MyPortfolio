@@ -9,6 +9,21 @@
         "id": 2,
         "title": "Art-Idee-02",
         "description": "Utiliser des matériaux recyclés pour peindre des fresques géantes."
+      },
+      {
+        "id": 3,
+        "title": "Art-Idee-03",
+        "description": "Créer des installations interactives avec des capteurs de mouvement."
+      },
+      {
+        "id": 4,
+        "title": "Art-Idee-03",
+        "description": "Créer des installations interactives avec des capteurs de mouvement."
+      },
+      {
+        "id": 5,
+        "title": "Art-Idee-03",
+        "description": "Créer des installations interactives avec des capteurs de mouvement."
       }
     ],
     "Société": [

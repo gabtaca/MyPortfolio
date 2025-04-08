@@ -1,24 +1,41 @@
+// src/components/HomeDesktop.js
 import React, { useState, useEffect, useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ThemeContext } from "../context/ThemeContext";
 import ProjectsSlider from "./ProjectsSlider";
-import IdeesMobile from "./IdeesMobile"; // <-- import your ideas component
+import IdeesMobile from "./IdeesMobile"; // Composant gérant la section Idées (mobile et dropdown)
+import ideesData from "../jsonFiles/ideesData.json"; // Pour récupérer la liste des catégories
 
 const HomeDesktop = () => {
   const { isDarkMode, toggleDarkMode } = useContext(ThemeContext);
 
-  // Manage drawers
+  // États pour gérer l'ouverture des tiroirs
   const [isCvOpen, setIsCvOpen] = useState(false);
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
   const [isIdeesOpen, setIsIdeesOpen] = useState(false);
 
-  // Chain pulled for dark mode
+  // État pour la chaîne (pour le mode sombre)
   const [chainPulled, setChainPulled] = useState(false);
 
-  // State to force re-mounting of the overlay to trigger the neon flicker animation
+  // État pour forcer le remontage de l'overlay (animation flicker)
   const [flickerKey, setFlickerKey] = useState(0);
 
-  // Toggle only one drawer at a time
+  // État global pour la catégorie active (défini avec useState)
+  const [activeCategory, setActiveCategory] = useState(null);
+
+  // Lors de l'ouverture du tiroir "Idées", si aucune catégorie n'est définie, on définit la catégorie par défaut
+  useEffect(() => {
+    if (isIdeesOpen && activeCategory === null) {
+      const categories = Object.keys(ideesData);
+      if (categories.includes("Art")) {
+        setActiveCategory("Art");
+      } else if (categories.length > 0) {
+        setActiveCategory(categories[0]);
+      }
+    }
+  }, [isIdeesOpen, activeCategory]);
+
+  // Fonction pour toggler un seul tiroir à la fois
   const toggleDrawer = (drawerName) => {
     if (drawerName === "cv") {
       setIsCvOpen(!isCvOpen);
@@ -35,17 +52,17 @@ const HomeDesktop = () => {
     }
   };
 
-  // Pull chain click => toggle dark mode and trigger neon flicker animation when switching to dark mode
+  // Gestion du clic sur la chaîne pour changer le mode sombre et déclencher l'animation flicker
   const handlePullChain = () => {
     setChainPulled(true);
     if (!isDarkMode) {
-      // Increment the key so the overlay re-mounts and runs the neon flicker animation
+      // Incrémente la clé pour forcer le remontage de l'overlay
       setFlickerKey((prev) => prev + 1);
     }
     toggleDarkMode();
   };
 
-  // Reset chainPulled after 1 second so user can reclick
+  // Réinitialisation de chainPulled après 1 seconde
   useEffect(() => {
     let timer;
     if (chainPulled) {
@@ -56,7 +73,7 @@ const HomeDesktop = () => {
     return () => clearTimeout(timer);
   }, [chainPulled]);
 
-  // Evenly spaced times for 27 keyframes
+  // Tableau de keyframes pour l'animation flicker
   const keyframeTimes = [
     0, 0.038, 0.077, 0.115, 0.154, 0.192, 0.231, 0.269, 0.308, 0.346, 0.385,
     0.423, 0.462, 0.5, 0.538, 0.577, 0.615, 0.654, 0.692, 0.731, 0.769, 0.808,
@@ -73,7 +90,7 @@ const HomeDesktop = () => {
         >
           <h1>Gabriel Taca</h1>
           <p>Idéation créative en mode solution</p>
-          {/* Neon Tube Flicker Overlay – rendered only in Dark Mode */}
+          {/* Animation Neon Flicker en mode sombre */}
           <AnimatePresence>
             {isDarkMode && (
               <motion.div
@@ -104,7 +121,7 @@ const HomeDesktop = () => {
                 style={{
                   position: "absolute",
                   top: "-90px",
-                  left: "22%",
+                  left: "18%",
                   width: "70%",
                   height: "180px",
                   pointerEvents: "none",
@@ -114,7 +131,7 @@ const HomeDesktop = () => {
           </AnimatePresence>
         </div>
 
-        {/* Pull-chain button */}
+        {/* Bouton pull-chain pour le mode sombre */}
         <div className="ctrl_darkmode-pull">
           <button className="btn_pull-chain" onClick={handlePullChain}>
             <motion.img
@@ -127,18 +144,12 @@ const HomeDesktop = () => {
               initial="idle"
               animate={chainPulled ? "pull" : "idle"}
               variants={{
-                idle: {
-                  rotate: 0,
-                  transformOrigin: "top center",
-                },
+                idle: { rotate: 0, transformOrigin: "top center" },
                 pull: {
                   rotate: [0, 4, -3, 2, -2, 1, 0],
                   scaleY: [1, 1.01, 0.995, 1.005, 1],
                   transformOrigin: "top center",
-                  transition: {
-                    duration: 1,
-                    ease: "easeInOut",
-                  },
+                  transition: { duration: 1, ease: "easeInOut" },
                 },
               }}
             />
@@ -164,21 +175,26 @@ const HomeDesktop = () => {
                   className="close-drawer-btn close-cv"
                   onClick={() => setIsCvOpen(false)}
                 >
-                  <p>Fermer</p>
+                  <h4>CV</h4>
+                  <p>✖</p>
                 </button>
                 <div className="cv-content">
-                  <iframe
-                    src="/pdf/CV-Gabriel_Taca.pdf"
+                  <object
+                    className="cv-object"
+                    data="/pdf/CV-Gabriel_Taca.pdf"
                     width="100%"
-                    height="1200px"
                     style={{ border: "none" }}
                     title="CV Gabriel Taca"
-                  ></iframe>
+                  >
+                    <p>
+                      Your browser does not support PDFs.{" "}
+                      <a href="/pdf/CV-Gabriel_Taca.pdf">Download the PDF</a>.
+                    </p>
+                  </object>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
-
           <button
             className="home_desktop-cv"
             onClick={() => toggleDrawer("cv")}
@@ -203,13 +219,13 @@ const HomeDesktop = () => {
                   className="close-drawer-btn close-projects"
                   onClick={() => setIsProjectsOpen(false)}
                 >
-                  <p>Fermer</p>
+                  <h4>Projets</h4>
+                  <p>✖</p>
                 </button>
                 <ProjectsSlider forceLandscapeFooter />
               </motion.div>
             )}
           </AnimatePresence>
-
           <button
             className="home_desktop-projects"
             onClick={() => toggleDrawer("projects")}
@@ -224,32 +240,50 @@ const HomeDesktop = () => {
             {isIdeesOpen && (
               <motion.div
                 className="drawer drawer-idees"
-                initial={{ height: 0 }}
-                animate={{ height: "auto" }}
-                exit={{ height: 0 }}
+                layout
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
-                style={{ overflow: "hidden" }}
               >
                 <button
                   className="close-drawer-btn close-ideas"
                   onClick={() => setIsIdeesOpen(false)}
-                  >
-                  <p>Fermer</p>
+                >
+                  <h4>Idées</h4>
+                  <p>✖</p>
                 </button>
-                <IdeesMobile />
+                {/* Passage de activeCategory et setActiveCategory à IdeesMobile */}
+                <IdeesMobile
+                  activeCategory={activeCategory}
+                  setActiveCategory={setActiveCategory}
+                />
               </motion.div>
             )}
           </AnimatePresence>
-
           <button
             className="home_desktop-idees"
-            onClick={() => toggleDrawer("idees")}
+            onClick={() => {
+              // Si le tiroir d'idées est ouvert, le fermer ; sinon l'ouvrir
+              if (isIdeesOpen) {
+                setIsIdeesOpen(false);
+              } else {
+                toggleDrawer("idees");
+              }
+            }}
           >
             <h2 className="btn_idees-homeDesktop">Idées</h2>
           </button>
         </section>
       </nav>
-      <div className="home_desktop-presentation-content">
+
+      <div
+        className="home_desktop-presentation-content"
+        style={{
+          filter:
+            isCvOpen || isProjectsOpen || isIdeesOpen ? "blur(1.5rem)" : "none",
+        }}
+      >
         <img
           className="home_desktop-portrait"
           src={
@@ -261,24 +295,17 @@ const HomeDesktop = () => {
         />
         <span>
           <p>Designer UI/UX,</p>
-          <br></br>
+          <br />
           <p>
-            Fort de plus de vingt ans d’expérience dans le domaine de la construction et l'immobilier.
-            Jumelé à une décennie en tant qu’entrepreneur général, j’ai appris à concevoir et créer des espaces de vie où
-            l’harmonie, la fonctionnalité et l’esthétique se conjuguent et offrent des expériences uniques.
+            Fort de plus d'une vingtaine d'années d'expérience dans la construction et l'immobilier, j'ai appris à concevoir et créer des espaces de vie alliant harmonie, fonctionnalité et esthétisme. Que ce soit en tant qu'entrepreneur, ouvrier ou même propriétaire, mon parcours m'a doté d'une vision globale et d'une approche centrée sur le service client, des atouts essentiels dans tous mes projets.
           </p>
-          <br></br>
+          <br />
           <p>
-            Pour l'avenir, j’ai choisi de transposer cette expertise du monde réel à l’univers du
-            numérique. Tout comme j’ai façonné des pièces et des intérieurs pour
-            améliorer le quotidien de mes clients, je conçois désormais des
-            interfaces intuitives et engageantes, où chaque détail compte.
+            Aujourd'hui, j'ai choisi de transposer cette expertise du monde réel vers l'univers numérique. Dans la même logique qui m'a permis de façonner l'environnement de mes clients pour améliorer leur quotidien, je conçois désormais des interfaces adaptées, intuitives et engageantes, où chaque détail compte.
           </p>
-          <br></br>
+          <br />
           <p>
-            Mon approche: inspiration, idéation, pragmatisme. À chaque projet nous visons à bâtir des expériences digitales solides et
-            élégantes. Des projets virtuels qui, à l’image d’une maison bien
-            conçue, invitent à la découverte et au bien-être.
+            Mon approche repose sur l'inspiration, l'idéation et le pragmatisme. Pour chaque projet, nous visons à bâtir une expérience digitale à la fois robuste et élégante, des espaces virtuels qui, à l'image d'une maison bien conçue, invitent au bien-être et à la découverte.
           </p>
         </span>
       </div>
