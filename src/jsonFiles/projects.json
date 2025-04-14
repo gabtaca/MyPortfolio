@@ -128,8 +128,8 @@
   {
     "id": "10",
     "name": "Projet 10",
-    "still": "/images/projects/project10.jpg",
-    "img": "/images/projects/project10.gif",
+    "still": "/images/projects/portfolio.png",
+    "img": "/images/projects/portfolio.gif",
     "imgAlt": "image du projet 10",
     "description": "Ce projet vise à développer une application web moderne et intuitive permettant aux utilisateurs d'interagir facilement avec les dernieres technologies.",
     "date": "2025",

@@ -459,22 +459,19 @@
 
 .idees-desktop-dropdown {
   display: flex;
-  position: absolute;
-  top: 70px;
   flex-direction: row;
   align-items: center;
-  margin-top: 20px;
   z-index: 10;
 }
 
 .idees-desktop-dropdown-item {
-  background-color: var(--btnBlankEnd);
+  background-color: var(--bgBtnIdeesProject);
   border: none;
   width: 100%;
   padding: 10px 20px;
   margin: 2px;
   font-size: 18px;
-  color: var(--textColor);
+  color: var(--desktopBtnCloseColor);
   text-wrap: nowrap;
   cursor: pointer;
   border-radius: 20px;
@@ -506,7 +503,11 @@
 }
 */
 .idees-desktop-dropdown-item:hover {
-  background-color: var(--dropdownItemHoverBg, #ddd);
+  background-color: var(--bgBtnSeeProject);
+}
+
+.idees-desktop-dropdown-item.active {
+  background-color: var(--bgBtnSeeProject) !important;
 }
 
 .idees-desktop-active-category {

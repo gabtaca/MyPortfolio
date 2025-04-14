@@ -32,6 +32,7 @@ $colors: (
   'desktopBtnCloseColor': #ffffff,
   'desktopBtnCloseBg': #ff8282,  
   'ideasDdown': #ffffff, 
+  'bgBtnIdeesProject': #4d687b,
 );
 
 
@@ -69,6 +70,7 @@ $dark-colors: (
   'h1Desktop': #7b99b7,
   'desktopPcolor': #898673,
   'desktopBtnCloseColor': #63521d,
+  'bgBtnIdeesProject': #b29784,
 );
 
 @mixin set-theme($theme-colors) {

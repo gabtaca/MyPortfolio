@@ -5,7 +5,6 @@ import { getRandomFoldClass } from "../hooks/foldedCorner";
 import ideesData from "../jsonFiles/ideesData.json"; // Données JSON des idées
 import CategoryButton from "./CategoryButton";
 import DashedArrow from "./DashedArrow";
-import classNames from "classnames";
 import useTheme from "../hooks/useTheme";
 
 // Hook personnalisé pour obtenir la largeur de la fenêtre
@@ -38,26 +37,22 @@ const getRandomRotation = () => {
 const IdeesMobile = ({ activeCategory, setActiveCategory }) => {
   const { isDarkMode } = useTheme();
   const windowWidth = useWindowWidth();
-  // Détection de l'orientation : en paysage si la largeur est supérieure à la hauteur
+  // Détecter l'orientation : en paysage si la largeur est supérieure à la hauteur
   const isLandscape = window.innerWidth > window.innerHeight;
-  // Mode dropdown si la largeur >= 1200px OU si l'appareil mobile est en paysage
+  // On active le mode dropdown si la largeur est >= 1200px OU si l'appareil mobile est en paysage
   const isDropdownMode = windowWidth >= 1200 || isLandscape;
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // État pour le hover sur le bouton (pour le ruban)
-  const [hovered, setHovered] = useState(false);
-
-  // États spécifiques au mode mobile portrait
+  // États pour le mode mobile portrait
   const [arrowExpanded, setArrowExpanded] = useState(false);
   const [visibleCategories, setVisibleCategories] = useState([]);
 
-  // État pour le mode dropdown
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  // Pas d'état pour toggler le dropdown en mode dropdown : il est affiché dès l'ouverture
 
   const containerRef = useRef(null);
   const ideesContainerRef = useRef(null);
-  const dropdownRef = useRef(null);
 
-  // Mémoriser les catégories depuis ideesData
+  // Liste des catégories récupérées à partir de ideesData
   const categories = useMemo(() => Object.keys(ideesData), [ideesData]);
 
   useEffect(() => {
@@ -65,7 +60,7 @@ const IdeesMobile = ({ activeCategory, setActiveCategory }) => {
     console.log("categories:", categories);
   }, [categories, ideesData]);
 
-  // En mode mobile portrait, afficher progressivement les catégories après l'expansion de la flèche
+  // En mode portrait mobile, afficher progressivement les catégories après l'expansion de la flèche
   useEffect(() => {
     if (!isDropdownMode && arrowExpanded && visibleCategories.length === 0) {
       categories.forEach((category, index) => {
@@ -76,7 +71,7 @@ const IdeesMobile = ({ activeCategory, setActiveCategory }) => {
     }
   }, [arrowExpanded, categories, visibleCategories.length, isDropdownMode]);
 
-  // En mode dropdown, définir la catégorie par défaut sur "Art" si elle existe, sinon la première catégorie
+  // En mode dropdown, définir la catégorie par défaut sur "Art" si elle existe, sinon la première
   useEffect(() => {
     if (isDropdownMode && !activeCategory && categories.length > 0) {
       if (categories.includes("Art")) {
@@ -85,47 +80,31 @@ const IdeesMobile = ({ activeCategory, setActiveCategory }) => {
         setActiveCategory(categories[0]);
       }
     }
-  }, [isDropdownMode, activeCategory, categories]);
+  }, [isDropdownMode, activeCategory, categories, setActiveCategory]);
 
   // Fermeture de la catégorie active en cliquant en dehors (pour les post-it)
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      const isOutsidePostIts =
-        containerRef.current && !containerRef.current.contains(event.target);
-      const isOutsideCategories =
-        ideesContainerRef.current && !ideesContainerRef.current.contains(event.target);
-      if (isOutsidePostIts && isOutsideCategories) {
-        setActiveCategory(null);
-      }
-    };
-    if (activeCategory) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
+// Fermeture de la catégorie active en cliquant en dehors (pour les post-it)
+// On ne supprime pas la catégorie active en mode dropdown, afin de conserver la sélection
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    const isOutsidePostIts =
+      containerRef.current && !containerRef.current.contains(event.target);
+    const isOutsideCategories =
+      ideesContainerRef.current && !ideesContainerRef.current.contains(event.target);
+    // Si nous ne sommes pas en mode dropdown, on efface la catégorie active
+    if (!isDropdownMode && isOutsidePostIts && isOutsideCategories) {
+      setActiveCategory(null);
     }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [activeCategory]);
+  };
+  if (activeCategory) {
+    document.addEventListener("mousedown", handleClickOutside);
+  }
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [activeCategory, isDropdownMode, setActiveCategory]);
 
-  // Fermeture du dropdown en cliquant en dehors (mode dropdown)
-  useEffect(() => {
-    const handleClickOutsideDropdown = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false);
-      }
-    };
-    if (isDropdownOpen) {
-      document.addEventListener("mousedown", handleClickOutsideDropdown);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutsideDropdown);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutsideDropdown);
-    };
-  }, [isDropdownOpen]);
-
-  // Fonction pour activer/désactiver une catégorie
+  // Fonction pour changer la catégorie active
   const toggleCategory = (category) => {
     setActiveCategory((prev) => (prev === category ? null : category));
   };
@@ -143,7 +122,9 @@ const IdeesMobile = ({ activeCategory, setActiveCategory }) => {
     return (
       <div className="idees-container" ref={ideesContainerRef}>
         <p className="idees-subtitle">
-          Un fourre-tout d'idées. Pas toujours de logique entre l'une et l'autre, mais un bel endroit pour relancer l'inspiration en cas de besoin !
+          Un fourre-tout d'idées. Pas toujours de logique entre l'une et
+          l'autre, mais un bel endroit pour relancer l'inspiration en cas de
+          besoin !
         </p>
         <div className="categories_container-portrait">
           {categories.map((category, index) => {
@@ -179,7 +160,9 @@ const IdeesMobile = ({ activeCategory, setActiveCategory }) => {
                             <h3>{idea.title}</h3>
                             <div className="post-it_descCTRL">
                               <p>
-                                <span className="postit_description">Description</span>
+                                <span className="postit_description">
+                                  Description
+                                </span>
                                 {idea.description}
                               </p>
                             </div>
@@ -197,70 +180,37 @@ const IdeesMobile = ({ activeCategory, setActiveCategory }) => {
       </div>
     );
   } else {
-    // Mode Dropdown Desktop / Mobile en paysage
-    // Le bouton affiche l'image neutre par défaut,
-    // l'image hover lorsqu'il est survolé, et l'image active uniquement quand le dropdown est ouvert.
-    let boutonImage = "/images/btn_idees_desktop-neutre.svg";
-    if (isDropdownOpen) {
-      boutonImage = "/images/btn_idees_desktop-active.svg";
-    } else if (hovered) {
-      boutonImage = "/images/btn_idees_desktop-hover.svg";
-    }
+    // Mode Dropdown (Desktop / Mobile en paysage)
+    // Dans cette version, le dropdown est affiché automatiquement lorsque le tiroir d'idées est ouvert.
     return (
-      // Utilisation d'un motion.div avec layout pour animer le conteneur
-      <motion.div layout className="idees-desktop-container" ref={ideesContainerRef}>
-        <div className="idees-desktop-button-container" ref={dropdownRef}>
-          <motion.button
-            className="idees-desktop-button"
-            onClick={() => setIsDropdownOpen((prev) => !prev)}
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            <img src={boutonImage} alt="Bouton catégories d'idées" />
-          </motion.button>
-          <AnimatePresence>
-            {hovered && !isDropdownOpen && (
-              <motion.div
-                className="idees-desktop-ribbon"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                transition={{ duration: 0.3 }}
-              >
-                Catégories
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+      <div className="idees-desktop-container" ref={ideesContainerRef}>
         <AnimatePresence>
-          {isDropdownOpen && (
-            <motion.div
-              className="idees-desktop-dropdown"
-              initial={{ opacity: 0, scale: 0, y: 0 }}
-              animate={{ opacity: 1, scale: 1, y: 1 }}
-              exit={{ opacity: 0, scale: 0, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              {categories.map((category, index) => (
-                <motion.button
-                  key={category}
-                  className="idees-desktop-dropdown-item"
-                  onClick={() => {
-                    toggleCategory(category);
-                    setIsDropdownOpen(false);
-                  }}
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2, delay: index * 0.2 }}
-                >
-                  {category}
-                </motion.button>
-              ))}
-            </motion.div>
-          )}
+          <motion.div
+            className="idees-desktop-dropdown"
+            initial={{ opacity: 0,  }}
+            animate={{ opacity: 1,  }}
+            exit={{ opacity: 0, }}
+            transition={{ duration: 0.3 }}
+          >
+            {categories.map((category, index) => (
+              <motion.button
+                key={category}
+                className={`idees-desktop-dropdown-item ${
+                  activeCategory === category ? "active" : ""
+                }`}
+                onClick={() => {
+                  toggleCategory(category);
+                  setIsDropdownOpen(false);
+                }}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2, delay: index * 0.2 }}
+              >
+                {category}
+              </motion.button>
+            ))}
+          </motion.div>
         </AnimatePresence>
         {activeCategory && (
           <div className="idees-desktop-active-category" ref={containerRef}>
@@ -291,7 +241,7 @@ const IdeesMobile = ({ activeCategory, setActiveCategory }) => {
             })}
           </div>
         )}
-      </motion.div>
+      </div>
     );
   }
 };

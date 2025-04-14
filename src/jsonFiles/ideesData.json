@@ -3,7 +3,8 @@
       {
         "id": 1,
         "title": "Art-Idee-01",
-        "description": "Créer des sculptures en mouvement grâce à l'énergie solaire."
+        "description": "Créer des sculptures en mouvement grâce à l'énergie solaire.",
+        "image": "/images//idees_img_refs/demande_famille.png"
       },
       {
         "id": 2,

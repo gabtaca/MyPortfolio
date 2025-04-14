@@ -239,11 +239,11 @@ const HomeDesktop = () => {
           <AnimatePresence>
             {isIdeesOpen && (
               <motion.div
+                key="idees-drawer"
                 className="drawer drawer-idees"
-                layout
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
               >
                 <button
@@ -253,11 +253,13 @@ const HomeDesktop = () => {
                   <h4>Idées</h4>
                   <p>✖</p>
                 </button>
-                {/* Passage de activeCategory et setActiveCategory à IdeesMobile */}
-                <IdeesMobile
-                  activeCategory={activeCategory}
-                  setActiveCategory={setActiveCategory}
-                />
+                {/* On enveloppe IdeesMobile dans un div statique pour que son contenu ne déclenche pas de nouvelle animation de scale */}
+                <div className="idees-content-wrapper">
+                  <IdeesMobile
+                    activeCategory={activeCategory}
+                    setActiveCategory={setActiveCategory}
+                  />
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -297,15 +299,27 @@ const HomeDesktop = () => {
           <p>Designer UI/UX,</p>
           <br />
           <p>
-            Fort de plus d'une vingtaine d'années d'expérience dans la construction et l'immobilier, j'ai appris à concevoir et créer des espaces de vie alliant harmonie, fonctionnalité et esthétisme. Que ce soit en tant qu'entrepreneur, ouvrier ou même propriétaire, mon parcours m'a doté d'une vision globale et d'une approche centrée sur le service client, des atouts essentiels dans tous mes projets.
+            Fort de plus d'une vingtaine d'années d'expérience dans la
+            construction et l'immobilier, j'ai appris à concevoir et créer des
+            espaces de vie alliant harmonie, fonctionnalité et esthétisme. Que
+            ce soit en tant qu'entrepreneur, ouvrier ou même propriétaire, mon
+            parcours m'a doté d'une vision globale et d'une approche centrée sur
+            le service client, des atouts essentiels dans tous mes projets.
           </p>
           <br />
           <p>
-            Aujourd'hui, j'ai choisi de transposer cette expertise du monde réel vers l'univers numérique. Dans la même logique qui m'a permis de façonner l'environnement de mes clients pour améliorer leur quotidien, je conçois désormais des interfaces adaptées, intuitives et engageantes, où chaque détail compte.
+            Aujourd'hui, j'ai choisi de transposer cette expertise du monde réel
+            vers l'univers numérique. Dans la même logique qui m'a permis de
+            façonner l'environnement de mes clients pour améliorer leur
+            quotidien, je conçois désormais des interfaces adaptées, intuitives
+            et engageantes, où chaque détail compte.
           </p>
           <br />
           <p>
-            Mon approche repose sur l'inspiration, l'idéation et le pragmatisme. Pour chaque projet, nous visons à bâtir une expérience digitale à la fois robuste et élégante, des espaces virtuels qui, à l'image d'une maison bien conçue, invitent au bien-être et à la découverte.
+            Mon approche repose sur l'inspiration, l'idéation et le pragmatisme.
+            Pour chaque projet, nous visons à bâtir une expérience digitale à la
+            fois robuste et élégante, des espaces virtuels qui, à l'image d'une
+            maison bien conçue, invitent au bien-être et à la découverte.
           </p>
         </span>
       </div>
