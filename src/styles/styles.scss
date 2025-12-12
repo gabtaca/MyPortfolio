@@ -122,12 +122,12 @@ nav {
 }
 
 :root {
-  @include set-theme($light-colors);
+  @include mixins.set-theme(vars.$light-colors);
 }
 
 // Dark theme
 body.dark-mode {
-  @include set-theme($dark-colors);
+  @include mixins.set-theme(vars.$dark-colors);
 }
 @function theme-color($name) {
   @return var(--#{$name});
