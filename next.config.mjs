@@ -2,7 +2,6 @@
 const nextConfig = {
   sassOptions: {
     includePaths: ['./src/styles', './src/styles/partials'],
-    prependData: `@use "src/styles/partials/_variables.scss" as *;`,
     webpack: (config, { dev, isServer }) => {
       // Iterate through all module rules
       config.module.rules.forEach((rule) => {
