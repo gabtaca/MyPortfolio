@@ -1,4 +1,31 @@
 {
-    "liveServer.settings.port": 5501,
-    "workbench.editor.wrapTabs": true
+    "CodeGPT.apiKey": "OpenAI",
+    "github.copilot.chat.codeGeneration.instructions": [
+        {
+            "file": ".github/copilot-instructions.md"
+        }
+    ],
+    "github.copilot.chat.subagents": [
+        {
+            "name": "code-review-subagent",
+            "description": "Review code changes from a completed implementation phase."
+        },
+        {
+            "name": "conductor",
+            "description": "Orchestrates Planning, Implementation, and Review cycle for complex tasks"
+        },
+        {
+            "name": "implement-subagent",
+            "description": "Execute implementation tasks delegated by the CONDUCTOR agent."
+        },
+        {
+            "name": "planning-subagent",
+            "description": "Research context and return findings to parent agent"
+        },
+        {
+            "name": "Plan",
+            "description": "Researches and outlines multi-step plans",
+            "argumentHint": "Outline the goal or problem to research"
+        }
+    ]
 }

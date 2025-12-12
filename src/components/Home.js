@@ -15,6 +15,7 @@ export default function Home() {
     useTheme();
   const [activeSection, setActiveSection] = useState(null);
   const [isBubbleVisible, setIsBubbleVisible] = useState(false);
+  const [activeCategory, setActiveCategory] = useState(null);
 
   // Références pour la bulle et l'icône du téléphone
   const bubbleRef = useRef(null);
@@ -350,7 +351,10 @@ export default function Home() {
                 variants={sectionVariants}
                 transition={{ duration: 0.5 }}
               >
-                <IdeesMobile />
+                <IdeesMobile 
+                  activeCategory={activeCategory}
+                  setActiveCategory={setActiveCategory}
+                />
               </motion.div>
             )}
           </AnimatePresence>

@@ -22,6 +22,9 @@ const HomeDesktop = () => {
 
   // État global pour la catégorie active (défini avec useState)
   const [activeCategory, setActiveCategory] = useState(null);
+  
+  // État pour contrôler l'affichage du contenu du tiroir Idées (après l'animation d'ouverture)
+  const [showIdeesContent, setShowIdeesContent] = useState(false);
 
   // Lors de l'ouverture du tiroir "Idées", si aucune catégorie n'est définie, on définit la catégorie par défaut
   useEffect(() => {
@@ -35,20 +38,53 @@ const HomeDesktop = () => {
     }
   }, [isIdeesOpen, activeCategory]);
 
+  // Gérer l'animation séquentielle du contenu du tiroir Idées
+  useEffect(() => {
+    let timer;
+    if (isIdeesOpen) {
+      // Attendre que le tiroir soit ouvert avant de rendre visible
+      timer = setTimeout(() => {
+        setShowIdeesContent(true);
+      }, 500);
+    } else {
+      // Masquer le contenu avant de fermer
+      setShowIdeesContent(false);
+    }
+    return () => clearTimeout(timer);
+  }, [isIdeesOpen]);
+
   // Fonction pour toggler un seul tiroir à la fois
   const toggleDrawer = (drawerName) => {
-    if (drawerName === "cv") {
-      setIsCvOpen(!isCvOpen);
-      setIsProjectsOpen(false);
-      setIsIdeesOpen(false);
-    } else if (drawerName === "projects") {
-      setIsProjectsOpen(!isProjectsOpen);
-      setIsCvOpen(false);
-      setIsIdeesOpen(false);
-    } else if (drawerName === "idees") {
-      setIsIdeesOpen(!isIdeesOpen);
-      setIsCvOpen(false);
-      setIsProjectsOpen(false);
+    // Si le tiroir Idées est ouvert et qu'on ouvre un autre tiroir, masquer le contenu d'abord
+    if (isIdeesOpen && drawerName !== "idees") {
+      setShowIdeesContent(false);
+      setTimeout(() => {
+        // Puis fermer les tiroirs après que le contenu ait disparu
+        if (drawerName === "cv") {
+          setIsCvOpen(!isCvOpen);
+          setIsProjectsOpen(false);
+          setIsIdeesOpen(false);
+        } else if (drawerName === "projects") {
+          setIsProjectsOpen(!isProjectsOpen);
+          setIsCvOpen(false);
+          setIsIdeesOpen(false);
+        }
+      }, 75);
+    } else {
+      // Sinon, comportement normal
+      if (drawerName === "cv") {
+        setIsCvOpen(!isCvOpen);
+        setIsProjectsOpen(false);
+        setIsIdeesOpen(false);
+      } else if (drawerName === "projects") {
+        setIsProjectsOpen(!isProjectsOpen);
+        setIsCvOpen(false);
+        setIsIdeesOpen(false);
+      } else if (drawerName === "idees") {
+        setIsIdeesOpen(!isIdeesOpen);
+        setIsCvOpen(false);
+        setIsProjectsOpen(false);
+      }
     }
   };
 
@@ -239,25 +275,31 @@ const HomeDesktop = () => {
           <AnimatePresence>
             {isIdeesOpen && (
               <motion.div
-                key="idees-drawer"
                 className="drawer drawer-idees"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
+                initial={{ height: 0 }}
+                animate={{ height: "auto" }}
+                exit={{ height: 0 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
               >
                 <button
                   className="close-drawer-btn close-ideas"
-                  onClick={() => setIsIdeesOpen(false)}
+                  onClick={() => {
+                    // D'abord masquer le contenu
+                    setShowIdeesContent(false);
+                    // Puis fermer le tiroir après un court délai
+                    setTimeout(() => {
+                      setIsIdeesOpen(false);
+                    }, 50);
+                  }}
                 >
                   <h4>Idées</h4>
                   <p>✖</p>
                 </button>
-                {/* On enveloppe IdeesMobile dans un div statique pour que son contenu ne déclenche pas de nouvelle animation de scale */}
                 <div className="idees-content-wrapper">
                   <IdeesMobile
                     activeCategory={activeCategory}
                     setActiveCategory={setActiveCategory}
+                    showContent={showIdeesContent}
                   />
                 </div>
               </motion.div>
@@ -268,7 +310,12 @@ const HomeDesktop = () => {
             onClick={() => {
               // Si le tiroir d'idées est ouvert, le fermer ; sinon l'ouvrir
               if (isIdeesOpen) {
-                setIsIdeesOpen(false);
+                // Masquer le contenu d'abord
+                setShowIdeesContent(false);
+                // Puis fermer le tiroir
+                setTimeout(() => {
+                  setIsIdeesOpen(false);
+                }, 50);
               } else {
                 toggleDrawer("idees");
               }

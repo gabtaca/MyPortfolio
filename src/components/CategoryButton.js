@@ -54,69 +54,75 @@ const CategoryButton = ({ category, index, onClick, angle }) => {
   }, [category, index, angle, paths]);
 
   /**
-   * Calculates the initial V-shaped path (pointing downward) and the final horizontal path
-   * based on the text width and desired angle.
+   * Calcule le chemin initial en forme de V (pointant vers le haut) et le chemin final horizontal
+   * basé sur la largeur du texte et l'angle désiré.
    *
-   * @param {number} textWidth - Width of the text in pixels.
-   * @param {number} angleDegrees - Desired opening angle of the V-shape.
-   * @param {number} svgWidth - The width of the SVG canvas.
-   * @param {number} finalLegY - The Y-coordinate where arms should settle.
-   * @returns {object} - Contains initialPath, finalPath, and finalPathWidth.
+   * @param {number} textWidth - Largeur du texte en pixels.
+   * @param {number} angleDegrees - Angle d'ouverture désiré du V.
+   * @param {number} svgWidth - Largeur du canvas SVG.
+   * @param {number} finalLegY - Coordonnée Y où les bras doivent se poser.
+   * @returns {object} - Contient initialPath, finalPath, et finalPathWidth.
    */
   const calculatePaths = (
     textWidth,
     angleDegrees,
     svgWidth = 200,
-    finalLegY = 50 // Fixed Y-coordinate for arms
+    finalLegY = 50 // Coordonnée Y fixe pour les bras
   ) => {
     try {
-      const angleRad = (angleDegrees * Math.PI) / 10;
-      const armAngleRad = angleRad / 2;
-      const armLength = textWidth / (2 * Math.sin(armAngleRad));
-      let deltaY = armLength * Math.sin(armAngleRad);
-
-      // Ensure arms don't exceed the finalLegY
-      if (deltaY > finalLegY - 35) { // Assuming initial y=35
-        deltaY = finalLegY - 35;
-      }
-
       const centerX = svgWidth / 2;
-      const hingeY = 35; // Fixed Y-coordinate for the middle point
+      const hingeY = 50; // Point final (horizontal)
 
-      // Adjust leftX and rightX based on textWidth and padding
-      const padding = 20; // Padding on each side
+      // Ajuster leftX et rightX basé sur la largeur du texte et le padding
+      const padding = 20; // Padding de chaque côté
       const leftX = centerX - (textWidth / 2);
       const rightX = centerX + (textWidth / 2);
 
-      const initialPath = `M${leftX},${hingeY} L${centerX},${hingeY + deltaY} L${rightX},${hingeY}`;
+      // Calcul simple et direct pour l'angle
+      // Pour un V, chaque bras fait la moitié de l'angle total
+      const halfAngleRad = (angleDegrees / 2) * Math.PI / -180;
+      const halfWidth = textWidth / 2;
+      
+      // Calculer deltaY basé sur la tangente de l'angle
+      // tan(angle) = deltaY / halfWidth, donc deltaY = halfWidth * tan(angle)
+      const deltaY = halfWidth * Math.tan(halfAngleRad);
+
+      // Pour un livre qui s'ouvre vers le HAUT :
+      // Les bords (gauche/droite) sont EN BAS → Y plus GRAND
+      // Le centre est EN HAUT → Y plus PETIT
+      const initialPath = `M${leftX},${hingeY + deltaY} L${centerX},${hingeY} L${rightX},${hingeY + deltaY}`;
       const finalPath = `M${leftX},${finalLegY} L${centerX},${finalLegY} L${rightX},${finalLegY}`;
 
-      // Calculate final path width
+      // Calculer la largeur du chemin final
       const finalPathWidth = rightX - leftX;
 
       return { initialPath, finalPath, finalPathWidth };
     } catch (error) {
-      console.error("Error in calculatePaths:", error);
+      console.error("Erreur dans calculatePaths:", error);
       return { 
         initialPath: `M20,35 L100,50 L180,35`, 
         finalPath: `M20,50 L100,50 L180,50`,
         finalPathWidth: 160, // (180 - 20)
-      }; // Fallback paths
+      }; // Chemins de secours
     }
   };
 
-  // Define path animation variants
+  // Définir les durées d'animation avec variation organique
+  // Les durées varient de façon non-linéaire pour un effet plus naturel
+  const animationDurations = [0.5, 0.44, 0.38, 0.34, 0.3, 0.28]; // En secondes
+  const animationDuration = animationDurations[index] || 0.35; // Durée par défaut
+
   const pathVariants = {
     initial: {
-      d: paths ? paths.initialPath : 'M20,35 L100,50 L180,35', // Fallback initial path
+      d: paths ? paths.initialPath : 'M20,50 L100,25 L180,50', // V pointant vers le HAUT (100,25 est plus haut que 20,50)
       transition: { duration: 0 },
     },
     final: {
-      d: paths ? paths.finalPath : 'M20,50 L100,50 L180,50', // Fallback final path
+      d: paths ? paths.finalPath : 'M20,50 L100,50 L180,50', // Ligne horizontale
       transition: { 
-        duration: 0.5, 
-        ease: "easeInOut",
-        delay: 0.1, // Additional delay before starting the path animation
+        duration: animationDuration,
+        ease: [0.34, 1.56, 0.64, 1], // Courbe organique avec léger rebond
+        delay: 0,
       },
     },
   };

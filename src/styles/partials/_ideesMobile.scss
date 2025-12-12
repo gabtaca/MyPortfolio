@@ -4,22 +4,34 @@
   flex-direction: column;
   position: relative;
   font-family: "Livvic", sans-serif;
-  justify-content: space-between;
+  justify-content: flex-start;
   text-align: center;
   padding: 20px;
+  min-height: 100vh;
 }
 
 .idees-subtitle {
   color: var(--textColor);
+  margin-bottom: 20px;
+}
+
+.idees-tree-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  overflow: hidden;
 }
 
 .dashed-arrow {
-  bottom: 0;
   width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction:column;
   align-items: center;
   z-index: 1;
+
 }
 
 .dashed-arrow-line {
@@ -41,21 +53,22 @@
     height: 0;
   }
   to {
-    height: 130px;
+    height: 230px;
   }
 }
 
 .dashed-arrow-head {
-  margin-bottom: -10px;
+  margin-top: -10px;
 }
 
 /* Styles pour le conteneur des catégories */
 .categories_container-portrait {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center; /* Center the categories */
+  justify-content: center;
   align-items: center;
   flex-direction: column;
+  width: 100%;
 }
 
 /* Container for categories in landscape mode */
@@ -418,6 +431,7 @@
   align-items: center;
   position: relative;
   font-family: "Livvic", sans-serif;
+  overflow: visible;
   padding: 20px;
 }
 
@@ -519,6 +533,7 @@
   grid-template-rows: auto;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
+  overflow: visible;
   gap: 30px;
 }
 

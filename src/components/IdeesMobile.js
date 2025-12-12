@@ -34,7 +34,7 @@ const getRandomRotation = () => {
   return Math.random() * 10 - 5; // Rotation entre -5° et 5°
 };
 
-const IdeesMobile = ({ activeCategory, setActiveCategory }) => {
+const IdeesMobile = ({ activeCategory, setActiveCategory, showContent = true }) => {
   const { isDarkMode } = useTheme();
   const windowWidth = useWindowWidth();
   // Détecter l'orientation : en paysage si la largeur est supérieure à la hauteur
@@ -61,12 +61,19 @@ const IdeesMobile = ({ activeCategory, setActiveCategory }) => {
   }, [categories, ideesData]);
 
   // En mode portrait mobile, afficher progressivement les catégories après l'expansion de la flèche
+  // Les catégories apparaissent en ordre inverse (les plus larges d'abord)
   useEffect(() => {
     if (!isDropdownMode && arrowExpanded && visibleCategories.length === 0) {
-      categories.forEach((category, index) => {
+      // Délai entre chaque catégorie pour créer un effet cascade organique
+      const cascadeDelay = 200; // 200ms entre chaque catégorie
+      
+      // Inverser l'ordre d'apparition : commencer par la dernière catégorie
+      const reversedCategories = [...categories].reverse();
+      
+      reversedCategories.forEach((category, index) => {
         setTimeout(() => {
           setVisibleCategories((prev) => [...prev, category]);
-        }, index * 300);
+        }, index * cascadeDelay);
       });
     }
   }, [arrowExpanded, categories, visibleCategories.length, isDropdownMode]);
@@ -126,57 +133,67 @@ useEffect(() => {
           l'autre, mais un bel endroit pour relancer l'inspiration en cas de
           besoin !
         </p>
-        <div className="categories_container-portrait">
-          {categories.map((category, index) => {
-            const isVisible = visibleCategories.includes(category);
-            return (
-              <div key={category} className="category-section">
-                <AnimatePresence>
-                  {isVisible && (
-                    <CategoryButton
-                      category={category}
-                      index={index}
-                      angle={80}
-                      onClick={() => toggleCategory(category)}
-                    />
-                  )}
-                </AnimatePresence>
-                {activeCategory === category && (
-                  <div className="post-it-container" ref={containerRef}>
-                    {ideesData[activeCategory].map((idea) => {
-                      const postItColor = getRandomPostItColor();
-                      const randomRotation = getRandomRotation();
-                      return (
-                        <div
-                          key={idea.id}
-                          className={`post-it ${getRandomFoldClass()}`}
-                          style={{
-                            backgroundColor: postItColor,
-                            "--post-it-color": postItColor,
-                            transform: `rotate(${randomRotation}deg)`,
-                          }}
-                        >
-                          <div className="post-it-content">
-                            <h3>{idea.title}</h3>
-                            <div className="post-it_descCTRL">
-                              <p>
-                                <span className="postit_description">
-                                  Description
-                                </span>
-                                {idea.description}
-                              </p>
+        <motion.div 
+          className="idees-tree-wrapper"
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: "auto", opacity: 1 }}
+          transition={{ 
+            duration: 1.2, 
+            ease: "easeOut"
+          }}
+        >
+          <DashedArrow onAnimationComplete={handleArrowAnimationEnd} />
+          <div className="categories_container-portrait">
+            {categories.map((category, index) => {
+              const isVisible = visibleCategories.includes(category);
+              return (
+                <div key={category} className="category-section">
+                  <AnimatePresence>
+                    {isVisible && (
+                      <CategoryButton
+                        category={category}
+                        index={index}
+                        angle={50}
+                        onClick={() => toggleCategory(category)}
+                      />
+                    )}
+                  </AnimatePresence>
+                  {activeCategory === category && (
+                    <div className="post-it-container" ref={containerRef}>
+                      {ideesData[activeCategory].map((idea) => {
+                        const postItColor = getRandomPostItColor();
+                        const randomRotation = getRandomRotation();
+                        return (
+                          <div
+                            key={idea.id}
+                            className={`post-it ${getRandomFoldClass()}`}
+                            style={{
+                              backgroundColor: postItColor,
+                              "--post-it-color": postItColor,
+                              transform: `rotate(${randomRotation}deg)`,
+                            }}
+                          >
+                            <div className="post-it-content">
+                              <h3>{idea.title}</h3>
+                              <div className="post-it_descCTRL">
+                                <p>
+                                  <span className="postit_description">
+                                    Description
+                                  </span>
+                                  {idea.description}
+                                </p>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-        <DashedArrow onAnimationComplete={handleArrowAnimationEnd} />
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </motion.div>
       </div>
     );
   } else {
@@ -184,62 +201,85 @@ useEffect(() => {
     // Dans cette version, le dropdown est affiché automatiquement lorsque le tiroir d'idées est ouvert.
     return (
       <div className="idees-desktop-container" ref={ideesContainerRef}>
-        <AnimatePresence>
-          <motion.div
-            className="idees-desktop-dropdown"
-            initial={{ opacity: 0,  }}
-            animate={{ opacity: 1,  }}
-            exit={{ opacity: 0, }}
-            transition={{ duration: 0.3 }}
-          >
-            {categories.map((category, index) => (
-              <motion.button
-                key={category}
-                className={`idees-desktop-dropdown-item ${
-                  activeCategory === category ? "active" : ""
-                }`}
-                onClick={() => {
-                  toggleCategory(category);
-                  setIsDropdownOpen(false);
-                }}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2, delay: index * 0.2 }}
-              >
-                {category}
-              </motion.button>
-            ))}
-          </motion.div>
-        </AnimatePresence>
-        {activeCategory && (
-          <div className="idees-desktop-active-category" ref={containerRef}>
-            {ideesData[activeCategory].map((idea) => {
-              const postItColor = getRandomPostItColor();
-              const randomRotation = getRandomRotation();
-              return (
-                <div
-                  key={idea.id}
-                  className={`idees-desktop-idea post-it ${getRandomFoldClass()}`}
-                  style={{
-                    backgroundColor: postItColor,
-                    "--post-it-color": postItColor,
-                    transform: `rotate(${randomRotation}deg)`,
+        <motion.div
+          className="idees-desktop-dropdown"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: showContent ? 1 : 0 }}
+          transition={{ duration: 0.3 }}
+        >
+              {categories.map((category, index) => (
+                <motion.button
+                  key={category}
+                  className={`idees-desktop-dropdown-item ${
+                    activeCategory === category ? "active" : ""
+                  }`}
+                  onClick={() => {
+                    toggleCategory(category);
+                    setIsDropdownOpen(false);
+                  }}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ 
+                    opacity: showContent ? 1 : 0,
+                    y: showContent ? 0 : -10
+                  }}
+                  transition={{ 
+                    duration: showContent ? 0.2 : 0.1, 
+                    delay: showContent ? index * 0.15 : 0
                   }}
                 >
-                  <div className="post-it-content">
-                    <h3>{idea.title}</h3>
-                    <div className="post-it_descCTRL">
-                      <p>
-                        <span className="postit_description">Description</span>
-                        {idea.description}
-                      </p>
+                  {category}
+                </motion.button>
+              ))}
+        </motion.div>
+        {activeCategory && (
+            <motion.div 
+              className="idees-desktop-active-category" 
+              ref={containerRef}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ 
+                opacity: showContent ? 1 : 0,
+                y: showContent ? 0 : 20 
+              }}
+              transition={{ 
+                duration: showContent ? 0.3 : 0.1,
+                delay: showContent ? 0.3 : 0
+              }}
+            >
+              {ideesData[activeCategory].map((idea, index) => {
+                const postItColor = getRandomPostItColor();
+                const randomRotation = getRandomRotation();
+                return (
+                  <motion.div
+                    key={idea.id}
+                    className={`idees-desktop-idea post-it ${getRandomFoldClass()}`}
+                    style={{
+                      backgroundColor: postItColor,
+                      "--post-it-color": postItColor,
+                      rotate: randomRotation,
+                    }}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ 
+                      opacity: showContent ? 1 : 0,
+                      scale: showContent ? 1 : 0.8
+                    }}
+                    transition={{ 
+                      duration: showContent ? 0.3 : 0.1, 
+                      delay: showContent ? (0.3 + index * 0.05) : 0
+                    }}
+                  >
+                    <div className="post-it-content">
+                      <h3>{idea.title}</h3>
+                      <div className="post-it_descCTRL">
+                        <p>
+                          <span className="postit_description">Description</span>
+                          {idea.description}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
         )}
       </div>
     );
