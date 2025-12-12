@@ -8,6 +8,8 @@
   text-align: center;
   padding: 20px;
   min-height: 100vh;
+  overflow-y: auto;
+  max-height: 100vh;
 }
 
 .idees-subtitle {
@@ -22,7 +24,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: 10px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .dashed-arrow {
@@ -68,6 +70,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  overflow: scroll;
   width: 100%;
 }
 
