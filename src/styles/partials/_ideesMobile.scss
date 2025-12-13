@@ -7,9 +7,9 @@
   justify-content: flex-start;
   text-align: center;
   padding: 20px;
-  min-height: 100vh;
+  min-height: 100dvh; /* dvh pour iOS */
   overflow-y: auto;
-  max-height: 100vh;
+  max-height: 100dvh; /* dvh pour iOS */
 }
 
 .idees-subtitle {
@@ -37,7 +37,7 @@
 }
 
 .dashed-arrow-line {
-  width: 2px;
+  width: 3px; /* Plus épais pour meilleure visibilité */
   height: 130px;
   background: repeating-linear-gradient(
     0deg,
@@ -55,7 +55,7 @@
     height: 0;
   }
   to {
-    height: 230px;
+    height: 280px; /* Plus long pour iOS */
   }
 }
 

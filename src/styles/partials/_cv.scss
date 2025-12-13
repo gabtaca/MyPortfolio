@@ -4,7 +4,8 @@
   padding: 20px;
   font-family: "Livvic", sans-serif;
   overflow-y: auto;
-  max-height: 75vh; // Adjust to prevent overflow
+  max-height: 75dvh; /* dvh pour iOS - hauteur dynamique */
+  -webkit-overflow-scrolling: touch; /* Scroll fluide sur iOS */
 }
 
 .cv_section {
