@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
+import classNames from "classnames";
+import useTheme from "../hooks/useTheme";
 import "animate.css";
 import cvInfos from "../jsonFiles/cvInfos.json";
 
 export default function CvMobile() {
+  const { isDarkMode } = useTheme();
   const [activeSection, setActiveSection] = useState(null); // Section actuellement ouverte
 
   // Gère l'ouverture et la fermeture des sections
@@ -11,7 +14,7 @@ export default function CvMobile() {
   };
 
   return (
-    <div className="cv_container">
+    <div className={`cv_container ${activeSection ? 'section-active' : ''}`}>
       {["Formations", "Emplois", "Hard Skills", "Soft Skills"].map(
         (section) => (
           <div key={section} className="cv_section">

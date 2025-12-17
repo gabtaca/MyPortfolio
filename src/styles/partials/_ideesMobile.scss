@@ -2,43 +2,54 @@
 .idees-container {
   display: flex;
   flex-direction: column;
-  position: relative;
   font-family: "Livvic", sans-serif;
-  justify-content: flex-start;
   text-align: center;
-  padding: 20px;
-  min-height: 100dvh; /* dvh pour iOS */
-  overflow-y: auto;
-  max-height: 100dvh; /* dvh pour iOS */
+  width: 100%;
+  /* Le parent (content-container) pousse ce conteneur vers le bas */
 }
 
 .idees-subtitle {
+  display: flex;
   color: var(--textColor);
-  margin-bottom: 20px;
+  padding: 25px 20px 20px 20px;
+  opacity: 0; /* Caché au départ */
+  text-align: center;
+  
+  &.visible {
+    animation: focus-in-contract-bck 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  }
 }
 
 .idees-tree-wrapper {
-  flex: 1;
+  width: 100%;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-end; /* Pousse le contenu vers le bas */
   gap: 10px;
+  transform-origin: bottom; /* Animation part du bas */
   overflow: visible;
 }
 
 .dashed-arrow {
+  position: relative;
+  bottom: 0;
   width: 100%;
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   align-items: center;
-  z-index: 1;
-
+  z-index: 10;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 
 .dashed-arrow-line {
   width: 3px; /* Plus épais pour meilleure visibilité */
-  height: 130px;
+  height: 0; /* Commence à 0 */
   background: repeating-linear-gradient(
     0deg,
     #677684,
@@ -47,7 +58,6 @@
     transparent 20px
   );
   animation: expandArrow 1s forwards;
-  transform-origin: bottom;
 }
 
 @keyframes expandArrow {
@@ -55,12 +65,60 @@
     height: 0;
   }
   to {
-    height: 280px; /* Plus long pour iOS */
+    height: 120px;
+  }
+}
+
+/* Animation pour le subtitle */
+@keyframes focus-in-contract-bck {
+  0% {
+    -webkit-filter: blur(12px);
+            filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-filter: blur(0px);
+            filter: blur(0px);
+    opacity: 1;
+  }
+}
+@keyframes text-focus-in {
+  0% {
+    -webkit-filter: blur(12px);
+            filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-filter: blur(0px);
+            filter: blur(0px);
+    opacity: 1;
   }
 }
 
 .dashed-arrow-head {
   margin-top: -10px;
+}
+
+.idees_footer {
+  width: 100%;
+  position: relative;
+  bottom: 0;
+  min-height: 60px;
+  max-height: 60px;
+  background: radial-gradient(
+    ellipse 70% 50% at center top,
+    color-mix(in srgb, var(--h2Color) 40%, transparent) 0%,
+    color-mix(in srgb, var(--h2Color) 20%, transparent) 20%,
+    color-mix(in srgb, var(--bgBody) 40%, transparent) 60%,
+    var(--bgBody) 100%
+  );
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 
 /* Styles pour le conteneur des catégories */
@@ -70,7 +128,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  overflow: scroll;
+  padding-top: 10px;
   width: 100%;
 }
 
@@ -153,10 +211,13 @@
 .category-section {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; /* Aligne en haut pour voir le premier élément */
   flex-direction: column;
-  overflow: visible;
   width: 100%;
+  transform-origin: top;
+  max-height: 70vh; /* Limite la hauteur pour permettre le scroll */
+  overflow-y: auto; /* Scroll vertical */
+  -webkit-overflow-scrolling: touch; /* Scroll fluide sur iOS */
 }
 
 .category-button {
@@ -219,8 +280,10 @@
   gap: 15px;
   margin-top: 20px;
   margin-bottom: 30px;
+  padding-bottom: 100px; /* Espace pour éviter que le contenu soit caché par le footer */
   justify-items: center;
   width: 100%;
+  overflow: visible; /* Permet aux post-its de déborder légèrement */
 }
 
 .post-it {

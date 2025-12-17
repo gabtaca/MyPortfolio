@@ -250,7 +250,7 @@ export default function Home() {
       {/* Passer handleSectionClick en tant que prop navigateTo */}
       <LightningHeader navigateTo={handleSectionClick} />
       <div className="home_container">
-        <nav className="nav_main-home">
+        <nav className={`nav_main-home ${activeSection ? 'section-active' : ''}`}>
 
           {/* Afficher les boutons de navigation en fonction de la section active */}
           <motion.div
@@ -316,10 +316,15 @@ export default function Home() {
           </motion.div>
         </nav>
 
-        <div className="content-container">
+        <div className={`content-container ${
+          activeSection === "CV" ? "cv-active" :
+          activeSection === "Projets" ? "projects-active" :
+          activeSection === "Idées" ? "idees-active" : ""
+        }`}>
           <AnimatePresence mode="wait">
             {activeSection === "CV" && (
               <motion.div
+                className="content_motion-cv"
                 key="cv"
                 initial="hidden"
                 animate="visible"
@@ -327,11 +332,30 @@ export default function Home() {
                 variants={sectionVariants}
                 transition={{ duration: 0.5 }}
               >
+                  <div className={`cv_ctrl`}></div>
                 <CvMobile />
+                <div className={`cv_ctrl-bottom`}></div>
+                <footer className="cv_footer">
+                  <a
+                    href="/pdf/CV-Gabriel_Taca.pdf"
+                    download="CV-Gabriel_Taca.pdf"
+                    className="cv_footer-download"
+                  >
+                    <button
+                      className={classNames("svg-icon cv_footer-download", {
+                        "dark-mode": isDarkMode,
+                        "light-mode": !isDarkMode,
+                      })}
+                      title="Télécharger le CV"
+                      style={{ cursor: "pointer" }}
+                    ></button>
+                  </a>
+                </footer>
               </motion.div>
             )}
             {activeSection === "Projets" && (
               <motion.div
+                className="content_motion-projets"
                 key="projets"
                 initial="hidden"
                 animate="visible"
@@ -340,10 +364,12 @@ export default function Home() {
                 transition={{ duration: 0.5 }}
               >
                 <ProjectsSlider />
+                
               </motion.div>
             )}
             {activeSection === "Idées" && (
               <motion.div
+                className="content_motion-idees"
                 key="idees"
                 initial="hidden"
                 animate="visible"
@@ -355,6 +381,7 @@ export default function Home() {
                   activeCategory={activeCategory}
                   setActiveCategory={setActiveCategory}
                 />
+                
               </motion.div>
             )}
           </AnimatePresence>
@@ -445,25 +472,7 @@ export default function Home() {
           </footer>
         )}
 
-        {/* Afficher le cv_footer seulement dans la section CV */}
-        {activeSection === "CV" && (
-          <footer className="cv_footer">
-            <a
-              href="/pdf/CV-Gabriel_Taca.pdf"
-              download="CV-Gabriel_Taca.pdf"
-              className="cv_footer-download"
-            >
-              <button
-                className={classNames("svg-icon cv_footer-download", {
-                  "dark-mode": isDarkMode,
-                  "light-mode": !isDarkMode,
-                })}
-                title="Télécharger le CV"
-                style={{ cursor: "pointer" }}
-              ></button>
-            </a>
-          </footer>
-        )}
+
       </div>
     </>
   );

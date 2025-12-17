@@ -34,7 +34,11 @@ const getRandomRotation = () => {
   return Math.random() * 10 - 5; // Rotation entre -5° et 5°
 };
 
-const IdeesMobile = ({ activeCategory, setActiveCategory, showContent = true }) => {
+const IdeesMobile = ({
+  activeCategory,
+  setActiveCategory,
+  showContent = true,
+}) => {
   const { isDarkMode } = useTheme();
   const windowWidth = useWindowWidth();
   // Détecter l'orientation : en paysage si la largeur est supérieure à la hauteur
@@ -46,6 +50,7 @@ const IdeesMobile = ({ activeCategory, setActiveCategory, showContent = true }) 
   // États pour le mode mobile portrait
   const [arrowExpanded, setArrowExpanded] = useState(false);
   const [visibleCategories, setVisibleCategories] = useState([]);
+  const [showSubtitle, setShowSubtitle] = useState(false);
 
   // Pas d'état pour toggler le dropdown en mode dropdown : il est affiché dès l'ouverture
 
@@ -66,50 +71,45 @@ const IdeesMobile = ({ activeCategory, setActiveCategory, showContent = true }) 
     if (!isDropdownMode && arrowExpanded && visibleCategories.length === 0) {
       // Délai entre chaque catégorie pour créer un effet cascade organique
       const cascadeDelay = 200; // 200ms entre chaque catégorie
-      
+
       // Inverser l'ordre d'apparition : commencer par la dernière catégorie
       const reversedCategories = [...categories].reverse();
-      
+
       reversedCategories.forEach((category, index) => {
         setTimeout(() => {
           setVisibleCategories((prev) => [...prev, category]);
         }, index * cascadeDelay);
       });
+      
+      // Afficher le subtitle après que toutes les catégories soient visibles
+      const totalDelay = reversedCategories.length * cascadeDelay + 500; // +500ms après la dernière
+      setTimeout(() => {
+        setShowSubtitle(true);
+      }, totalDelay);
     }
   }, [arrowExpanded, categories, visibleCategories.length, isDropdownMode]);
 
-  // En mode dropdown, définir la catégorie par défaut sur "Art" si elle existe, sinon la première
-  useEffect(() => {
-    if (isDropdownMode && !activeCategory && categories.length > 0) {
-      if (categories.includes("Art")) {
-        setActiveCategory("Art");
-      } else {
-        setActiveCategory(categories[0]);
-      }
-    }
-  }, [isDropdownMode, activeCategory, categories, setActiveCategory]);
-
   // Fermeture de la catégorie active en cliquant en dehors (pour les post-it)
-// Fermeture de la catégorie active en cliquant en dehors (pour les post-it)
-// On ne supprime pas la catégorie active en mode dropdown, afin de conserver la sélection
-useEffect(() => {
-  const handleClickOutside = (event) => {
-    const isOutsidePostIts =
-      containerRef.current && !containerRef.current.contains(event.target);
-    const isOutsideCategories =
-      ideesContainerRef.current && !ideesContainerRef.current.contains(event.target);
-    // Si nous ne sommes pas en mode dropdown, on efface la catégorie active
-    if (!isDropdownMode && isOutsidePostIts && isOutsideCategories) {
-      setActiveCategory(null);
+  // On ne supprime pas la catégorie active en mode dropdown, afin de conserver la sélection
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const isOutsidePostIts =
+        containerRef.current && !containerRef.current.contains(event.target);
+      const isOutsideCategories =
+        ideesContainerRef.current &&
+        !ideesContainerRef.current.contains(event.target);
+      // Si nous ne sommes pas en mode dropdown, on efface la catégorie active
+      if (!isDropdownMode && isOutsidePostIts && isOutsideCategories) {
+        setActiveCategory(null);
+      }
+    };
+    if (activeCategory) {
+      document.addEventListener("mousedown", handleClickOutside);
     }
-  };
-  if (activeCategory) {
-    document.addEventListener("mousedown", handleClickOutside);
-  }
-  return () => {
-    document.removeEventListener("mousedown", handleClickOutside);
-  };
-}, [activeCategory, isDropdownMode, setActiveCategory]);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [activeCategory, isDropdownMode, setActiveCategory]);
 
   // Fonction pour changer la catégorie active
   const toggleCategory = (category) => {
@@ -127,22 +127,25 @@ useEffect(() => {
   if (!isDropdownMode) {
     // Mode Mobile Portrait
     return (
-      <div className="idees-container" ref={ideesContainerRef}>
-        <p className="idees-subtitle">
+      <>
+        <p 
+          className={`idees-subtitle ${showSubtitle ? 'visible' : ''}`} 
+        >
           Un fourre-tout d'idées. Pas toujours de logique entre l'une et
-          l'autre, mais un bel endroit pour relancer l'inspiration en cas de
-          besoin !
+          l'autre, mais un bel endroit pour relancer l'inspiration au
+          besoin
         </p>
-        <motion.div 
+        <div className="idees-container" ref={ideesContainerRef}>
+
+        <motion.div
           className="idees-tree-wrapper"
           initial={{ height: 0, opacity: 0 }}
           animate={{ height: "auto", opacity: 1 }}
-          transition={{ 
-            duration: 1.2, 
-            ease: "easeOut"
+          transition={{
+            duration: 1.2,
+            ease: "easeOut",
           }}
         >
-          <DashedArrow onAnimationComplete={handleArrowAnimationEnd} />
           <div className="categories_container-portrait">
             {categories.map((category, index) => {
               const isVisible = visibleCategories.includes(category);
@@ -193,8 +196,16 @@ useEffect(() => {
               );
             })}
           </div>
+          <DashedArrow
+            onAnimationComplete={handleArrowAnimationEnd}
+            className={activeCategory ? "hidden" : ""}
+          />
+          <footer
+            className={`idees_footer ${activeCategory ? "hidden" : ""}`}
+          ></footer>
         </motion.div>
       </div>
+      </>
     );
   } else {
     // Mode Dropdown (Desktop / Mobile en paysage)
@@ -207,79 +218,79 @@ useEffect(() => {
           animate={{ opacity: showContent ? 1 : 0 }}
           transition={{ duration: 0.3 }}
         >
-              {categories.map((category, index) => (
-                <motion.button
-                  key={category}
-                  className={`idees-desktop-dropdown-item ${
-                    activeCategory === category ? "active" : ""
-                  }`}
-                  onClick={() => {
-                    toggleCategory(category);
-                    setIsDropdownOpen(false);
-                  }}
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ 
-                    opacity: showContent ? 1 : 0,
-                    y: showContent ? 0 : -10
-                  }}
-                  transition={{ 
-                    duration: showContent ? 0.2 : 0.1, 
-                    delay: showContent ? index * 0.15 : 0
-                  }}
-                >
-                  {category}
-                </motion.button>
-              ))}
-        </motion.div>
-        {activeCategory && (
-            <motion.div 
-              className="idees-desktop-active-category" 
-              ref={containerRef}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ 
-                opacity: showContent ? 1 : 0,
-                y: showContent ? 0 : 20 
+          {categories.map((category, index) => (
+            <motion.button
+              key={category}
+              className={`idees-desktop-dropdown-item ${
+                activeCategory === category ? "active" : ""
+              }`}
+              onClick={() => {
+                toggleCategory(category);
+                setIsDropdownOpen(false);
               }}
-              transition={{ 
-                duration: showContent ? 0.3 : 0.1,
-                delay: showContent ? 0.3 : 0
+              initial={{ opacity: 0, y: -10 }}
+              animate={{
+                opacity: showContent ? 1 : 0,
+                y: showContent ? 0 : -10,
+              }}
+              transition={{
+                duration: showContent ? 0.2 : 0.1,
+                delay: showContent ? index * 0.15 : 0,
               }}
             >
-              {ideesData[activeCategory].map((idea, index) => {
-                const postItColor = getRandomPostItColor();
-                const randomRotation = getRandomRotation();
-                return (
-                  <motion.div
-                    key={idea.id}
-                    className={`idees-desktop-idea post-it ${getRandomFoldClass()}`}
-                    style={{
-                      backgroundColor: postItColor,
-                      "--post-it-color": postItColor,
-                      rotate: randomRotation,
-                    }}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ 
-                      opacity: showContent ? 1 : 0,
-                      scale: showContent ? 1 : 0.8
-                    }}
-                    transition={{ 
-                      duration: showContent ? 0.3 : 0.1, 
-                      delay: showContent ? (0.3 + index * 0.05) : 0
-                    }}
-                  >
-                    <div className="post-it-content">
-                      <h3>{idea.title}</h3>
-                      <div className="post-it_descCTRL">
-                        <p>
-                          <span className="postit_description">Description</span>
-                          {idea.description}
-                        </p>
-                      </div>
+              {category}
+            </motion.button>
+          ))}
+        </motion.div>
+        {activeCategory && (
+          <motion.div
+            className="idees-desktop-active-category"
+            ref={containerRef}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{
+              opacity: showContent ? 1 : 0,
+              y: showContent ? 0 : 20,
+            }}
+            transition={{
+              duration: showContent ? 0.3 : 0.1,
+              delay: showContent ? 0.3 : 0,
+            }}
+          >
+            {ideesData[activeCategory].map((idea, index) => {
+              const postItColor = getRandomPostItColor();
+              const randomRotation = getRandomRotation();
+              return (
+                <motion.div
+                  key={idea.id}
+                  className={`idees-desktop-idea post-it ${getRandomFoldClass()}`}
+                  style={{
+                    backgroundColor: postItColor,
+                    "--post-it-color": postItColor,
+                    rotate: randomRotation,
+                  }}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{
+                    opacity: showContent ? 1 : 0,
+                    scale: showContent ? 1 : 0.8,
+                  }}
+                  transition={{
+                    duration: showContent ? 0.3 : 0.1,
+                    delay: showContent ? 0.3 + index * 0.05 : 0,
+                  }}
+                >
+                  <div className="post-it-content">
+                    <h3>{idea.title}</h3>
+                    <div className="post-it_descCTRL">
+                      <p>
+                        <span className="postit_description">Description</span>
+                        {idea.description}
+                      </p>
                     </div>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
         )}
       </div>
     );
