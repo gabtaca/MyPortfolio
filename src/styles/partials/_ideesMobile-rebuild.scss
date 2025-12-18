@@ -1,0 +1,330 @@
+/* ============================================
+   REBUILD - CSS IDÉES MOBILE PROPRE
+   ============================================ */
+
+/* === STRUCTURE DE BASE === */
+
+.idees-container {
+  display: flex;
+  flex-direction: column;
+  font-family: "Livvic", sans-serif;
+  text-align: center;
+  width: 100%;
+}
+
+.content_motion-idees {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  animation: fadeIn 0.3s ease;
+}
+
+/* === SUBTITLE === */
+
+.idees-subtitle {
+  display: flex;
+  justify-content: center;
+  color: var(--textColor);
+  width: 90%;
+  padding: 20px;
+  opacity: 0;
+  text-align: center;
+  
+  &.visible {
+    animation: focus-in-contract-bck 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  }
+}
+
+/* === TREE WRAPPER - ANCRÉ AU BAS === */
+
+.idees-tree-wrapper {
+  width: 100%;
+  min-height: calc(100vh - 180px); /* Force à prendre toute la hauteur */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end; /* Tout au bas */
+  transform-origin: bottom;
+}
+
+/* === CONTENEUR DES CATÉGORIES - SCROLLABLE === */
+
+.categories_container-portrait {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-height: calc(100vh - 280px); /* Espace disponible */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 10px 0 150px 0; /* Padding-bottom pour voir le dernier élément */
+}
+
+/* === SECTIONS DE CATÉGORIES === */
+
+.category-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.category-button {
+  display: none;
+  
+  &.visible {
+    display: block;
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: fadeInSlideDown 0.5s forwards;
+  }
+}
+
+/* === POST-ITS === */
+
+.post-it-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+  width: 100%;
+  padding: 0 10px;
+}
+
+.post-it {
+  position: relative;
+  width: 100%;
+  padding-top: 100%; /* Carré */
+  border-radius: 2px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  color: var(--h2Color);
+  overflow: hidden;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1) 0%,
+    transparent 30%,
+    var(--post-it-color) 100%
+  );
+}
+
+.post-it-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+
+  h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .post-it_descCTRL {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    p {
+      font-size: 16px;
+      font-family: "PlaywriteCA", normal;
+      text-align: center;
+
+      .postit_description {
+        font-family: "Inter";
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
+
+/* === FLÈCHE ANIMÉE === */
+
+.dashed-arrow {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px 0;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.dashed-arrow-line {
+  width: 3px;
+  height: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    #677684,
+    #677684 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  animation: expandArrow 1s forwards;
+}
+
+.dashed-arrow-head {
+  margin-top: -10px;
+}
+
+/* === FOOTER === */
+
+.idees_footer {
+  width: 100%;
+  min-height: 60px;
+  background: radial-gradient(
+    ellipse 70% 50% at center top,
+    color-mix(in srgb, var(--h2Color) 40%, transparent) 0%,
+    color-mix(in srgb, var(--h2Color) 20%, transparent) 20%,
+    color-mix(in srgb, var(--bgBody) 40%, transparent) 60%,
+    var(--bgBody) 100%
+  );
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* === SVG BUTTONS === */
+
+.svg-animation {
+  width: 100%;
+  height: 40px;
+  overflow: visible;
+}
+
+.text {
+  font-size: 40px;
+  fill: var(--h2Color);
+  dominant-baseline: middle;
+  text-anchor: middle;
+  font-family: "Italiana";
+}
+
+.animatedPath {
+  fill: transparent;
+}
+
+.textPathRef {
+  text-anchor: middle;
+}
+
+/* === POST-IT CORNERS === */
+
+.post-it.folded-top-right::before,
+.post-it.folded-top-left::before,
+.post-it.folded-bottom-right::before,
+.post-it.folded-bottom-left::before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  z-index: 1;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.post-it.folded-top-right {
+  border-radius: 2px 5px 2px 2px;
+  &::before {
+    top: 0;
+    right: 0;
+    border-width: 0 5px 5px 0;
+    border-color: transparent var(--post-it-color) var(--post-it-color) transparent;
+    border-radius: 0 5px 0 0;
+  }
+}
+
+.post-it.folded-top-left {
+  border-radius: 5px 2px 2px 2px;
+  &::before {
+    top: 0;
+    left: 0;
+    border-width: 0 0 5px 5px;
+    border-color: transparent transparent var(--post-it-color) var(--post-it-color);
+    border-radius: 5px 0 0 0;
+  }
+}
+
+.post-it.folded-bottom-right {
+  border-radius: 2px 2px 5px 2px;
+  &::before {
+    bottom: 0;
+    right: 0;
+    border-width: 5px 5px 0 0;
+    border-color: var(--post-it-color) var(--post-it-color) transparent transparent;
+    border-radius: 0 0 5px 0;
+  }
+}
+
+.post-it.folded-bottom-left {
+  border-radius: 2px 2px 2px 5px;
+  &::before {
+    bottom: 0;
+    left: 0;
+    border-width: 5px 0 0 5px;
+    border-color: var(--post-it-color) transparent transparent var(--post-it-color);
+    border-radius: 0 0 0 5px;
+  }
+}
+
+/* === ANIMATIONS === */
+
+@keyframes expandArrow {
+  from { height: 0; }
+  to { height: 120px; }
+}
+
+@keyframes fadeInSlideDown {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes focus-in-contract-bck {
+  0% {
+    filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+
+/* === LANDSCAPE MODE (Desktop/Tablette) === */
+
+.categories_container-landscape {
+  display: none;
+}
+
+@media (orientation: landscape) and (max-width: 1199px) {
+  .categories_container-portrait {
+    display: none;
+  }
+  .categories_container-landscape {
+    display: flex;
+  }
+  .idees-subtitle {
+    display: none;
+  }
+  .dashed-arrow {
+    display: none;
+  }
+}

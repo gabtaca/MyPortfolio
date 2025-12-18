@@ -65,6 +65,17 @@ const IdeesMobile = ({
     console.log("categories:", categories);
   }, [categories, ideesData]);
 
+  // Activer "Art" par défaut en mode dropdown (landscape mobile)
+  useEffect(() => {
+    if (isDropdownMode && !activeCategory) {
+      if (categories.includes("Art")) {
+        setActiveCategory("Art");
+      } else if (categories.length > 0) {
+        setActiveCategory(categories[0]);
+      }
+    }
+  }, [isDropdownMode, activeCategory, categories, setActiveCategory]);
+
   // En mode portrait mobile, afficher progressivement les catégories après l'expansion de la flèche
   // Les catégories apparaissent en ordre inverse (les plus larges d'abord)
   useEffect(() => {

@@ -272,7 +272,6 @@ body.single-toggle .drop:nth-child(10) {
 
 .content-container {
   display: flex;
-  padding-bottom: 5px;
   width: 100%;
   overflow-y: scroll;
   flex-direction: column;
@@ -291,7 +290,15 @@ body.single-toggle .drop:nth-child(10) {
   
   /* État Idées - pousse vers le bas pour l'animation du tree */
   &.idees-active {
-    justify-content: flex-end;
+    justify-content: flex-start;
+
+    .nav_main-home {
+      
+      &.section-active {
+        min-height: 30px;
+      }
+      
+    }
   }
 }
 

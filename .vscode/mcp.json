@@ -2,17 +2,15 @@
   "mcpServers": {
     "context7": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@context7/mcp-server"
-      ]
+      "args": ["-y", "@context7/mcp-server"]
     },
     "sequential-thinking": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-sequential-thinking"
-      ]
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+    "css": {
+      "command": "npx",
+      "args": ["-y", "css-mcp"]
     }
   }
 }
