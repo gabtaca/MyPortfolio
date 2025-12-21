@@ -71,11 +71,16 @@
 .projects-slider-menu {
   display: flex;
   overscroll-behavior: none;
-  display: flex;
-  overflow-x: scroll;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-x: scroll; /* Mobile par défaut */
   position: relative;
   scrollbar-width: none;
   height: 355px;
+
+  &.desktop-slider {
+    overflow-x: visible; 
+  }
 }
 
 .projects-slider-menu::-webkit-scrollbar {

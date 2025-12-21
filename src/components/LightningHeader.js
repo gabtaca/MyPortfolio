@@ -1,17 +1,19 @@
 // src/components/LightningHeader.jsx
 
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, stagger } from 'framer-motion';
-import useTheme from '../hooks/useTheme';
-import classNames from 'classnames';
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, stagger } from "framer-motion";
+import useTheme from "../hooks/useTheme";
+import classNames from "classnames";
 
-
-export default function LightningHeader({ navigateTo }) { // Recevoir navigateTo en prop
-  const { isDarkMode, toggleDarkMode, animationsEnabled, toggleAnimations } = useTheme(); // Accès au thème via le hook
+export default function LightningHeader({ navigateTo }) {
+  // Recevoir navigateTo en prop
+  const { isDarkMode, toggleDarkMode } = useTheme();
   const [open, setOpen] = useState(false);
+  const [contactModalOpen, setContactModalOpen] = useState(false);
 
   const dropdownRef = useRef(null);
-  const burgerButtonRef = useRef(null); // Référence pour le bouton burger
+  const burgerButtonRef = useRef(null);
+  const modalRef = useRef(null);
 
   // Effet pour gérer les clics en dehors du menu déroulant
   useEffect(() => {
@@ -26,18 +28,18 @@ export default function LightningHeader({ navigateTo }) { // Recevoir navigateTo
     };
 
     if (open) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [open]);
 
   // Variants pour les animations de Framer Motion
   const menuVariants = {
     hidden: { height: 0, opacity: 0 },
-    visible: { height: 'auto', opacity: 1 },
+    visible: { height: "auto", opacity: 1 },
     exit: { height: 0, opacity: 0 },
   };
 
@@ -67,11 +69,20 @@ export default function LightningHeader({ navigateTo }) { // Recevoir navigateTo
           })}
           onClick={() => setOpen(!open)}
           ref={burgerButtonRef} // Attacher la référence au bouton burger
-          style={{ cursor: "pointer", background: "none", border: "none", padding: 0 }}
+          style={{
+            cursor: "pointer",
+            background: "none",
+            border: "none",
+            padding: 0,
+          }}
         >
           {/* Utiliser un SVG ou une image comme icône de burger */}
           <img
-            src={isDarkMode ? '/images/menu_burgerDarkMode.svg' : '/images/menu_burger.svg'}
+            src={
+              isDarkMode
+                ? "/images/menu_burgerDarkMode.svg"
+                : "/images/menu_burger.svg"
+            }
             alt="Menu"
             className="burger-icon"
           />
@@ -87,7 +98,7 @@ export default function LightningHeader({ navigateTo }) { // Recevoir navigateTo
             animate="visible"
             exit="exit"
             variants={menuVariants}
-            transition={{ duration: 0.4, ease: 'easeInOut' }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
             ref={dropdownRef}
           >
             {/* Liste des items avec stagger */}
@@ -99,157 +110,158 @@ export default function LightningHeader({ navigateTo }) { // Recevoir navigateTo
               exit="hidden"
             >
               {/* Bouton Accueil */}
-              <motion.div
-                className="dropdown-item"
+              <motion.button
+                className="dropdown-item dropdown-item-accueil"
                 variants={itemVariants}
                 onClick={() => {
-                  navigateTo(null, "dropdown"); // Réinitialiser à l'accueil
-                  setOpen(false); // Fermer le menu déroulant
+                  navigateTo(null, "dropdown");
+                  setOpen(false);
                 }}
               >
-                <button
-                  className={classNames("svg-icon home-accueil", {
-                    "dark-mode": isDarkMode,
-                    "light-mode": !isDarkMode,
-                  })}
-                  title="Accueil"
-                  style={{ cursor: "pointer", marginRight: "10px" }}
-                ></button>
-                <span
-                  onClick={() => {
-                    navigateTo(null, "dropdown"); // Réinitialiser à l'accueil
-                    setOpen(false); // Fermer le menu déroulant
-                  }}
-                  style={{ cursor: "pointer" }}
-                >
-                  Accueil
-                </span>
-              </motion.div>
+                <span className="dropdown-item-text">Accueil</span>
+              </motion.button>
 
               {/* Lien vers CV */}
-              <motion.div
-                className="dropdown-item"
+              <motion.button
+                className="dropdown-item dropdown-item-cv"
                 variants={itemVariants}
                 onClick={() => {
                   navigateTo("CV", "dropdown");
-                  setOpen(false); // Fermer le menu déroulant
+                  setOpen(false);
                 }}
               >
-                <button
-                  className={classNames("svg-icon home-cv", { // Utiliser "home-cv" pour correspondre au SCSS
-                    "dark-mode": isDarkMode,
-                    "light-mode": !isDarkMode,
-                  })}
-                  title="CV"
-                  style={{ cursor: "pointer", marginRight: "10px" }}
-                ></button>
-                <span
-                  onClick={() => {
-                    navigateTo("CV", "dropdown");
-                    setOpen(false); // Fermer le menu déroulant
-                  }}
-                  style={{ cursor: "pointer" }}
-                >
-                  CV
-                </span>
-              </motion.div>
+                <span className="dropdown-item-text">CV</span>
+              </motion.button>
 
               {/* Lien vers Projets */}
-              <motion.div
-                className="dropdown-item"
+              <motion.button
+                className="dropdown-item dropdown-item-projets"
                 variants={itemVariants}
                 onClick={() => {
                   navigateTo("Projets", "dropdown");
-                  setOpen(false); // Fermer le menu déroulant
+                  setOpen(false);
                 }}
               >
-                <button
-                  className={classNames("svg-icon home-projects", { // Utiliser "home-projects" pour correspondre au SCSS
-                    "dark-mode": isDarkMode,
-                    "light-mode": !isDarkMode,
-                  })}
-                  title="Projets"
-                  style={{ cursor: "pointer", marginRight: "10px" }}
-                ></button>
-                <span
-                  onClick={() => {
-                    navigateTo("Projets", "dropdown");
-                    setOpen(false); // Fermer le menu déroulant
-                  }}
-                  style={{ cursor: "pointer" }}
-                >
-                  Projets
-                </span>
-              </motion.div>
+                <span className="dropdown-item-text">Projets</span>
+              </motion.button>
 
               {/* Lien vers Idées */}
-              <motion.div
-                className="dropdown-item"
+              <motion.button
+                className="dropdown-item dropdown-item-idees"
                 variants={itemVariants}
                 onClick={() => {
                   navigateTo("Idées", "dropdown");
-                  setOpen(false); // Fermer le menu déroulant
+                  setOpen(false);
                 }}
               >
-                <button
-                  className={classNames("svg-icon home-ideas", { // Utiliser "home-ideas" pour correspondre au SCSS
-                    "dark-mode": isDarkMode,
-                    "light-mode": !isDarkMode,
-                  })}
-                  title="Idées"
-                  style={{ cursor: "pointer", marginRight: "10px" }}
-                ></button>
-                <span
-                  onClick={() => {
-                    navigateTo("Idées", "dropdown");
-                    setOpen(false); // Fermer le menu déroulant
-                  }}
-                  style={{ cursor: "pointer" }}
-                >
-                  Idées
-                </span>
-              </motion.div>
+                <span className="dropdown-item-text">Idées</span>
+              </motion.button>
 
               {/* Toggle Mode Sombre */}
               <motion.div
-                className="dropdown-item"
+                className="dropdown-item dropdown-item-darkmode"
                 variants={itemVariants}
               >
-                <span>Mode Sombre</span>
+                <span 
+                  className="dropdown-item-text"
+                  onClick={toggleDarkMode}
+                >
+                  Mode Sombre
+                </span>
                 <label className="switch">
                   <input
                     type="checkbox"
+                    aria-label="Dark Mode Toggle"
                     checked={isDarkMode}
-                    onChange={toggleDarkMode} // Utiliser la fonction toggleDarkMode du contexte
+                    onChange={toggleDarkMode}
                   />
                   <span className="slider round"></span>
                 </label>
               </motion.div>
 
-              {/* Toggle Animations */}
-              <motion.div
-                className="dropdown-item"
+              {/* Bouton Contact */}
+              <motion.button
+                className="dropdown-item dropdown-item-contact"
                 variants={itemVariants}
+                onClick={() => {
+                  setContactModalOpen(true);
+                  setOpen(false);
+                }}
               >
-                <span>Animations</span>
-                <label className="switch">
-                  <input
-                    type="checkbox"
-                    checked={animationsEnabled}
-                    onChange={toggleAnimations} // Utiliser la fonction toggleAnimations du contexte
-                  />
-                  <span className="slider round"></span>
-                </label>
-              </motion.div>
+                <span className="dropdown-item-text">Contact</span>
+              </motion.button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Modal Contact */}
+      <AnimatePresence>
+        {contactModalOpen && (
+          <motion.div
+            className="contact-modal-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setContactModalOpen(false)}
+          >
+            <motion.div
+              className="contact-modal"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={(e) => e.stopPropagation()}
+              ref={modalRef}
+            >
+              <button
+                className="close-modal-btn"
+                onClick={() => setContactModalOpen(false)}
+              >
+                ✖
+              </button>
+              <h2>Contact</h2>
+              <div className="contact-links">
+                <a
+                  href="https://www.linkedin.com/in/gabriel-taca-7a65961a/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="contact-link"
+                >
+                  <span className={classNames("svg-icon home-linkedin", {
+                    "dark-mode": isDarkMode,
+                    "light-mode": !isDarkMode,
+                  })}></span>
+                  <span>LinkedIn</span>
+                </a>
+                <a
+                  href="mailto:gabrieltaca117@gmail.com"
+                  className="contact-link"
+                >
+                  <span className={classNames("svg-icon home-mail", {
+                    "dark-mode": isDarkMode,
+                    "light-mode": !isDarkMode,
+                  })}></span>
+                  <span>gabriel.taca@example.com</span>
+                </a>
+                <a
+                  href="tel:+14189303703"
+                  className="contact-link"
+                >
+                  <span className={classNames("svg-icon home-call", {
+                    "dark-mode": isDarkMode,
+                    "light-mode": !isDarkMode,
+                  })}></span>
+                  <span>+1 (418) 930-3703</span>
+                </a>
+              </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Conteneur des nuages */}
-      <div className="clouds">
-        {/* Vos nuages ici */}
-      </div>
+      <div className="clouds">{/* Vos nuages ici */}</div>
     </div>
   );
 }

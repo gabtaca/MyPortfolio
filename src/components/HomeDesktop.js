@@ -22,9 +22,12 @@ const HomeDesktop = () => {
 
   // État global pour la catégorie active (défini avec useState)
   const [activeCategory, setActiveCategory] = useState(null);
-  
+
   // État pour contrôler l'affichage du contenu du tiroir Idées (après l'animation d'ouverture)
   const [showIdeesContent, setShowIdeesContent] = useState(false);
+
+  // État pour tracker le projet hoveré en mode desktop
+  const [hoveredProject, setHoveredProject] = useState(null);
 
   // Lors de l'ouverture du tiroir "Idées", si aucune catégorie n'est définie, on définit la catégorie par défaut
   useEffect(() => {
@@ -249,7 +252,7 @@ const HomeDesktop = () => {
                 animate={{ height: "auto" }}
                 exit={{ height: 0 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
-                style={{ overflow: "hidden" }}
+                style={{ overflow: "visible" }}
               >
                 <button
                   className="close-drawer-btn close-projects"
@@ -258,7 +261,34 @@ const HomeDesktop = () => {
                   <h4>Projets</h4>
                   <p>✖</p>
                 </button>
-                <ProjectsSlider forceLandscapeFooter />
+                <motion.div
+                  className="desktop_drawer-projects-description"
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0, opacity: 0 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  style={{ transformOrigin: "center" }}
+                >
+                  <div className="ctrl_description-projects">
+                    <h5>{hoveredProject ? hoveredProject.name : ""}</h5>
+                    <h6>{hoveredProject ? hoveredProject.type : ""}</h6>
+                  </div>
+                  <span className="description-projects-stack">
+                    {hoveredProject && hoveredProject.stack && hoveredProject.stack.join(", ")}
+                  </span>
+                </motion.div>
+                <motion.div
+                  initial={{ scaleY: 0, opacity: 0 }}
+                  animate={{ scaleY: 1, opacity: 1 }}
+                  exit={{ scaleY: 0, opacity: 0 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  style={{ transformOrigin: "top", overflow: "visible" }}
+                >
+                  <ProjectsSlider 
+                    forceLandscapeFooter 
+                    onProjectHover={setHoveredProject}
+                  />
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>

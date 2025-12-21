@@ -7,7 +7,7 @@ const DashedArrow = ({ onAnimationComplete }) => {
   return (
     <div className="dashed-arrow">
       <img
-        src="/images/arrow_up.svg"
+        src="/images/ideas_underline.svg"
         alt="Flèche pointant en haut"
         className="dashed-arrow-head"
       />

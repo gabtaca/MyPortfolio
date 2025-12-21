@@ -244,7 +244,7 @@ body.single-toggle .drop:nth-child(10) {
   width: 100%;
   justify-content: center;
 
-    &.section-active {
+  &.section-active {
     height: 5%;
     justify-content: center;
     background-color: transparent;
@@ -277,27 +277,25 @@ body.single-toggle .drop:nth-child(10) {
   flex-direction: column;
   justify-content: flex-start; /* Par défaut : en haut */
   -webkit-overflow-scrolling: touch;
-  
+
   /* État CV - contenu en haut */
   &.cv-active {
     height: 100%;
   }
-  
+
   /* État Projets - contenu en haut */
   &.projects-active {
     justify-content: flex-start;
   }
-  
+
   /* État Idées - pousse vers le bas pour l'animation du tree */
   &.idees-active {
     justify-content: flex-start;
 
     .nav_main-home {
-      
       &.section-active {
         min-height: 30px;
       }
-      
     }
   }
 }
@@ -314,7 +312,6 @@ body.single-toggle .drop:nth-child(10) {
 
 .btn_idees-main-home {
   color: var(--h2Color);
-
 }
 
 .main_home {
@@ -344,7 +341,6 @@ body.single-toggle .drop:nth-child(10) {
   position: relative;
   width: 100%;
   height: 80px;
-  overflow: hidden;
 }
 
 .date-group {
@@ -404,9 +400,9 @@ body.single-toggle .drop:nth-child(10) {
   justify-content: center;
   align-items: center;
   bottom: 0;
-  position: fixed; 
+  position: fixed;
   width: 100%;
-  z-index: 100;
+  z-index: 1000;
   max-height: 60px;
   min-height: 60px;
   background-color: var(--bgBody);
@@ -546,8 +542,6 @@ body.single-toggle .drop:nth-child(10) {
 
 // Home desktop
 
-
-
 .home_desktop-main {
   display: flex;
   height: 100%;
@@ -563,22 +557,22 @@ body.single-toggle .drop:nth-child(10) {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-  .home_desktop-portrait {
-    width: 60%;
-    bottom: 0;
-    z-index: 1;
-  }
-  span {
-    font-family: "Livvic";
-    font-size: 16px;
-    color: var(--desktopPcolor);
-    font-weight: bold;
-    p {
-      padding: 10px;
-      width: 80%;
+    .home_desktop-portrait {
+      width: 60%;
+      bottom: 0;
+      z-index: 1;
+    }
+    span {
+      font-family: "Livvic";
+      font-size: 16px;
+      color: var(--desktopPcolor);
+      font-weight: bold;
+      p {
+        padding: 10px;
+        width: 80%;
+      }
     }
   }
-}
 }
 
 .home_desktop-header {
@@ -596,8 +590,8 @@ body.single-toggle .drop:nth-child(10) {
   -webkit-border-bottom-left-radius: 60px;
   -moz-border-radius-bottomright: 60px;
   -moz-border-radius-bottomleft: 60px;
-  border-bottom-right-radius: 60px;
   border-bottom-left-radius: 60px;
+  border-bottom-right-radius: 60px;
 
   .ctrl_darkmode-pull {
     position: absolute;
@@ -632,15 +626,17 @@ body.single-toggle .drop:nth-child(10) {
       font-weight: bold;
     }
     .flicker-overlay {
-      background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 50%);
+      background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.5) 0%,
+        transparent 50%
+      );
       mix-blend-mode: screen;
       -webkit-animation: flicker-in-1 2s linear both;
       animation: flicker-in-1 2s linear both;
     }
   }
 }
-
-
 
 .home_desktop-nav {
   display: flex;
@@ -657,12 +653,8 @@ body.single-toggle .drop:nth-child(10) {
   z-index: 10;
   width: 65vw;
   background-color: var(--bgCvDesktop);
-  -webkit-border-bottom-right-radius: 60px;
-  -webkit-border-bottom-left-radius: 60px;
-  -moz-border-radius-bottomright: 60px;
-  -moz-border-radius-bottomleft: 60px;
-  border-bottom-right-radius: 60px;
-  border-bottom-left-radius: 60px;
+  border-radius: 0px 0px 60px 60px;
+  -webkit-border-radius: 0px 0px 60px 60px;
 }
 
 .drawer-cv {
@@ -698,13 +690,7 @@ body.single-toggle .drop:nth-child(10) {
   flex-direction: column;
   align-items: center;
   width: 50vw;
-  background-color: var(--bgProjectsDesktop);
-  -webkit-border-bottom-right-radius: 60px;
-  -webkit-border-bottom-left-radius: 60px;
-  -moz-border-radius-bottomright: 60px;
-  -moz-border-radius-bottomleft: 60px;
-  border-bottom-right-radius: 60px;
-  border-bottom-left-radius: 60px;
+  /* Pas d'overflow ici - géré par le drawer */
 }
 
 .home_desktop-projects {
@@ -712,29 +698,74 @@ body.single-toggle .drop:nth-child(10) {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 50vw;
+  width: 100%;
   background-color: var(--bgProjectsDesktop);
-  -webkit-border-bottom-right-radius: 60px;
-  -webkit-border-bottom-left-radius: 60px;
-  -moz-border-radius-bottomright: 60px;
-  -moz-border-radius-bottomleft: 60px;
-  border-bottom-right-radius: 60px;
-  border-bottom-left-radius: 60px;
+  border-radius: 0px 0px 60px 60px;
+  -webkit-border-radius: 0px 0px 60px 60px;
+  z-index: 2;
+  position: relative;
 }
 
 .drawer-projects {
   position: relative;
   flex-direction: column;
   display: flex;
+  background-color: var(--bgProjectsDesktop);
+  width: 50vw;
+  overflow-x: visible; /* Déborde sur les côtés */
+  overflow-y: hidden; /* Caché en haut/bas pendant l'animation */
 
+  .desktop_drawer-projects-description {
+    display: flex;
+    justify-self: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bgProjectsDesktop);
+    padding: 10px 15px;
+    height: 5vh;
+    width: 100%;
+    border-radius: 20px;
+    font-family: "Italiana";
+    color: var(--h2Color);
+
+    .ctrl_description-projects {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      h5 {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0;
+        padding-right: 10px;
+      }
+      h6 {
+        font-size: 16px;
+        font-style: italic;
+        margin: 0;
+        padding-left: 10px;
+      }
+    }
+
+    .description-projects-stack {
+      margin-top: 5px;
+      font-size: 14px;
+      color: var(--datesColor);
+    }
+  }
 }
 
 .desktop-slider {
+  display: flex;
+  justify-self: center;
   margin-top: 100px;
+  /* overflow géré par ProjectsSlider.js inline style */
 }
 
 .drawer {
   position: relative;
+  overflow: visible !important;
   flex-direction: column;
   display: flex;
 }
@@ -752,14 +783,17 @@ body.single-toggle .drop:nth-child(10) {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 35vw;
+  width: 100%;
+  background: none;
   background-color: var(--bgIdeesDesktop);
+  border: none;
+  cursor: pointer;
   -webkit-border-bottom-right-radius: 60px;
   -webkit-border-bottom-left-radius: 60px;
   -moz-border-radius-bottomright: 60px;
   -moz-border-radius-bottomleft: 60px;
-  border-bottom-right-radius: 60px;
   border-bottom-left-radius: 60px;
+  border-bottom-right-radius: 60px;
 }
 
 .section_desktop-idees {
@@ -767,13 +801,15 @@ body.single-toggle .drop:nth-child(10) {
   flex-direction: column;
   justify-content: center;
   width: 35vw;
+  overflow: visible; /* Permet au contenu de dépasser */
+}
+
+.drawer-idees {
+  position: relative;
+  flex-direction: column;
+  display: flex;
   background-color: var(--bgIdeesDesktop);
-  -webkit-border-bottom-right-radius: 60px;
-  -webkit-border-bottom-left-radius: 60px;
-  -moz-border-radius-bottomright: 60px;
-  -moz-border-radius-bottomleft: 60px;
-  border-bottom-right-radius: 60px;
-  border-bottom-left-radius: 60px;
+  overflow: visible; /* Permet au contenu de dépasser si nécessaire */
 }
 
 .btn_idees-homeDesktop {
@@ -812,14 +848,13 @@ body.single-toggle .drop:nth-child(10) {
   justify-content: space-between;
   background-color: var(--bgCvDesktop);
   color: var(--desktopBtnCloseColor);
-  border-right: solid white 1px ;
 
   h4 {
     color: var(--h2Color);
   }
   p {
     display: flex;
-    padding:0 5px 2px 5px;
+    padding: 0 5px 2px 5px;
     background-color: var(--desktopBtnCloseBg);
     border-radius: 20px;
   }
@@ -837,14 +872,13 @@ body.single-toggle .drop:nth-child(10) {
   justify-content: space-between;
   background-color: var(--bgProjectsDesktop);
   color: var(--desktopBtnCloseColor);
-  border-right: solid white 1px ;
 
   h4 {
     color: var(--h2Color);
   }
   p {
     display: flex;
-    padding:0 5px 2px 5px;
+    padding: 0 5px 2px 5px;
     background-color: var(--desktopBtnCloseBg);
     border-radius: 20px;
   }
@@ -860,14 +894,13 @@ body.single-toggle .drop:nth-child(10) {
   justify-content: space-between;
   background-color: var(--bgideesDesktop);
   color: var(--desktopBtnCloseColor);
-  border-right: solid white 1px ;
 
   h4 {
     color: var(--h2Color);
   }
   p {
     display: flex;
-    padding:0 5px 2px 5px;
+    padding: 0 5px 2px 5px;
     background-color: var(--desktopBtnCloseBg);
     border-radius: 20px;
   }

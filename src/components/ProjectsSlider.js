@@ -18,7 +18,7 @@ import ProjectsModalDesktop from "./ProjectsModalDesktop";
 // 1) IMPORT your IdeesMobile component
 import IdeesMobile from "./IdeesMobile"; // <-- adjust path if needed
 
-const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode }, ref) => {
+const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHover }, ref) => {
   
   const sliderRef = useRef(null);
 
@@ -311,7 +311,7 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode }, ref) => {
             : "portrait-slider"
         }`}
         style={{
-          overflowX: isDesktop ? "hidden" : "scroll",
+          overflowX: isDesktop ? "visible" : "scroll",
           msOverflowStyle: "none",
           WebkitOverflowScrolling: "touch",
         }}
@@ -351,7 +351,19 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode }, ref) => {
                 transition: { type: "spring", stiffness: 600, damping: 25 },
               }}
               // On desktop: highlight on hover
-              onMouseEnter={() => handleColumnHover(index)}
+              onMouseEnter={() => {
+                handleColumnHover(index);
+                // Envoyer les infos du projet au parent (HomeDesktop)
+                if (isDesktop && onProjectHover && !project.id.startsWith("blank")) {
+                  onProjectHover(project);
+                }
+              }}
+              onMouseLeave={() => {
+                // Réinitialiser quand on quitte
+                if (isDesktop && onProjectHover) {
+                  onProjectHover(null);
+                }
+              }}
             >
               <ProjectColumn
                 project={project}
