@@ -1,10 +1,11 @@
 // src/components/HomeDesktop.js
 import React, { useState, useEffect, useContext } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { ThemeContext } from "../context/ThemeContext";
 import ProjectsSlider from "./ProjectsSlider";
-import IdeesMobile from "./IdeesMobile"; // Composant gérant la section Idées (mobile et dropdown)
-import ideesData from "../jsonFiles/ideesData.json"; // Pour récupérer la liste des catégories
+import IdeesMobile from "./IdeesMobile";
+import ideesData from "../jsonFiles/ideesData.json";
 
 const HomeDesktop = () => {
   const { isDarkMode, toggleDarkMode } = useContext(ThemeContext);
@@ -237,6 +238,7 @@ const HomeDesktop = () => {
           <button
             className="home_desktop-cv"
             onClick={() => toggleDrawer("cv")}
+            aria-label="Ouvrir le CV"
           >
             <h2 className="btn_cv-homeDesktop">CV</h2>
           </button>
@@ -295,6 +297,7 @@ const HomeDesktop = () => {
           <button
             className="home_desktop-projects"
             onClick={() => toggleDrawer("projects")}
+            aria-label="Ouvrir les projets"
           >
             <h2 className="btn_projects-homeDesktop">Projets</h2>
           </button>
@@ -363,14 +366,17 @@ const HomeDesktop = () => {
             isCvOpen || isProjectsOpen || isIdeesOpen ? "blur(1.5rem)" : "none",
         }}
       >
-        <img
+        <Image
           className="home_desktop-portrait"
           src={
             isDarkMode
-              ? "/images/portrait_desktop-darrkmode.png"
-              : "/images/portrait_desktop.png"
+              ? "/images/portrait_desktop-darrkmode.webp"
+              : "/images/portrait_desktop.webp"
           }
           alt="Portrait de Gabriel Taca"
+          fill
+          priority
+          quality={75}
         />
         <span>
           <p>Designer UI/UX,</p>

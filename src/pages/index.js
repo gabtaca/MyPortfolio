@@ -1,6 +1,7 @@
 // src/pages/index.js
 
 import React, { useState, useEffect } from 'react';
+import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import useWindowWidth from '../hooks/useWindowWidth';
 
@@ -18,10 +19,28 @@ const HomePage = () => {
 
   if (!isClient) {
     // Afficher un loader ou rien côté serveur
-    return <div>Chargement...</div>;
+    return (
+      <>
+        <Head>
+          <title>Gabriel Taca - Portfolio | Idéation créative en mode solution</title>
+          <meta name="description" content="Portfolio de Gabriel Taca - Développeur créatif spécialisé en solutions web innovantes. Découvrez mes projets, mon CV et mes idées créatives." />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+        </Head>
+        <div>Chargement...</div>
+      </>
+    );
   }
 
-  return width >= breakpoint ? <HomeDesktop /> : <Home />;
+  return (
+    <>
+      <Head>
+        <title>Gabriel Taca - Portfolio | Idéation créative en mode solution</title>
+        <meta name="description" content="Portfolio de Gabriel Taca - Développeur créatif spécialisé en solutions web innovantes. Découvrez mes projets, mon CV et mes idées créatives." />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+      {width >= breakpoint ? <HomeDesktop /> : <Home />}
+    </>
+  );
 };
 
 export default HomePage;

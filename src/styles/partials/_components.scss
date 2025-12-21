@@ -558,7 +558,9 @@ body.single-toggle .drop:nth-child(10) {
     align-items: center;
     justify-content: center;
     .home_desktop-portrait {
-      width: 60%;
+      position: relative !important;
+      width: 60% !important;
+      height: auto !important;
       bottom: 0;
       z-index: 1;
     }

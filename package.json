@@ -19,6 +19,7 @@
     "react-dom": "^18",
     "sass": "^1.81.0",
     "sass-loader": "^16.0.3",
+    "sharp": "^0.34.5",
     "simplex-noise": "^4.0.3",
     "style-loader": "^4.0.0"
   },
