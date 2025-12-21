@@ -259,9 +259,6 @@ export default function LightningHeader({ navigateTo }) {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Conteneur des nuages */}
-      <div className="clouds">{/* Vos nuages ici */}</div>
     </div>
   );
 }
