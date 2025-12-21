@@ -371,10 +371,10 @@
     align-items: center;
     justify-content: center;
     .home_desktop-portrait {
-      position: relative !important;
-      width: 60% !important;
-      height: auto !important;
-      bottom: 0;
+      width: 60%;
+      height: auto;
+      max-width: 800px;
+      object-fit: contain;
       z-index: 1;
     }
     span {

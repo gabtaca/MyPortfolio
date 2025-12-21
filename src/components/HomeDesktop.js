@@ -374,9 +374,11 @@ const HomeDesktop = () => {
               : "/images/portrait_desktop.webp"
           }
           alt="Portrait de Gabriel Taca"
-          fill
+          width={800}
+          height={1000}
           priority
-          quality={75}
+          quality={60}
+          sizes="(max-width: 768px) 100vw, 60vw"
         />
         <span>
           <p>Designer UI/UX,</p>
