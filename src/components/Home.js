@@ -8,7 +8,6 @@ import IdeesMobile from "./IdeesMobile";
 import LightningHeader from "./LightningHeader";
 import classNames from "classnames";
 import useTheme from "../hooks/useTheme";
-import "animate.css"; // Importer Animate.css
 
 export default function Home() {
   const { isDarkMode, toggleDarkMode, animationsEnabled, toggleAnimations } =
@@ -16,186 +15,40 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState(null);
   const [isBubbleVisible, setIsBubbleVisible] = useState(false);
   const [activeCategory, setActiveCategory] = useState(null);
+  const [buttonsToHide, setButtonsToHide] = useState(new Set());
 
   // Références pour la bulle et l'icône du téléphone
   const bubbleRef = useRef(null);
   const phoneIconRef = useRef(null);
 
-  // Références pour les boutons de navigation
-  const btnCvRef = useRef(null);
-  const btnProjectsRef = useRef(null);
-  const btnIdeasRef = useRef(null);
-
   // Fonction pour naviguer vers une section spécifique avec animations
   const handleSectionClick = (section) => {
-    console.log(`handleSectionClick called with section: ${section}`);
-
     if (activeSection === section) {
-      console.log("Resetting view to home.");
       resetView();
       return;
     }
 
-    console.log(`Setting activeSection to: ${section}`);
-
-    // Appliquer les animations en fonction de la section cible
+    // Determine which buttons to hide based on the selected section
+    let hideButtons = new Set();
     if (section === "CV") {
-      // Animer les boutons Projets et Idées pour sortir
-      if (btnIdeasRef.current) {
-        btnIdeasRef.current.classList.add(
-          "animate__animated",
-          "animate__rotateOutDownLeft"
-        );
-        btnIdeasRef.current.addEventListener(
-          "animationend",
-          () => {
-            btnIdeasRef.current.classList.remove(
-              "animate__animated",
-              "animate__rotateOutDownLeft"
-            );
-          },
-          { once: true }
-        );
-      }
-      if (btnProjectsRef.current) {
-        btnProjectsRef.current.classList.add(
-          "animate__animated",
-          "animate__rotateOutDownRight"
-        );
-        btnProjectsRef.current.addEventListener(
-          "animationend",
-          () => {
-            btnProjectsRef.current.classList.remove(
-              "animate__animated",
-              "animate__rotateOutDownRight"
-            );
-          },
-          { once: true }
-        );
-      }
+      hideButtons = new Set(["Projets", "Idées"]);
     } else if (section === "Projets") {
-      // Animer les boutons CV et Idées pour sortir
-      if (btnIdeasRef.current) {
-        btnIdeasRef.current.classList.add(
-          "animate__animated",
-          "animate__fadeOutLeft"
-        );
-        btnIdeasRef.current.addEventListener(
-          "animationend",
-          () => {
-            btnIdeasRef.current.classList.remove(
-              "animate__animated",
-              "animate__fadeOutLeft"
-            );
-          },
-          { once: true }
-        );
-      }
-      if (btnCvRef.current) {
-        btnCvRef.current.classList.add(
-          "animate__animated",
-          "animate__fadeOutRight"
-        );
-        btnCvRef.current.addEventListener(
-          "animationend",
-          () => {
-            btnCvRef.current.classList.remove(
-              "animate__animated",
-              "animate__fadeOutRight"
-            );
-          },
-          { once: true }
-        );
-      }
+      hideButtons = new Set(["CV", "Idées"]);
     } else if (section === "Idées") {
-      // Animer les boutons CV et Projets pour sortir
-      if (btnCvRef.current) {
-        btnCvRef.current.classList.add(
-          "animate__animated",
-          "animate__fadeOutUp"
-        );
-        btnCvRef.current.addEventListener(
-          "animationend",
-          () => {
-            btnCvRef.current.classList.remove(
-              "animate__animated",
-              "animate__fadeOutUp"
-            );
-          },
-          { once: true }
-        );
-      }
-      if (btnProjectsRef.current) {
-        btnProjectsRef.current.classList.add(
-          "animate__animated",
-          "animate__rotateOutUpRight"
-        );
-        btnProjectsRef.current.addEventListener(
-          "animationend",
-          () => {
-            btnProjectsRef.current.classList.remove(
-              "animate__animated",
-              "animate__rotateOutUpRight"
-            );
-          },
-          { once: true }
-        );
-      }
+      hideButtons = new Set(["CV", "Projets"]);
     }
 
-    // Définir la nouvelle section active après un court délai pour permettre l'animation
+    setButtonsToHide(hideButtons);
+
+    // Set the active section after animation delay
     setTimeout(() => {
       setActiveSection(section);
-
-      // Ajouter l'animation d'entrée pour le bouton correspondant
-      if (section === "CV" && btnCvRef.current) {
-        btnCvRef.current.classList.add("animate__animated", "animate__fadeIn");
-        btnCvRef.current.addEventListener(
-          "animationend",
-          () => {
-            btnCvRef.current.classList.remove(
-              "animate__animated",
-              "animate__fadeIn"
-            );
-          },
-          { once: true }
-        );
-      } else if (section === "Projets" && btnProjectsRef.current) {
-        btnProjectsRef.current.classList.add(
-          "animate__animated",
-          "animate__fadeIn"
-        );
-        btnProjectsRef.current.addEventListener(
-          "animationend",
-          () => {
-            btnProjectsRef.current.classList.remove(
-              "animate__animated",
-              "animate__fadeIn"
-            );
-          },
-          { once: true }
-        );
-      } else if (section === "Idées" && btnIdeasRef.current) {
-        btnIdeasRef.current.classList.add(
-          "animate__animated",
-          "animate__fadeIn"
-        );
-        btnIdeasRef.current.addEventListener(
-          "animationend",
-          () => {
-            btnIdeasRef.current.classList.remove(
-              "animate__animated",
-              "animate__fadeIn"
-            );
-          },
-          { once: true }
-        );
-      }
-    }, 500); // Ajustez ce délai selon la durée de vos animations
+    }, 500);
   };
 
   // Réinitialiser la vue à l'état initial
   const resetView = () => {
+    setButtonsToHide(new Set());
     setActiveSection(null);
   };
 
@@ -233,6 +86,46 @@ export default function Home() {
   }, [isBubbleVisible]);
 
   // Variants pour les animations de Framer Motion
+  const exitAnimations = {
+    rotateOutDownLeft: {
+      opacity: 0,
+      rotate: -45,
+      y: 100,
+      transition: { duration: 0.5 }
+    },
+    rotateOutDownRight: {
+      opacity: 0,
+      rotate: 45,
+      y: 100,
+      transition: { duration: 0.5 }
+    },
+    fadeOutLeft: {
+      opacity: 0,
+      x: -100,
+      transition: { duration: 0.5 }
+    },
+    fadeOutRight: {
+      opacity: 0,
+      x: 100,
+      transition: { duration: 0.5 }
+    },
+    fadeOutUp: {
+      opacity: 0,
+      y: -100,
+      transition: { duration: 0.5 }
+    },
+    rotateOutUpRight: {
+      opacity: 0,
+      rotate: 90,
+      y: -100,
+      transition: { duration: 0.5 }
+    },
+    fadeIn: {
+      opacity: 1,
+      transition: { duration: 0.5 }
+    }
+  };
+
   const buttonVariants = {
     hidden: { opacity: 0, y: -20 },
     visible: { opacity: 1, y: 0 },
@@ -243,6 +136,21 @@ export default function Home() {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
     exit: { opacity: 0 },
+  };
+
+  // Get button exit animation based on section
+  const getButtonExitAnimation = (buttonName, section) => {
+    if (section === "CV") {
+      if (buttonName === "Projets") return exitAnimations.rotateOutDownRight;
+      if (buttonName === "Idées") return exitAnimations.rotateOutDownLeft;
+    } else if (section === "Projets") {
+      if (buttonName === "CV") return exitAnimations.fadeOutRight;
+      if (buttonName === "Idées") return exitAnimations.fadeOutLeft;
+    } else if (section === "Idées") {
+      if (buttonName === "CV") return exitAnimations.fadeOutUp;
+      if (buttonName === "Projets") return exitAnimations.rotateOutUpRight;
+    }
+    return exitAnimations.fadeIn;
   };
 
   return (
@@ -261,58 +169,78 @@ export default function Home() {
             variants={buttonVariants}
             transition={{ duration: 0.5 }}
           >
-            {activeSection === null && (
-              <>
-                <button
-                  ref={btnCvRef}
+            <AnimatePresence mode="sync">
+              {activeSection === null && (
+                <>
+                  <motion.button
+                    key="cv-btn"
+                    className="btn_cv-main-home text-h2-100 text-28 hover-underline font-italiana"
+                    onClick={() => handleSectionClick("CV")}
+                    initial={{ opacity: 1, y: 0 }}
+                    exit={exitAnimations.fadeIn}
+                  >
+                    CV
+                  </motion.button>
+                  <motion.button
+                    key="projects-btn"
+                    className="btn_projets-main-home text-h2-100 text-28 hover-underline font-italiana"
+                    onClick={() => handleSectionClick("Projets")}
+                    initial={{ opacity: 1, y: 0 }}
+                    exit={exitAnimations.fadeIn}
+                  >
+                    Projets
+                  </motion.button>
+                  <motion.button
+                    key="ideas-btn"
+                    className="btn_idees-main-home text-h2-100 text-28 hover-underline font-italiana"
+                    onClick={() => handleSectionClick("Idées")}
+                    initial={{ opacity: 1, y: 0 }}
+                    exit={exitAnimations.fadeIn}
+                  >
+                    Idées
+                  </motion.button>
+                </>
+              )}
+              {activeSection === "CV" && !buttonsToHide.has("CV") && (
+                <motion.button
+                  key="cv-btn-active"
                   className="btn_cv-main-home text-h2-100 text-28 hover-underline font-italiana"
                   onClick={() => handleSectionClick("CV")}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.5 }}
                 >
                   CV
-                </button>
-                <button
-                  ref={btnProjectsRef}
+                </motion.button>
+              )}
+              {activeSection === "Projets" && !buttonsToHide.has("Projets") && (
+                <motion.button
+                  key="projects-btn-active"
                   className="btn_projets-main-home text-h2-100 text-28 hover-underline font-italiana"
                   onClick={() => handleSectionClick("Projets")}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.5 }}
                 >
                   Projets
-                </button>
-                <button
-                  ref={btnIdeasRef}
+                </motion.button>
+              )}
+              {activeSection === "Idées" && !buttonsToHide.has("Idées") && (
+                <motion.button
+                  key="ideas-btn-active"
                   className="btn_idees-main-home text-h2-100 text-28 hover-underline font-italiana"
                   onClick={() => handleSectionClick("Idées")}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.5 }}
                 >
                   Idées
-                </button>
-              </>
-            )}
-            {activeSection === "CV" && (
-              <button
-                ref={btnCvRef}
-                className="btn_cv-main-home text-h2-100 text-28 hover-underline font-italiana"
-                onClick={() => handleSectionClick("CV")}
-              >
-                CV
-              </button>
-            )}
-            {activeSection === "Projets" && (
-              <button
-                ref={btnProjectsRef}
-                className="btn_projets-main-home text-h2-100 text-28 hover-underline font-italiana"
-                onClick={() => handleSectionClick("Projets")}
-              >
-                Projets
-              </button>
-            )}
-            {activeSection === "Idées" && (
-              <button
-                ref={btnIdeasRef}
-                className="btn_idees-main-home text-h2-100 text-28 hover-underline font-italiana"
-                onClick={() => handleSectionClick("Idées")}
-              >
-                Idées
-              </button>
-            )}
+                </motion.button>
+              )}
+            </AnimatePresence>
           </motion.div>
         </nav>
 

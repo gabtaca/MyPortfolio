@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import classNames from "classnames";
 import useTheme from "../hooks/useTheme";
-import "animate.css";
 import cvInfos from "../jsonFiles/cvInfos.json";
 
 export default function CvMobile() {
@@ -29,9 +29,16 @@ export default function CvMobile() {
             </div>
 
             {/* Contenu de la section */}
-            {activeSection === section && (
-              <div className="cv_section-content animate__animated animate__fadeIn">
-                {section === "Formations" &&
+            <AnimatePresence>
+              {activeSection === section && (
+                <motion.div
+                  className="cv_section-content"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {section === "Formations" &&
                   cvInfos.formations.map((item) => (
                     <div key={item.id} className="cv_section-item">
                       <h3 className="cv_item-title">{item.programName}</h3>
@@ -70,8 +77,9 @@ export default function CvMobile() {
                       {skill}
                     </p>
                   ))}
-              </div>
-            )}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         )
       )}
