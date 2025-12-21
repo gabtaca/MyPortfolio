@@ -17,6 +17,10 @@ export default function ProjectsModalDesktop({
 
   // State to control iframe mode: "desktop" or "mobile"
   const [iframeMode, setIframeMode] = useState("iframe_desktop");
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [showCursor, setShowCursor] = useState(false);
+  const [tapPosition, setTapPosition] = useState({ x: 0, y: 0 });
+  const [showTap, setShowTap] = useState(false);
 
   useEffect(() => {
     document.body.classList.add("no-scroll");
@@ -28,6 +32,40 @@ export default function ProjectsModalDesktop({
   // Handlers to switch iframe mode
   const handleIframeModeChange = (mode) => {
     setIframeMode(mode);
+  };
+
+  // Handler pour suivre le curseur en mode mobile
+  const handleMouseMove = (e) => {
+    if (iframeMode === "iframe_mobile") {
+      const rect = e.currentTarget.getBoundingClientRect();
+      setCursorPosition({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      });
+    }
+  };
+
+  const handleMouseEnter = () => {
+    if (iframeMode === "iframe_mobile") {
+      setShowCursor(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setShowCursor(false);
+  };
+
+  // Handler pour l'effet tap
+  const handleTap = (e) => {
+    if (iframeMode === "iframe_mobile") {
+      const rect = e.currentTarget.getBoundingClientRect();
+      setTapPosition({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      });
+      setShowTap(true);
+      setTimeout(() => setShowTap(false), 300);
+    }
   };
 
   // Determine icon sources based on dark mode
@@ -61,6 +99,34 @@ export default function ProjectsModalDesktop({
                   title={project.name}
                   // Remove inline width/height: CSS should now control the ratio.
                 ></iframe>
+                {iframeMode === "iframe_mobile" && (
+                  <div 
+                    className="iframe-touch-layer"
+                    onMouseMove={handleMouseMove}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                    onClick={handleTap}
+                  >
+                    {showCursor && (
+                      <div 
+                        className="custom-touch-cursor"
+                        style={{
+                          left: `${cursorPosition.x}px`,
+                          top: `${cursorPosition.y}px`
+                        }}
+                      />
+                    )}
+                    {showTap && (
+                      <div 
+                        className="touch-ripple"
+                        style={{
+                          left: `${tapPosition.x}px`,
+                          top: `${tapPosition.y}px`
+                        }}
+                      />
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Right: Project information */}

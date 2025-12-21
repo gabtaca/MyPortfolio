@@ -84,6 +84,8 @@ input:checked + .slider:before {
     gap: 8px;
     color: var(--textColor);
     font-family: "Inter";
+    font-size: 18px;
+    font-weight: 200;
     background: none;
     border: none;
     cursor: pointer;

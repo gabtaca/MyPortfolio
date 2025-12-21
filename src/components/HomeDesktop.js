@@ -6,6 +6,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import ProjectsSlider from "./ProjectsSlider";
 import IdeesMobile from "./IdeesMobile";
 import ideesData from "../jsonFiles/ideesData.json";
+import classNames from "classnames";
 
 const HomeDesktop = () => {
   const { isDarkMode, toggleDarkMode } = useContext(ThemeContext);
@@ -14,6 +15,7 @@ const HomeDesktop = () => {
   const [isCvOpen, setIsCvOpen] = useState(false);
   const [isProjectsOpen, setIsProjectsOpen] = useState(false);
   const [isIdeesOpen, setIsIdeesOpen] = useState(false);
+  const [contactModalOpen, setContactModalOpen] = useState(false);
 
   // État pour la chaîne (pour le mode sombre)
   const [chainPulled, setChainPulled] = useState(false);
@@ -28,6 +30,19 @@ const HomeDesktop = () => {
   const [showIdeesContent, setShowIdeesContent] = useState(false);
 
   // État pour tracker le projet hoveré en mode desktop
+
+  // Précharger le PDF au montage du composant
+  useEffect(() => {
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.as = 'document';
+    link.href = '/pdf/CV-Gabriel_Taca.pdf';
+    document.head.appendChild(link);
+
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, []);
   const [hoveredProject, setHoveredProject] = useState(null);
 
   // Lors de l'ouverture du tiroir "Idées", si aucune catégorie n'est définie, on définit la catégorie par défaut
@@ -208,17 +223,40 @@ const HomeDesktop = () => {
                 initial={{ height: 0 }}
                 animate={{ height: "auto" }}
                 exit={{ height: 0 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
+                transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
                 style={{ overflow: "hidden" }}
               >
-                <button
+                <motion.button
                   className="close-drawer-btn close-cv"
                   onClick={() => setIsCvOpen(false)}
+                  initial={{ scaleY: 0, opacity: 0 }}
+                  animate={{ scaleY: 1, opacity: 1 }}
+                  exit={{ scaleY: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                  style={{ transformOrigin: "top" }}
                 >
                   <h4>CV</h4>
                   <p>✖</p>
-                </button>
-                <div className="cv-content">
+                </motion.button>
+                <motion.button
+                  className="contact-band-btn"
+                  onClick={() => setContactModalOpen(true)}
+                  initial={{ scaleY: 0, opacity: 0 }}
+                  animate={{ scaleY: 1, opacity: 1 }}
+                  exit={{ scaleY: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1], delay: 0.05 }}
+                  style={{ transformOrigin: "top" }}
+                >
+                  <span>Contact</span>
+                </motion.button>
+                <motion.div 
+                  className="cv-content"
+                  initial={{ scaleY: 0, opacity: 0 }}
+                  animate={{ scaleY: 1, opacity: 1 }}
+                  exit={{ scaleY: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1], delay: 0.1 }}
+                  style={{ transformOrigin: "top" }}
+                >
                   <object
                     className="cv-object"
                     data="/pdf/CV-Gabriel_Taca.pdf"
@@ -231,7 +269,7 @@ const HomeDesktop = () => {
                       <a href="/pdf/CV-Gabriel_Taca.pdf">Download the PDF</a>.
                     </p>
                   </object>
-                </div>
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -256,13 +294,18 @@ const HomeDesktop = () => {
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 style={{ overflow: "visible" }}
               >
-                <button
+                <motion.button
                   className="close-drawer-btn close-projects"
                   onClick={() => setIsProjectsOpen(false)}
+                  initial={{ scaleY: 0, opacity: 0 }}
+                  animate={{ scaleY: 1, opacity: 1 }}
+                  exit={{ scaleY: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                  style={{ transformOrigin: "top" }}
                 >
                   <h4>Projets</h4>
                   <p>✖</p>
-                </button>
+                </motion.button>
                 <motion.div
                   className="desktop_drawer-projects-description"
                   initial={{ scale: 0, opacity: 0 }}
@@ -314,7 +357,7 @@ const HomeDesktop = () => {
                 exit={{ height: 0 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
               >
-                <button
+                <motion.button
                   className="close-drawer-btn close-ideas"
                   onClick={() => {
                     // D'abord masquer le contenu
@@ -324,10 +367,15 @@ const HomeDesktop = () => {
                       setIsIdeesOpen(false);
                     }, 50);
                   }}
+                  initial={{ scaleY: 0, opacity: 0 }}
+                  animate={{ scaleY: 1, opacity: 1 }}
+                  exit={{ scaleY: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                  style={{ transformOrigin: "top" }}
                 >
                   <h4>Idées</h4>
                   <p>✖</p>
-                </button>
+                </motion.button>
                 <div className="idees-content-wrapper">
                   <IdeesMobile
                     activeCategory={activeCategory}
@@ -409,6 +457,70 @@ const HomeDesktop = () => {
           </p>
         </span>
       </div>
+
+      {/* Modal Contact */}
+      <AnimatePresence>
+        {contactModalOpen && (
+          <motion.div
+            className="contact-modal-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setContactModalOpen(false)}
+          >
+            <motion.div
+              className="contact-modal"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                className="close-modal-btn"
+                onClick={() => setContactModalOpen(false)}
+              >
+                ✖
+              </button>
+              <h2>Contact</h2>
+              <div className="contact-links">
+                <a
+                  href="https://www.linkedin.com/in/gabriel-taca-7a65961a/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="contact-link"
+                >
+                  <span className={classNames("svg-icon home-linkedin", {
+                    "dark-mode": isDarkMode,
+                    "light-mode": !isDarkMode,
+                  })}></span>
+                  <span>LinkedIn</span>
+                </a>
+                <a
+                  href="mailto:gabrieltaca117@gmail.com"
+                  className="contact-link"
+                >
+                  <span className={classNames("svg-icon home-mail", {
+                    "dark-mode": isDarkMode,
+                    "light-mode": !isDarkMode,
+                  })}></span>
+                  <span>gabrieltaca117@gmail.com</span>
+                </a>
+                <a
+                  href="tel:+14189303703"
+                  className="contact-link"
+                >
+                  <span className={classNames("svg-icon home-call", {
+                    "dark-mode": isDarkMode,
+                    "light-mode": !isDarkMode,
+                  })}></span>
+                  <span>+1 (418) 930-3703</span>
+                </a>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
