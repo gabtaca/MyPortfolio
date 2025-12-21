@@ -366,20 +366,21 @@ const HomeDesktop = () => {
             isCvOpen || isProjectsOpen || isIdeesOpen ? "blur(1.5rem)" : "none",
         }}
       >
-        <Image
-          className="home_desktop-portrait"
-          src={
-            isDarkMode
-              ? "/images/portrait_desktop-darrkmode.webp"
-              : "/images/portrait_desktop.webp"
-          }
-          alt="Portrait de Gabriel Taca"
-          width={800}
-          height={1000}
-          priority
-          quality={60}
-          sizes="(max-width: 768px) 100vw, 60vw"
-        />
+        <div className="home_desktop-portrait-container">
+          <Image
+            className="home_desktop-portrait"
+            src={
+              isDarkMode
+                ? "/images/portrait_desktop-darrkmode.webp"
+                : "/images/portrait_desktop.webp"
+            }
+            alt="Portrait de Gabriel Taca"
+            fill
+            quality={60}
+            sizes="(max-width: 768px) 100vw, 60vw"
+            loading="eager"
+          />
+        </div>
         <span>
           <p>Designer UI/UX,</p>
           <br />

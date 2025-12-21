@@ -43,7 +43,7 @@ export default function Home() {
     // Set the active section after animation delay
     setTimeout(() => {
       setActiveSection(section);
-    }, 500);
+    }, 600);
   };
 
   // Réinitialiser la vue à l'état initial
@@ -170,71 +170,45 @@ export default function Home() {
             transition={{ duration: 0.5 }}
           >
             <AnimatePresence mode="sync">
-              {activeSection === null && (
-                <>
-                  <motion.button
-                    key="cv-btn"
-                    className="btn_cv-main-home text-h2-100 text-28 hover-underline font-italiana"
-                    onClick={() => handleSectionClick("CV")}
-                    initial={{ opacity: 1, y: 0 }}
-                    exit={exitAnimations.fadeIn}
-                  >
-                    CV
-                  </motion.button>
-                  <motion.button
-                    key="projects-btn"
-                    className="btn_projets-main-home text-h2-100 text-28 hover-underline font-italiana"
-                    onClick={() => handleSectionClick("Projets")}
-                    initial={{ opacity: 1, y: 0 }}
-                    exit={exitAnimations.fadeIn}
-                  >
-                    Projets
-                  </motion.button>
-                  <motion.button
-                    key="ideas-btn"
-                    className="btn_idees-main-home text-h2-100 text-28 hover-underline font-italiana"
-                    onClick={() => handleSectionClick("Idées")}
-                    initial={{ opacity: 1, y: 0 }}
-                    exit={exitAnimations.fadeIn}
-                  >
-                    Idées
-                  </motion.button>
-                </>
-              )}
-              {activeSection === "CV" && !buttonsToHide.has("CV") && (
+              {/* Bouton CV */}
+              {!buttonsToHide.has("CV") && (
                 <motion.button
-                  key="cv-btn-active"
+                  key="cv-btn"
                   className="btn_cv-main-home text-h2-100 text-28 hover-underline font-italiana"
                   onClick={() => handleSectionClick("CV")}
-                  initial={{ opacity: 0, y: -20 }}
+                  initial={{ opacity: activeSection === "CV" ? 0 : 1, y: activeSection === "CV" ? -20 : 0 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
+                  exit={getButtonExitAnimation("CV")}
                   transition={{ duration: 0.5 }}
                 >
                   CV
                 </motion.button>
               )}
-              {activeSection === "Projets" && !buttonsToHide.has("Projets") && (
+              
+              {/* Bouton Projets */}
+              {!buttonsToHide.has("Projets") && (
                 <motion.button
-                  key="projects-btn-active"
+                  key="projects-btn"
                   className="btn_projets-main-home text-h2-100 text-28 hover-underline font-italiana"
                   onClick={() => handleSectionClick("Projets")}
-                  initial={{ opacity: 0, y: -20 }}
+                  initial={{ opacity: activeSection === "Projets" ? 0 : 1, y: activeSection === "Projets" ? -20 : 0 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
+                  exit={getButtonExitAnimation("Projets")}
                   transition={{ duration: 0.5 }}
                 >
                   Projets
                 </motion.button>
               )}
-              {activeSection === "Idées" && !buttonsToHide.has("Idées") && (
+              
+              {/* Bouton Idées */}
+              {!buttonsToHide.has("Idées") && (
                 <motion.button
-                  key="ideas-btn-active"
+                  key="ideas-btn"
                   className="btn_idees-main-home text-h2-100 text-28 hover-underline font-italiana"
                   onClick={() => handleSectionClick("Idées")}
-                  initial={{ opacity: 0, y: -20 }}
+                  initial={{ opacity: activeSection === "Idées" ? 0 : 1, y: activeSection === "Idées" ? -20 : 0 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
+                  exit={getButtonExitAnimation("Idées")}
                   transition={{ duration: 0.5 }}
                 >
                   Idées
@@ -353,6 +327,7 @@ export default function Home() {
                   "dark-mode": isDarkMode,
                   "light-mode": !isDarkMode,
                 })}
+                
                 onClick={handlePhoneClick}
                 style={{ cursor: "pointer" }}
                 ref={phoneIconRef}

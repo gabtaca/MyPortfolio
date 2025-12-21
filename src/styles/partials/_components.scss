@@ -370,17 +370,24 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    .home_desktop-portrait {
-      width: 60%;
-      height: auto;
-      max-width: 800px;
-      object-fit: contain;
+    
+    .home_desktop-portrait-container {
+      position: relative;
+      width: 200dvw;
+      max-width: 80rem;
+      aspect-ratio: 5 / 3.5;
       z-index: 1;
     }
+    
+    .home_desktop-portrait {
+      object-fit:fill;
+    }
+    
     span {
       font-family: "Livvic";
       font-size: 16px;
       color: var(--desktopPcolor);
+      max-width: 800px;
       font-weight: bold;
       p {
         padding: 10px;
