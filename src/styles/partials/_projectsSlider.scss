@@ -135,6 +135,12 @@
     height: 140px;
     display: flex;
     align-items: center;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+    scroll-behavior: auto;
+    scroll-snap-type: none;
 
     .project-column {
       transition: transform 0.3s ease, height 0.3s ease;

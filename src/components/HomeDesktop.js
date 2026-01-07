@@ -28,6 +28,9 @@ const HomeDesktop = () => {
 
   // État pour contrôler l'affichage du contenu du tiroir Idées (après l'animation d'ouverture)
   const [showIdeesContent, setShowIdeesContent] = useState(false);
+  
+  // État pour l'animation de sortie du bouton contact
+  const [isContactExiting, setIsContactExiting] = useState(false);
 
   // État pour tracker le projet hoveré en mode desktop
 
@@ -228,7 +231,13 @@ const HomeDesktop = () => {
               >
                 <motion.button
                   className="close-drawer-btn close-cv"
-                  onClick={() => setIsCvOpen(false)}
+                  onClick={() => {
+                    setIsContactExiting(true);
+                    setIsCvOpen(false);
+                    setTimeout(() => {
+                      setIsContactExiting(false);
+                    }, 300);
+                  }}
                   initial={{ scaleY: 0, opacity: 0 }}
                   animate={{ scaleY: 1, opacity: 1 }}
                   exit={{ scaleY: 0, opacity: 0 }}
@@ -238,17 +247,12 @@ const HomeDesktop = () => {
                   <h4>CV</h4>
                   <p>✖</p>
                 </motion.button>
-                <motion.button
-                  className="contact-band-btn"
+                <button
+                  className={`contact-band-btn ${isContactExiting ? 'contact-band-exit' : 'contact-band-enter'}`}
                   onClick={() => setContactModalOpen(true)}
-                  initial={{ scaleY: 0, opacity: 0 }}
-                  animate={{ scaleY: 1, opacity: 1 }}
-                  exit={{ scaleY: 0, opacity: 0 }}
-                  transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1], delay: 0.05 }}
-                  style={{ transformOrigin: "top" }}
                 >
                   <span>Contact</span>
-                </motion.button>
+                </button>
                 <motion.div 
                   className="cv-content"
                   initial={{ scaleY: 0, opacity: 0 }}
