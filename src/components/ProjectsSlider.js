@@ -348,7 +348,9 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
               }}
               animate={{
                 ...scaleStyles,
-                transition: { type: "spring", stiffness: 600, damping: 25 },
+                transition: isLandscape 
+                  ? { duration: 0 } // Pas d'animation en landscape
+                  : { type: "spring", stiffness: 600, damping: 25 },
               }}
               // On desktop: highlight on hover
               onMouseEnter={() => {
