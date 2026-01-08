@@ -148,7 +148,7 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
 
   // MOBILE inactivity
   const resetMobileInactivityTimeout = useCallback(() => {
-    if (isDesktop) return;
+    if (isDesktop || isLandscape) return; // Désactiver en landscape
     const isMobile = window.innerWidth <= 768;
     if (isMobile) {
       clearTimeout(mobileInactivityTimeout.current);
@@ -158,7 +158,7 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
         }
       }, 2000);
     }
-  }, [isDesktop, highlightedIndex]);
+  }, [isDesktop, isLandscape, highlightedIndex]);
 
   // DESKTOP inactivity
   const resetDesktopInactivityTimeout = useCallback(() => {
