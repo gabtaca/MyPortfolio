@@ -221,7 +221,10 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
         calculateScalesAndHighlightMobile();
       }
       resetMobileInactivityTimeout();
-      updateButtonPositions();
+      // En landscape, ne pas mettre à jour les positions pendant le scroll
+      if (!isLandscape) {
+        updateButtonPositions();
+      }
     }
   }, [
     isDesktop,

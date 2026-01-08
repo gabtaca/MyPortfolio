@@ -36,6 +36,7 @@ export default function ProjectsDatesFooterLandscape({ projectsData, buttonPosit
         display: "flex",
         flexDirection: "column",
         justifyContent: "flex-start",
+        pointerEvents: "none",
       }}
     >
       {Object.entries(groupedDates).map(([date, buttonIndices], groupIndex) => {
