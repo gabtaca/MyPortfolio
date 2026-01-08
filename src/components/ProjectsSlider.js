@@ -373,8 +373,8 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
                 isHighlighted={highlightedIndex === index}
                 scale={1} // motion.div handles the actual scaling
                 onClick={() => {
-                  // On mobile, center on this column
-                  if (!isDesktop && !project.id.startsWith("blank")) {
+                  // On mobile portrait, center on this column
+                  if (!isDesktop && !isLandscape && !project.id.startsWith("blank")) {
                     scrollToProjectIndex(index);
                   }
                   // Then open the modal
