@@ -17,6 +17,21 @@ export default function ProjectsDatesFooterLandscape({ projectsData, buttonPosit
     return null;
   }
 
+  // Calculer les positions min et max pour créer une ligne continue
+  const allIndices = Object.values(groupedDates).flat();
+  if (allIndices.length === 0) return null;
+
+  const minIndex = Math.min(...allIndices);
+  const maxIndex = Math.max(...allIndices);
+  const firstButton = buttonPositions[minIndex];
+  const lastButton = buttonPositions[maxIndex];
+
+  if (!firstButton || !lastButton) return null;
+
+  const lineStartX = firstButton.x - 30;
+  const lineEndX = lastButton.x + 30;
+  const lineWidth = lineEndX - lineStartX;
+
   return (
     <div
       className="projects-dates-footer-landscape"
@@ -30,47 +45,49 @@ export default function ProjectsDatesFooterLandscape({ projectsData, buttonPosit
         pointerEvents: "none",
       }}
     >
-      {Object.entries(groupedDates).map(([date, buttonIndices], groupIndex) => {
-        if (!buttonIndices.length) return null; // Ignore les bookends
+      {/* Ligne continue de pointillés pour tous les projets */}
+      <div
+        style={{
+          position: "absolute",
+          top: "15px",
+          left: `${lineStartX}px`,
+          width: `${lineWidth}px`,
+          height: "15px",
+          borderBottom: "2px dotted var(--h2Color)",
+          borderLeft: "2px dotted var(--h2Color)",
+          borderRight: "2px dotted var(--h2Color)",
+          pointerEvents: "none",
+        }}
+      />
 
-        // Récupère la position du premier et du dernier bouton dans le groupe
+      {/* Les dates individuelles */}
+      {Object.entries(groupedDates).map(([date, buttonIndices], groupIndex) => {
+        if (!buttonIndices.length) return null;
+
         const firstButton = buttonPositions[buttonIndices[0]];
         const lastButton = buttonPositions[buttonIndices[buttonIndices.length - 1]];
 
-        if (!firstButton || !lastButton) return null; // S'assure que les boutons existent
+        if (!firstButton || !lastButton) return null;
 
-        // Calculer les positions (x est déjà relatif au slider visible)
-        const leftPosition = firstButton.x - 30; // Centre du premier bouton - demi-largeur
-        const rightPosition = lastButton.x + 30; // Centre du dernier bouton + demi-largeur
+        const leftPosition = firstButton.x - 30;
+        const rightPosition = lastButton.x + 30;
         const totalWidth = rightPosition - leftPosition;
 
         return (
           <React.Fragment key={groupIndex}>
-            {/* Conteneur pour le groupe de date */}
             <div
               className="date-group"
               style={{
                 position: "absolute",
-                top: "15px", // Contrôle vertical pour placer le footer
-                left: `${leftPosition}px`, // Position horizontale basée sur le premier bouton
-                width: `${totalWidth}px`, // Largeur calculée pour couvrir tous les boutons du groupe
+                top: "15px",
+                left: `${leftPosition}px`,
+                width: `${totalWidth}px`,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 pointerEvents: "none",
               }}
             >
-              {/* Ligne avec des bordures spécifiques */}
-              <div
-                style={{
-                  width: "100%",
-                  height: "15px",
-                  backgroundColor: "transparent",
-                  borderBottom: "2px dotted var(--h2Color)",
-                  borderLeft: groupIndex === 0 ? "2px dotted var(--h2Color)" : "none", // Bordure à gauche seulement pour le premier groupe avec la même date
-                  borderRight: "2px dotted var(--h2Color)", // Bordure à droite pour tous les groupes générés apres le premier
-                }}
-              ></div>
               {/* date */}
               <p
                 style={{

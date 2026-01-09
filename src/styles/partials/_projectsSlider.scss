@@ -138,7 +138,7 @@
     overflow-x: scroll;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-x;
+    overscroll-behavior-x: contain;
     scroll-behavior: auto;
     scroll-snap-type: none;
 
