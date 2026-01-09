@@ -5,6 +5,7 @@ import React, {
   useCallback,
   forwardRef,
   useImperativeHandle,
+  useMemo,
 } from "react";
 import ProjectColumn from "./ProjectColumn";
 import ProjectsModal from "./ProjectsModal";
@@ -215,12 +216,19 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
   // SCROLL for mobile
   const handleScroll = useCallback(() => {
     if (!isDesktop) {
-      calculateScalesAndHighlightMobile();
+      // En landscape, ne pas calculer les scales pendant le scroll pour éviter les saccades
+      if (!isLandscape) {
+        calculateScalesAndHighlightMobile();
+      }
       resetMobileInactivityTimeout();
-      updateButtonPositions();
+      // En landscape, ne pas mettre à jour les positions pendant le scroll
+      if (!isLandscape) {
+        updateButtonPositions();
+      }
     }
   }, [
     isDesktop,
+    isLandscape,
     calculateScalesAndHighlightMobile,
     resetMobileInactivityTimeout,
     updateButtonPositions,
@@ -299,6 +307,76 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
   // Decide which footer
   const shouldUseLandscapeFooter = isDesktop || isLandscape;
 
+  // Pré-render les colonnes avec useMemo pour éviter les re-renders en landscape
+  const renderedColumns = useMemo(() => {
+    return combinedData.map((project, index) => {
+      const dist = Math.abs(index - highlightedIndex);
+      const buttonZIndex = combinedData.length + 15 - dist;
+
+      // transforms[index] is either a number (mobile) or {scaleX, scaleY} (desktop).
+      const t = transforms[index] || 1;
+
+      let scaleStyles;
+      if (isDesktop && typeof t === "object") {
+        scaleStyles = { scaleX: t.scaleX, scaleY: t.scaleY };
+      } else {
+        // Mobile - en landscape, pas de scale
+        scaleStyles = { scale: isLandscape ? 1 : (typeof t === "number" ? t : 1) };
+      }
+
+      return (
+        <motion.div
+          key={project.id}
+          className="project-motion-wrapper"
+          style={{
+            transformOrigin: "bottom center",
+            position: "relative",
+            zIndex: buttonZIndex,
+          }}
+          animate={{
+            ...scaleStyles,
+            transition: isLandscape 
+              ? { duration: 0 } // Pas d'animation en landscape
+              : { type: "spring", stiffness: 600, damping: 25 },
+          }}
+          // On desktop: highlight on hover
+          onMouseEnter={() => {
+            handleColumnHover(index);
+            // Envoyer les infos du projet au parent (HomeDesktop)
+            if (isDesktop && onProjectHover && !project.id.startsWith("blank")) {
+              onProjectHover(project);
+            }
+          }}
+          onMouseLeave={() => {
+            // Réinitialiser quand on quitte
+            if (isDesktop && onProjectHover) {
+              onProjectHover(null);
+            }
+          }}
+        >
+          <ProjectColumn
+            project={project}
+            zIndexValue={buttonZIndex}
+            centerIndex={highlightedIndex}
+            index={index}
+            isHighlighted={highlightedIndex === index}
+            scale={1} // motion.div handles the actual scaling
+            onClick={() => {
+              // On mobile portrait, center on this column
+              if (!isDesktop && !isLandscape && !project.id.startsWith("blank")) {
+                scrollToProjectIndex(index);
+              }
+              // Then open the modal
+              if (!project.id.startsWith("blank")) {
+                setTimeout(() => setSelectedProjectIndex(index - 2), 300);
+              }
+            }}
+          />
+        </motion.div>
+      );
+    });
+  }, [combinedData, highlightedIndex, transforms, isDesktop, isLandscape, handleColumnHover, onProjectHover, scrollToProjectIndex]);
+
   return (
     <>
       <div
@@ -322,70 +400,7 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
           }
         }}
       >
-        {combinedData.map((project, index) => {
-          const dist = Math.abs(index - highlightedIndex);
-          const buttonZIndex = combinedData.length + 15 - dist;
-
-          // transforms[index] is either a number (mobile) or {scaleX, scaleY} (desktop).
-          const t = transforms[index] || 1;
-
-          let scaleStyles;
-          if (isDesktop && typeof t === "object") {
-            scaleStyles = { scaleX: t.scaleX, scaleY: t.scaleY };
-          } else {
-            // Mobile
-            scaleStyles = { scale: typeof t === "number" ? t : 1 };
-          }
-
-          return (
-            <motion.div
-              key={project.id}
-              className="project-motion-wrapper"
-              style={{
-                transformOrigin: "bottom center",
-                position: "relative",
-                zIndex: buttonZIndex,
-              }}
-              animate={{
-                ...scaleStyles,
-                transition: { type: "spring", stiffness: 600, damping: 25 },
-              }}
-              // On desktop: highlight on hover
-              onMouseEnter={() => {
-                handleColumnHover(index);
-                // Envoyer les infos du projet au parent (HomeDesktop)
-                if (isDesktop && onProjectHover && !project.id.startsWith("blank")) {
-                  onProjectHover(project);
-                }
-              }}
-              onMouseLeave={() => {
-                // Réinitialiser quand on quitte
-                if (isDesktop && onProjectHover) {
-                  onProjectHover(null);
-                }
-              }}
-            >
-              <ProjectColumn
-                project={project}
-                zIndexValue={buttonZIndex}
-                centerIndex={highlightedIndex}
-                index={index}
-                isHighlighted={highlightedIndex === index}
-                scale={1} // motion.div handles the actual scaling
-                onClick={() => {
-                  // On mobile, center on this column
-                  if (!isDesktop && !project.id.startsWith("blank")) {
-                    scrollToProjectIndex(index);
-                  }
-                  // Then open the modal
-                  if (!project.id.startsWith("blank")) {
-                    setTimeout(() => setSelectedProjectIndex(index - 2), 300);
-                  }
-                }}
-              />
-            </motion.div>
-          );
-        })}
+        {renderedColumns}
       </div>
 
       {/* Project Details Modal */}
