@@ -5,10 +5,10 @@ export default function ProjectsDatesFooterLandscape({ projectsData, buttonPosit
 
   // Vérifie si les positions des boutons sont prêtes avant de rendre le composant pour s'assurer que le footer ait les informations
   useEffect(() => {
-    if (Object.keys(buttonPositions).length > 0) {
+    if (!positionsReady && Object.keys(buttonPositions).length > 0) {
       setPositionsReady(true); // Active le rendu quand les positions disponibles
     }
-  }, [buttonPositions]);
+  }, [buttonPositions, positionsReady]);
 
   // Groupe les boutons par leurs dates
   const groupedDates = useMemo(() => {
