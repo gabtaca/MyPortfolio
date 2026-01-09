@@ -1,15 +1,6 @@
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useMemo } from "react";
 
 export default function ProjectsDatesFooterLandscape({ projectsData, buttonPositions }) {
-  const [positionsReady, setPositionsReady] = useState(false);
-
-  // Vérifie si les positions des boutons sont prêtes avant de rendre le composant pour s'assurer que le footer ait les informations
-  useEffect(() => {
-    if (!positionsReady && Object.keys(buttonPositions).length > 0) {
-      setPositionsReady(true); // Active le rendu quand les positions disponibles
-    }
-  }, [buttonPositions, positionsReady]);
-
   // Groupe les boutons par leurs dates
   const groupedDates = useMemo(() => {
     const groups = {};
@@ -22,7 +13,7 @@ export default function ProjectsDatesFooterLandscape({ projectsData, buttonPosit
   }, [projectsData]);
 
   // Retourne rien tant que les positions des boutons ne sont pas prêtes
-  if (!positionsReady) {
+  if (Object.keys(buttonPositions).length === 0) {
     return null;
   }
 
@@ -48,12 +39,10 @@ export default function ProjectsDatesFooterLandscape({ projectsData, buttonPosit
 
         if (!firstButton || !lastButton) return null; // S'assure que les boutons existent
 
-        // Ajuste la position à gauche et la largeur du groupe de boites
-        const leftPosition = (firstButton.x || 0) - (firstButton.width / 2 || 70); // Début du coté gauche du premier bouton
-        const totalWidth =
-          (lastButton.x || 0) +
-          (lastButton.width / 2 || 70) -
-          leftPosition; // Termine du coté droit du dernier bouton
+        // Calculer les positions (x est déjà relatif au slider visible)
+        const leftPosition = firstButton.x - 30; // Centre du premier bouton - demi-largeur
+        const rightPosition = lastButton.x + 30; // Centre du dernier bouton + demi-largeur
+        const totalWidth = rightPosition - leftPosition;
 
         return (
           <React.Fragment key={groupIndex}>
