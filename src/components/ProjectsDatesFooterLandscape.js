@@ -32,6 +32,23 @@ export default function ProjectsDatesFooterLandscape({ projectsData, buttonPosit
   const lineEndX = lastButton.x + 30;
   const lineWidth = lineEndX - lineStartX;
 
+  // Calculer les positions des séparateurs entre les groupes
+  const separators = [];
+  const groupEntries = Object.entries(groupedDates);
+  for (let i = 0; i < groupEntries.length - 1; i++) {
+    const currentGroup = groupEntries[i][1];
+    const nextGroup = groupEntries[i + 1][1];
+    
+    const lastOfCurrent = buttonPositions[currentGroup[currentGroup.length - 1]];
+    const firstOfNext = buttonPositions[nextGroup[0]];
+    
+    if (lastOfCurrent && firstOfNext) {
+      // Position du séparateur au milieu entre les deux groupes
+      const separatorX = (lastOfCurrent.x + 30 + firstOfNext.x - 30) / 2;
+      separators.push(separatorX);
+    }
+  }
+
   return (
     <div
       className="projects-dates-footer-landscape"
@@ -45,7 +62,7 @@ export default function ProjectsDatesFooterLandscape({ projectsData, buttonPosit
         pointerEvents: "none",
       }}
     >
-      {/* Ligne continue de pointillés pour tous les projets */}
+      {/* Ligne horizontale continue de pointillés */}
       <div
         style={{
           position: "absolute",
@@ -60,8 +77,24 @@ export default function ProjectsDatesFooterLandscape({ projectsData, buttonPosit
         }}
       />
 
+      {/* Séparateurs verticaux entre les groupes */}
+      {separators.map((x, index) => (
+        <div
+          key={`separator-${index}`}
+          style={{
+            position: "absolute",
+            top: "15px",
+            left: `${x}px`,
+            width: "0px",
+            height: "15px",
+            borderLeft: "2px dotted var(--h2Color)",
+            pointerEvents: "none",
+          }}
+        />
+      ))}
+
       {/* Les dates individuelles */}
-      {Object.entries(groupedDates).map(([date, buttonIndices], groupIndex) => {
+      {Object.entries(groupedDates).map(([date, buttonIndices]) => {
         if (!buttonIndices.length) return null;
 
         const firstButton = buttonPositions[buttonIndices[0]];
@@ -71,38 +104,33 @@ export default function ProjectsDatesFooterLandscape({ projectsData, buttonPosit
 
         const leftPosition = firstButton.x - 30;
         const rightPosition = lastButton.x + 30;
-        const totalWidth = rightPosition - leftPosition;
+        const centerPosition = (leftPosition + rightPosition) / 2;
 
         return (
-          <React.Fragment key={groupIndex}>
-            <div
-              className="date-group"
+          <div
+            key={date}
+            style={{
+              position: "absolute",
+              top: "30px",
+              left: `${centerPosition}px`,
+              transform: "translateX(-50%)",
+              pointerEvents: "none",
+            }}
+          >
+            <p
               style={{
-                position: "absolute",
-                top: "15px",
-                left: `${leftPosition}px`,
-                width: `${totalWidth}px`,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                pointerEvents: "none",
+                margin: 0,
+                fontFamily: "Jockey One",
+                fontSize: "20px",
+                fontWeight: "bold",
+                color: "var(--datesColor)",
+                textAlign: "center",
+                whiteSpace: "nowrap",
               }}
             >
-              {/* date */}
-              <p
-                style={{
-                  marginTop: "5px",
-                  fontFamily: "Jockey One",
-                  fontSize: "20px",
-                  fontWeight: "bold",
-                  color: "var(--datesColor)",
-                  textAlign: "center",
-                }}
-              >
-                {date}
-              </p>
-            </div>
-          </React.Fragment>
+              {date}
+            </p>
+          </div>
         );
       })}
     </div>

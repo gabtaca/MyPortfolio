@@ -147,19 +147,38 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
     setButtonPositions(newPositions);
   }, []);
 
-  // MOBILE inactivity
+  // Scroll to a given project index (mobile)
+  const scrollToProjectIndex = useCallback((index, smooth = true) => {
+    if (!sliderRef.current) return;
+    const project = sliderRef.current.children[index];
+    if (!project) return;
+
+    const offset =
+      project.offsetLeft -
+      sliderRef.current.offsetWidth / 2 +
+      project.offsetWidth / 2;
+
+    sliderRef.current.scrollTo({
+      left: offset,
+      behavior: smooth ? "smooth" : "auto",
+    });
+  }, []);
+
+  // MOBILE inactivity - défini après scrollToProjectIndex
   const resetMobileInactivityTimeout = useCallback(() => {
     if (isDesktop || isLandscape) return; // Désactiver en landscape
     const isMobile = window.innerWidth <= 768;
     if (isMobile) {
       clearTimeout(mobileInactivityTimeout.current);
       mobileInactivityTimeout.current = setTimeout(() => {
-        if (highlightedIndex !== null) {
+        // Double vérification de landscape au moment de l'exécution
+        const isCurrentlyLandscape = window.matchMedia("(orientation: landscape)").matches;
+        if (highlightedIndex !== null && !isCurrentlyLandscape) {
           scrollToProjectIndex(highlightedIndex, true);
         }
       }, 2000);
     }
-  }, [isDesktop, isLandscape, highlightedIndex]);
+  }, [isDesktop, isLandscape, highlightedIndex, scrollToProjectIndex]);
 
   // DESKTOP inactivity
   const resetDesktopInactivityTimeout = useCallback(() => {
@@ -185,23 +204,6 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
       }
     }
   }, [isDesktop, highlightedIndex, getDesktopTransforms]);
-
-  // Scroll to a given project index (mobile)
-  const scrollToProjectIndex = useCallback((index, smooth = true) => {
-    if (!sliderRef.current) return;
-    const project = sliderRef.current.children[index];
-    if (!project) return;
-
-    const offset =
-      project.offsetLeft -
-      sliderRef.current.offsetWidth / 2 +
-      project.offsetWidth / 2;
-
-    sliderRef.current.scrollTo({
-      left: offset,
-      behavior: smooth ? "smooth" : "auto",
-    });
-  }, []);
 
   // Hover event (desktop)
   const handleColumnHover = useCallback(
@@ -285,7 +287,13 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
     setIsLandscape(landscapeQuery.matches);
     setIsDesktop(desktopQuery.matches);
 
-    const handleOrientationChange = (e) => setIsLandscape(e.matches);
+    const handleOrientationChange = (e) => {
+      setIsLandscape(e.matches);
+      // Clear le timeout si on passe en landscape
+      if (e.matches) {
+        clearTimeout(mobileInactivityTimeout.current);
+      }
+    };
     const handleDesktopChange = (e) => setIsDesktop(e.matches);
 
     landscapeQuery.addEventListener("change", handleOrientationChange);
