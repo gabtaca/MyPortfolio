@@ -154,6 +154,7 @@
   position: relative;
   width: 100%;
   height: 80px;
+  pointer-events: none;
 }
 
 .date-group {
@@ -161,6 +162,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  pointer-events: none;
 }
 
 .date-group div {
