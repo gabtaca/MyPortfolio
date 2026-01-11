@@ -60,6 +60,9 @@ export default function ProjectsDatesFooterLandscape({ projectsData, buttonPosit
         flexDirection: "column",
         justifyContent: "flex-start",
         pointerEvents: "none",
+        userSelect: "none",
+        WebkitUserSelect: "none",
+        WebkitTouchCallout: "none",
       }}
     >
       {/* Ligne horizontale continue de pointillés */}

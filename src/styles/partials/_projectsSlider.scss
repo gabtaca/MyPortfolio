@@ -138,9 +138,12 @@
     overflow-x: scroll;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior-x: contain;
+    overscroll-behavior-x: auto;
+    overscroll-behavior-y: contain;
     scroll-behavior: auto;
     scroll-snap-type: none;
+    position: relative;
+    isolation: isolate;
 
     .project-column {
       transition: transform 0.3s ease, height 0.3s ease;
