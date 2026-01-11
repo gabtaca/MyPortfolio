@@ -133,7 +133,8 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
    * We define updateButtonPositions BEFORE using it in handleScroll, handleResize
    * -------------
    */
-  const updateButtonPositions = useCallback(() => {
+  // Méthode desktop : positions statiques avec getBoundingClientRect
+  const updateButtonPositionsDesktop = useCallback(() => {
     if (!sliderRef.current) return;
     const projects = Array.from(sliderRef.current.children);
     const newPositions = {};
@@ -143,6 +144,21 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
       const sliderLeft = sliderRef.current.getBoundingClientRect().left;
       const xOffset = rect.left + rect.width / 2 - sliderLeft;
       newPositions[i] = { x: xOffset, y: rect.top };
+    });
+    setButtonPositions(newPositions);
+  }, []);
+
+  // Méthode mobile : positions relatives avec offsetLeft (pas de reflow!)
+  const updateButtonPositionsMobile = useCallback(() => {
+    if (!sliderRef.current) return;
+    const projects = Array.from(sliderRef.current.children);
+    const scrollLeft = sliderRef.current.scrollLeft;
+    const newPositions = {};
+
+    projects.forEach((proj, i) => {
+      // offsetLeft = position dans le conteneur (pas de reflow)
+      const xOffset = proj.offsetLeft + proj.offsetWidth / 2 - scrollLeft;
+      newPositions[i] = { x: xOffset, y: 0 };
     });
     setButtonPositions(newPositions);
   }, []);
@@ -220,22 +236,24 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
     if (!isDesktop) {
       calculateScalesAndHighlightMobile();
       resetMobileInactivityTimeout();
-      updateButtonPositions();
+      updateButtonPositionsMobile(); // Utilise la méthode légère
     }
   }, [
     isDesktop,
     calculateScalesAndHighlightMobile,
     resetMobileInactivityTimeout,
-    updateButtonPositions,
+    updateButtonPositionsMobile,
   ]);
 
-  // RESIZE for mobile
+  // RESIZE for mobile and desktop
   const handleResize = useCallback(() => {
-    if (!isDesktop) {
+    if (isDesktop) {
+      updateButtonPositionsDesktop();
+    } else {
       calculateScalesAndHighlightMobile();
-      updateButtonPositions();
+      updateButtonPositionsMobile();
     }
-  }, [isDesktop, calculateScalesAndHighlightMobile, updateButtonPositions]);
+  }, [isDesktop, calculateScalesAndHighlightMobile, updateButtonPositionsMobile, updateButtonPositionsDesktop]);
 
   // Expose scrollToProjectIndex to parent
   useImperativeHandle(ref, () => ({
@@ -249,11 +267,12 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
         // Mobile
         scrollToProjectIndex(startProjectIndex, false);
         calculateScalesAndHighlightMobile();
+        updateButtonPositionsMobile();
       } else {
         // Desktop
         setHighlightedIndex(startProjectIndex);
+        updateButtonPositionsDesktop();
       }
-      updateButtonPositions();
       hasInitialized.current = true;
     }
   }, [
@@ -261,7 +280,8 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
     scrollToProjectIndex,
     startProjectIndex,
     calculateScalesAndHighlightMobile,
-    updateButtonPositions,
+    updateButtonPositionsMobile,
+    updateButtonPositionsDesktop,
   ]);
 
   // Add event listeners
@@ -321,8 +341,8 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
       if (isDesktop && typeof t === "object") {
         scaleStyles = { scaleX: t.scaleX, scaleY: t.scaleY };
       } else {
-        // Mobile - en landscape, pas de scale
-        scaleStyles = { scale: isLandscape ? 1 : (typeof t === "number" ? t : 1) };
+        // Mobile - scale actif en portrait ET landscape
+        scaleStyles = { scale: typeof t === "number" ? t : 1 };
       }
 
       return (
@@ -336,9 +356,7 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
           }}
           animate={{
             ...scaleStyles,
-            transition: isLandscape 
-              ? { duration: 0 } // Pas d'animation en landscape
-              : { type: "spring", stiffness: 600, damping: 25 },
+            transition: { type: "spring", stiffness: 600, damping: 25 },
           }}
           // On desktop: highlight on hover
           onMouseEnter={() => {
@@ -363,8 +381,8 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
             isHighlighted={highlightedIndex === index}
             scale={1} // motion.div handles the actual scaling
             onClick={() => {
-              // On mobile portrait, center on this column
-              if (!isDesktop && !isLandscape && !project.id.startsWith("blank")) {
+              // On mobile, center on this column
+              if (!isDesktop && !project.id.startsWith("blank")) {
                 scrollToProjectIndex(index);
               }
               // Then open the modal

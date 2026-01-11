@@ -165,11 +165,21 @@
           position: relative;
           border: 0.5px solid var(--btnBlank);
           border-radius: 100%;
+          transition: border 0.3s ease, box-shadow 0.3s ease;
+        }
+      }
+
+      // Effet de highlight pour le cercle central
+      .project-motion-wrapper[style*="scale: 1"] {
+        .project-image {
+          border: 3px solid var(--bgBtnSeeProject);
+          box-shadow: 0 0 20px rgba(122, 179, 235, 0.5);
         }
       }
     }
   }
 
+  // Masquer les triangles en landscape (on utilise des cercles)
   .triangle {
     display: none;
   }
