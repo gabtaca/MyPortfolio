@@ -17,6 +17,9 @@ export default function Home() {
   const [activeCategory, setActiveCategory] = useState(null);
   const [buttonsToHide, setButtonsToHide] = useState(new Set());
 
+  // Référence pour ProjectsSlider
+  const projectsSliderRef = useRef(null);
+
   // Références pour la bulle et l'icône du téléphone
   const bubbleRef = useRef(null);
   const phoneIconRef = useRef(null);
@@ -84,6 +87,18 @@ export default function Home() {
       };
     }
   }, [isBubbleVisible]);
+
+  // Réinitialiser le slider quand on revient à la section Projets
+  // Temporairement désactivé pour debug
+  /*
+  useEffect(() => {
+    if (activeSection === "Projets" && projectsSliderRef.current?.reinitializeSlider) {
+      setTimeout(() => {
+        projectsSliderRef.current.reinitializeSlider();
+      }, 300);
+    }
+  }, [activeSection]);
+  */
 
   // Variants pour les animations de Framer Motion
   const exitAnimations = {
@@ -265,7 +280,7 @@ export default function Home() {
                 variants={sectionVariants}
                 transition={{ duration: 0.5 }}
               >
-                <ProjectsSlider />
+                <ProjectsSlider ref={projectsSliderRef} />
                 
               </motion.div>
             )}

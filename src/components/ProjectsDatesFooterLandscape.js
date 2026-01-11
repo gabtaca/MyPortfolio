@@ -1,13 +1,19 @@
 import React, { useMemo } from "react";
 
-export default function ProjectsDatesFooterLandscape({ projectsData, buttonPositions }) {
-  // Groupe les boutons par leurs dates
+export default function ProjectsDatesFooterLandscape({ 
+  projectsData, 
+  buttonPositions, 
+  scrollLeft = 0,
+  isLandscape = false,
+  isDesktop = false
+}) {
+  // Groupe les boutons par leurs dates et garde les VRAIS indices (pas les indices filtrés)
   const groupedDates = useMemo(() => {
     const groups = {};
     projectsData.forEach((project, index) => {
       if (project.id.startsWith("blank")) return; // Ignore les boutons esthétiques bookends
       if (!groups[project.date]) groups[project.date] = []; // Crée un tableau pour chaque date
-      groups[project.date].push(index); // Ajoute l'index du bouton dans le tableau 
+      groups[project.date].push(index); // Index dans projectsData complet (avec bookends)
     });
     return groups;
   }, [projectsData]);
@@ -17,7 +23,29 @@ export default function ProjectsDatesFooterLandscape({ projectsData, buttonPosit
     return null;
   }
 
+  // En landscape mobile : utiliser transform pour suivre le scroll
+  // En desktop : positions statiques, pas de transform
+  const containerStyle = {
+    position: "relative",
+    width: "100%",
+    height: "80px",
+    overflow: isDesktop ? "visible" : "hidden",
+    pointerEvents: "none",
+    userSelect: "none",
+    WebkitUserSelect: "none",
+    WebkitTouchCallout: "none",
+  };
+
+  const contentStyle = (isLandscape && !isDesktop) ? {
+    position: "relative",
+    width: "100%",
+    height: "100%",
+    transform: `translateX(-${scrollLeft}px)`,
+    willChange: "transform",
+  } : {};
+
   // Calculer les positions min et max pour créer une ligne continue
+  // Utiliser les vrais indices des projets (qui correspondent aux indices dans buttonPositions)
   const allIndices = Object.values(groupedDates).flat();
   if (allIndices.length === 0) return null;
 
@@ -28,8 +56,10 @@ export default function ProjectsDatesFooterLandscape({ projectsData, buttonPosit
 
   if (!firstButton || !lastButton) return null;
 
-  const lineStartX = firstButton.x - 30;
-  const lineEndX = lastButton.x + 30;
+  // Utiliser la vraie largeur des projets au lieu de valeurs arbitraires
+  const buttonWidth = firstButton.width || 60; // Fallback si width pas disponible
+  const lineStartX = firstButton.x - buttonWidth / 2;
+  const lineEndX = lastButton.x + buttonWidth / 2;
   const lineWidth = lineEndX - lineStartX;
 
   // Calculer les positions des séparateurs entre les groupes
@@ -44,29 +74,17 @@ export default function ProjectsDatesFooterLandscape({ projectsData, buttonPosit
     
     if (lastOfCurrent && firstOfNext) {
       // Position du séparateur au milieu entre les deux groupes
-      const separatorX = (lastOfCurrent.x + 30 + firstOfNext.x - 30) / 2;
+      const buttonWidth = lastOfCurrent.width || 60;
+      const separatorX = (lastOfCurrent.x + buttonWidth / 2 + firstOfNext.x - buttonWidth / 2) / 2;
       separators.push(separatorX);
     }
   }
 
   return (
-    <div
-      className="projects-dates-footer-landscape"
-      style={{
-        position: "relative",
-        width: "100%",
-        height: "80px", 
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "flex-start",
-        pointerEvents: "none",
-        userSelect: "none",
-        WebkitUserSelect: "none",
-        WebkitTouchCallout: "none",
-      }}
-    >
-      {/* Ligne horizontale continue de pointillés */}
-      <div
+    <div className="projects-dates-footer-landscape" style={containerStyle}>
+      <div style={contentStyle}>
+        {/* Ligne horizontale continue de pointillés */}
+        <div
         style={{
           position: "absolute",
           top: "15px",
@@ -105,8 +123,9 @@ export default function ProjectsDatesFooterLandscape({ projectsData, buttonPosit
 
         if (!firstButton || !lastButton) return null;
 
-        const leftPosition = firstButton.x - 30;
-        const rightPosition = lastButton.x + 30;
+        const buttonWidth = firstButton.width || 60;
+        const leftPosition = firstButton.x - buttonWidth / 2;
+        const rightPosition = lastButton.x + buttonWidth / 2;
         const centerPosition = (leftPosition + rightPosition) / 2;
 
         return (
@@ -136,6 +155,7 @@ export default function ProjectsDatesFooterLandscape({ projectsData, buttonPosit
           </div>
         );
       })}
+      </div>
     </div>
   );
 }

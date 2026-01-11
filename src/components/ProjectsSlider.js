@@ -42,6 +42,7 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
 
   // Only initialize once
   const hasInitialized = useRef(false);
+  const lastOrientation = useRef(null); // Tracker l'orientation précédente
 
   // Combine project data + bookends
   const combinedData = [
@@ -52,6 +53,87 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
 
   // The center index in that combined array
   const startProjectIndex = Math.floor(projectsData.length / 2) + 2;
+
+  // Fonction pour réinitialiser complètement le slider
+  const reinitializeSlider = useCallback(() => {
+    if (!sliderRef.current || !hasInitialized.current) return;
+    
+    // Rescroll au centre
+    const project = sliderRef.current.children[startProjectIndex];
+    if (project) {
+      const offset =
+        project.offsetLeft -
+        sliderRef.current.offsetWidth / 2 +
+        project.offsetWidth / 2;
+      sliderRef.current.scrollTo({
+        left: offset,
+        behavior: "auto",
+      });
+    }
+    
+    // Recalculer après un délai
+    setTimeout(() => {
+      if (!sliderRef.current) return;
+      
+      // Recalculer scales et highlight
+      if (!isDesktop) {
+        const projects = Array.from(sliderRef.current.children);
+        const sliderCenter = sliderRef.current.scrollLeft + sliderRef.current.offsetWidth / 2;
+        const baseScales = [1, 0.9, 0.8, 0.7];
+        let minDist = Infinity;
+        let centerIdx = null;
+        const newTransforms = new Array(projects.length).fill(1);
+
+        projects.forEach((proj, i) => {
+          const projCenter = proj.offsetLeft + proj.offsetWidth / 2;
+          const dist = Math.abs(sliderCenter - projCenter);
+          if (dist < minDist) {
+            minDist = dist;
+            centerIdx = i;
+          }
+        });
+
+        projects.forEach((_, i) => {
+          const dist = Math.abs(i - centerIdx);
+          const scaleIdx = Math.min(dist, baseScales.length - 1);
+          newTransforms[i] = baseScales[scaleIdx];
+        });
+
+        setTransforms(newTransforms);
+        setHighlightedIndex(centerIdx);
+      }
+      
+      // Recalculer positions
+      if (isDesktop) {
+        const projects = Array.from(sliderRef.current.children);
+        const newPositions = {};
+        projects.forEach((proj, i) => {
+          const rect = proj.getBoundingClientRect();
+          const sliderLeft = sliderRef.current.getBoundingClientRect().left;
+          const xOffset = rect.left + rect.width / 2 - sliderLeft;
+          newPositions[i] = { x: xOffset, y: rect.top };
+        });
+        setButtonPositions(newPositions);
+      } else if (isLandscape) {
+        const projects = Array.from(sliderRef.current.children);
+        const newPositions = {};
+        projects.forEach((proj, i) => {
+          const xOffset = proj.offsetLeft + proj.offsetWidth / 2;
+          newPositions[i] = { x: xOffset, y: 0, width: proj.offsetWidth };
+        });
+        setButtonPositions(newPositions);
+      } else {
+        const projects = Array.from(sliderRef.current.children);
+        const scrollLeft = sliderRef.current.scrollLeft;
+        const newPositions = {};
+        projects.forEach((proj, i) => {
+          const xOffset = proj.offsetLeft + proj.offsetWidth / 2 - scrollLeft;
+          newPositions[i] = { x: xOffset, y: 0 };
+        });
+        setButtonPositions(newPositions);
+      }
+    }, 100);
+  }, [isDesktop, isLandscape, startProjectIndex]);
 
   // Gaussian function for desktop height
   const gaussScaleY = (dist) => {
@@ -163,6 +245,21 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
     setButtonPositions(newPositions);
   }, []);
 
+  // Méthode landscape : positions ABSOLUES pour utilisation avec transform
+  const updateButtonPositionsLandscape = useCallback(() => {
+    if (!sliderRef.current) return;
+    const projects = Array.from(sliderRef.current.children);
+    const newPositions = {};
+
+    projects.forEach((proj, i) => {
+      // Position absolue dans le slider (pas de scrollLeft soustrait)
+      const xOffset = proj.offsetLeft + proj.offsetWidth / 2;
+      newPositions[i] = { x: xOffset, y: 0, width: proj.offsetWidth };
+    });
+    
+    setButtonPositions(newPositions);
+  }, []);
+
   // Scroll to a given project index (mobile)
   const scrollToProjectIndex = useCallback((index, smooth = true) => {
     if (!sliderRef.current) return;
@@ -236,10 +333,14 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
     if (!isDesktop) {
       calculateScalesAndHighlightMobile();
       resetMobileInactivityTimeout();
-      updateButtonPositionsMobile(); // Utilise la méthode légère
+      // En landscape : pas de updateButtonPositions (on utilise transform)
+      if (!isLandscape) {
+        updateButtonPositionsMobile();
+      }
     }
   }, [
     isDesktop,
+    isLandscape,
     calculateScalesAndHighlightMobile,
     resetMobileInactivityTimeout,
     updateButtonPositionsMobile,
@@ -249,15 +350,19 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
   const handleResize = useCallback(() => {
     if (isDesktop) {
       updateButtonPositionsDesktop();
+    } else if (isLandscape) {
+      calculateScalesAndHighlightMobile();
+      updateButtonPositionsLandscape();
     } else {
       calculateScalesAndHighlightMobile();
       updateButtonPositionsMobile();
     }
-  }, [isDesktop, calculateScalesAndHighlightMobile, updateButtonPositionsMobile, updateButtonPositionsDesktop]);
+  }, [isDesktop, isLandscape, calculateScalesAndHighlightMobile, updateButtonPositionsMobile, updateButtonPositionsDesktop, updateButtonPositionsLandscape]);
 
   // Expose scrollToProjectIndex to parent
   useImperativeHandle(ref, () => ({
     scrollToProjectIndex,
+    reinitializeSlider, // Permet au parent de réinitialiser
   }));
 
   // First mount
@@ -267,7 +372,14 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
         // Mobile
         scrollToProjectIndex(startProjectIndex, false);
         calculateScalesAndHighlightMobile();
-        updateButtonPositionsMobile();
+        // Attendre que le scroll soit fini avant de calculer les positions
+        setTimeout(() => {
+          if (isLandscape) {
+            updateButtonPositionsLandscape();
+          } else {
+            updateButtonPositionsMobile();
+          }
+        }, 200);
       } else {
         // Desktop
         setHighlightedIndex(startProjectIndex);
@@ -277,11 +389,13 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
     }
   }, [
     isDesktop,
+    isLandscape,
     scrollToProjectIndex,
     startProjectIndex,
     calculateScalesAndHighlightMobile,
     updateButtonPositionsMobile,
     updateButtonPositionsDesktop,
+    updateButtonPositionsLandscape,
   ]);
 
   // Add event listeners
@@ -312,6 +426,19 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
       // Clear le timeout si on passe en landscape
       if (e.matches) {
         clearTimeout(mobileInactivityTimeout.current);
+        // Recalculer les positions en mode absolu pour landscape
+        setTimeout(() => {
+          if (sliderRef.current) {
+            updateButtonPositionsLandscape();
+          }
+        }, 100);
+      } else {
+        // Repasser en mode relatif pour portrait
+        setTimeout(() => {
+          if (sliderRef.current) {
+            updateButtonPositionsMobile();
+          }
+        }, 100);
       }
     };
     const handleDesktopChange = (e) => setIsDesktop(e.matches);
@@ -325,17 +452,120 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
     };
   }, []);
 
+  // Effet séparé : recalculer quand isLandscape change APRÈS l'initialisation
+  useEffect(() => {
+    if (!hasInitialized.current) return; // Attendre que l'initialisation soit faite
+    
+    // Détecter un changement d'orientation
+    const orientationChanged = lastOrientation.current !== null && lastOrientation.current !== isLandscape;
+    lastOrientation.current = isLandscape;
+    
+    if (orientationChanged && sliderRef.current) {
+      // Sauvegarder le projet actuellement highlighted
+      const currentHighlighted = highlightedIndex !== null ? highlightedIndex : startProjectIndex;
+      
+      // Changement d'orientation détecté : rescroller vers le projet highlighted
+      setTimeout(() => {
+        if (!sliderRef.current) return;
+        
+        // Scroller vers le projet qui était highlighted
+        const project = sliderRef.current.children[currentHighlighted];
+        if (project) {
+          const offset =
+            project.offsetLeft -
+            sliderRef.current.offsetWidth / 2 +
+            project.offsetWidth / 2;
+          sliderRef.current.scrollTo({
+            left: offset,
+            behavior: "auto",
+          });
+        }
+        
+        // Recalculer après le scroll
+        setTimeout(() => {
+          if (!sliderRef.current) return;
+          
+          // Recalculer scales avec le nouveau highlighted
+          if (!isDesktop) {
+            const projects = Array.from(sliderRef.current.children);
+            const sliderCenter = sliderRef.current.scrollLeft + sliderRef.current.offsetWidth / 2;
+            const baseScales = [1, 0.9, 0.8, 0.7];
+            let minDist = Infinity;
+            let centerIdx = null;
+            const newTransforms = new Array(projects.length).fill(1);
+
+            projects.forEach((proj, i) => {
+              const projCenter = proj.offsetLeft + proj.offsetWidth / 2;
+              const dist = Math.abs(sliderCenter - projCenter);
+              if (dist < minDist) {
+                minDist = dist;
+                centerIdx = i;
+              }
+            });
+
+            projects.forEach((_, i) => {
+              const dist = Math.abs(i - centerIdx);
+              const scaleIdx = Math.min(dist, baseScales.length - 1);
+              newTransforms[i] = baseScales[scaleIdx];
+            });
+
+            setTransforms(newTransforms);
+            setHighlightedIndex(centerIdx);
+          }
+          
+          // Recalculer positions selon le mode
+          const projects = Array.from(sliderRef.current.children);
+          const newPositions = {};
+          
+          if (isDesktop) {
+            projects.forEach((proj, i) => {
+              const rect = proj.getBoundingClientRect();
+              const sliderLeft = sliderRef.current.getBoundingClientRect().left;
+              const xOffset = rect.left + rect.width / 2 - sliderLeft;
+              newPositions[i] = { x: xOffset, y: rect.top };
+            });
+          } else if (isLandscape) {
+            projects.forEach((proj, i) => {
+              const xOffset = proj.offsetLeft + proj.offsetWidth / 2;
+              newPositions[i] = { x: xOffset, y: 0, width: proj.offsetWidth };
+            });
+          } else {
+            const scrollLeft = sliderRef.current.scrollLeft;
+            projects.forEach((proj, i) => {
+              const xOffset = proj.offsetLeft + proj.offsetWidth / 2 - scrollLeft;
+              newPositions[i] = { x: xOffset, y: 0 };
+            });
+          }
+          setButtonPositions(newPositions);
+        }, 100);
+      }, 100);
+    }
+    // Ne PAS inclure les fonctions dans les dépendances pour éviter la boucle
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLandscape, isDesktop, highlightedIndex, startProjectIndex]);
+
   // Decide which footer
   const shouldUseLandscapeFooter = isDesktop || isLandscape;
 
   // Pré-render les colonnes avec useMemo pour éviter les re-renders en landscape
   const renderedColumns = useMemo(() => {
-    return combinedData.map((project, index) => {
-      const dist = Math.abs(index - highlightedIndex);
+    // En desktop : filtrer les bookends (colonnes blanches)
+    const dataToRender = isDesktop 
+      ? combinedData.filter(project => !project.id.startsWith("blank"))
+      : combinedData;
+    
+    return dataToRender.map((project, displayIndex) => {
+      // En desktop, les indices dans buttonPositions correspondent à combinedData complet
+      // Donc on doit retrouver l'index original
+      const originalIndex = isDesktop 
+        ? combinedData.findIndex(p => p.id === project.id)
+        : displayIndex;
+      
+      const dist = Math.abs(originalIndex - highlightedIndex);
       const buttonZIndex = combinedData.length + 15 - dist;
 
-      // transforms[index] is either a number (mobile) or {scaleX, scaleY} (desktop).
-      const t = transforms[index] || 1;
+      // transforms[originalIndex] is either a number (mobile) or {scaleX, scaleY} (desktop).
+      const t = transforms[originalIndex] || 1;
 
       let scaleStyles;
       if (isDesktop && typeof t === "object") {
@@ -360,7 +590,7 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
           }}
           // On desktop: highlight on hover
           onMouseEnter={() => {
-            handleColumnHover(index);
+            handleColumnHover(originalIndex);
             // Envoyer les infos du projet au parent (HomeDesktop)
             if (isDesktop && onProjectHover && !project.id.startsWith("blank")) {
               onProjectHover(project);
@@ -377,17 +607,17 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
             project={project}
             zIndexValue={buttonZIndex}
             centerIndex={highlightedIndex}
-            index={index}
-            isHighlighted={highlightedIndex === index}
+            index={originalIndex}
+            isHighlighted={highlightedIndex === originalIndex}
             scale={1} // motion.div handles the actual scaling
             onClick={() => {
               // On mobile, center on this column
               if (!isDesktop && !project.id.startsWith("blank")) {
-                scrollToProjectIndex(index);
+                scrollToProjectIndex(originalIndex);
               }
               // Then open the modal
               if (!project.id.startsWith("blank")) {
-                setTimeout(() => setSelectedProjectIndex(index - 2), 300);
+                setTimeout(() => setSelectedProjectIndex(originalIndex - 2), 300);
               }
             }}
           />
@@ -474,8 +704,11 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
       {/* Footer (landscape or portrait) */}
       {shouldUseLandscapeFooter ? (
         <ProjectsDatesFooterLandscape
-          projectsData={combinedData}
+          projectsData={isDesktop ? projectsData : combinedData}
           buttonPositions={buttonPositions}
+          scrollLeft={sliderRef.current?.scrollLeft || 0}
+          isLandscape={isLandscape}
+          isDesktop={isDesktop}
         />
       ) : (
         <ProjectsDatesFooterPortrait

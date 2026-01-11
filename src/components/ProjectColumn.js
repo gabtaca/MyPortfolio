@@ -21,8 +21,6 @@ export default function ProjectColumn({
   const triangleDirection =
     index < centerIndex ? "triangle-right" : "triangle-left";
 
-  console.log(`ProjectColumn - isDarkMode: ${isDarkMode}`);
-
   return (
     <div
       className="project-column"
