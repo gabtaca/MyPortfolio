@@ -376,7 +376,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    
+
     .home_desktop-portrait-container {
       position: relative;
       width: 200dvw;
@@ -384,11 +384,11 @@
       aspect-ratio: 5 / 3.5;
       z-index: 1;
     }
-    
+
     .home_desktop-portrait {
-      object-fit:fill;
+      object-fit: fill;
     }
-    
+
     span {
       font-family: "Livvic";
       font-size: 16px;
@@ -555,22 +555,26 @@
     width: 100%;
     border-radius: 20px;
     font-family: "Italiana";
-    color: var(--h2Color);
 
     .ctrl_description-projects {
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: center;
+      color: var(--h2Color);
+      border-radius: 20px;
+      padding: 5px 10px 5px 10px;
+
       h5 {
         font-size: 24px;
-        font-weight: bold;
+        font-weight: 600;
         margin: 0;
         padding-right: 10px;
       }
       h6 {
         font-size: 20px;
         font-style: italic;
+        font-weight: 600;
         margin: 0;
         padding-left: 10px;
       }
@@ -587,7 +591,7 @@
 .desktop-slider {
   display: flex;
   justify-self: center;
-  margin-top: 100px;
+  margin-top: 50px;
   /* overflow géré par ProjectsSlider.js inline style */
 }
 
@@ -753,7 +757,7 @@
   padding-left: 5px;
   transform-style: preserve-3d;
   perspective: 1000px;
-  
+
   span {
     display: flex;
     left: -11rem;
@@ -767,7 +771,7 @@
     border-radius: 10px;
     border: var(--desktopPcolor) 1px solid;
   }
-  
+
   &:hover {
     opacity: 0.8;
     transform: scale(1.02);
@@ -777,7 +781,7 @@
 /* Styles spécifiques selon le drawer */
 .drawer-cv {
   border-top: 1px solid color-mix(in srgb, var(--h2Color) 20%, transparent);
-  
+
   .contact-band-btn {
     background-color: var(--bgCvDesktop);
   }

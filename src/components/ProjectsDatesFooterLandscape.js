@@ -5,7 +5,8 @@ export default function ProjectsDatesFooterLandscape({
   buttonPositions, 
   scrollLeft = 0,
   isLandscape = false,
-  isDesktop = false
+  isDesktop = false,
+  indexOffset = 0
 }) {
   // Groupe les boutons par leurs dates et garde les VRAIS indices (pas les indices filtrés)
   const groupedDates = useMemo(() => {
@@ -13,39 +14,18 @@ export default function ProjectsDatesFooterLandscape({
     projectsData.forEach((project, index) => {
       if (project.id.startsWith("blank")) return; // Ignore les boutons esthétiques bookends
       if (!groups[project.date]) groups[project.date] = []; // Crée un tableau pour chaque date
-      groups[project.date].push(index); // Index dans projectsData complet (avec bookends)
+      // En desktop, ajouter l'offset pour mapper aux bons indices de buttonPositions
+      groups[project.date].push(index + indexOffset);
     });
     return groups;
-  }, [projectsData]);
+  }, [projectsData, indexOffset]);
 
   // Retourne rien tant que les positions des boutons ne sont pas prêtes
   if (Object.keys(buttonPositions).length === 0) {
     return null;
   }
 
-  // En landscape mobile : utiliser transform pour suivre le scroll
-  // En desktop : positions statiques, pas de transform
-  const containerStyle = {
-    position: "relative",
-    width: "100%",
-    height: "80px",
-    overflow: isDesktop ? "visible" : "hidden",
-    pointerEvents: "none",
-    userSelect: "none",
-    WebkitUserSelect: "none",
-    WebkitTouchCallout: "none",
-  };
-
-  const contentStyle = (isLandscape && !isDesktop) ? {
-    position: "relative",
-    width: "100%",
-    height: "100%",
-    transform: `translateX(-${scrollLeft}px)`,
-    willChange: "transform",
-  } : {};
-
-  // Calculer les positions min et max pour créer une ligne continue
-  // Utiliser les vrais indices des projets (qui correspondent aux indices dans buttonPositions)
+  // Calculer d'ABORD toutes les valeurs nécessaires
   const allIndices = Object.values(groupedDates).flat();
   if (allIndices.length === 0) return null;
 
@@ -56,11 +36,41 @@ export default function ProjectsDatesFooterLandscape({
 
   if (!firstButton || !lastButton) return null;
 
-  // Utiliser la vraie largeur des projets au lieu de valeurs arbitraires
-  const buttonWidth = firstButton.width || 60; // Fallback si width pas disponible
+  const buttonWidth = firstButton.width || 60;
+  // Utiliser les positions absolues des colonnes (comme en mobile)
   const lineStartX = firstButton.x - buttonWidth / 2;
   const lineEndX = lastButton.x + buttonWidth / 2;
   const lineWidth = lineEndX - lineStartX;
+
+  // ENSUITE définir les styles qui utilisent ces valeurs
+  // En landscape mobile : utiliser transform pour suivre le scroll
+  // En desktop : wrapper de largeur fixe centré
+  const containerStyle = {
+    position: "relative",
+    width: "100%",
+    height: "80px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    overflow: isDesktop ? "visible" : "hidden",
+    pointerEvents: "none",
+    userSelect: "none",
+    WebkitUserSelect: "none",
+    WebkitTouchCallout: "none",
+  };
+
+  // En desktop : wrapper de largeur fixe
+  // En landscape : transform suivant le scroll
+  const contentStyle = isDesktop ? {
+    position: "relative",
+    width: `${lineWidth}px`,
+  } : (isLandscape ? {
+    position: "relative",
+    width: "100%",
+    height: "100%",
+    transform: `translateX(-${scrollLeft}px)`,
+    willChange: "transform",
+  } : {});
 
   // Calculer les positions des séparateurs entre les groupes
   const separators = [];
@@ -74,9 +84,10 @@ export default function ProjectsDatesFooterLandscape({
     
     if (lastOfCurrent && firstOfNext) {
       // Position du séparateur au milieu entre les deux groupes
-      const buttonWidth = lastOfCurrent.width || 60;
-      const separatorX = (lastOfCurrent.x + buttonWidth / 2 + firstOfNext.x - buttonWidth / 2) / 2;
-      separators.push(separatorX);
+      const btnWidth = lastOfCurrent.width || 60;
+      const separatorX = (lastOfCurrent.x + btnWidth / 2 + firstOfNext.x - btnWidth / 2) / 2;
+      // Convertir en position relative au wrapper
+      separators.push(separatorX - lineStartX);
     }
   }
 
@@ -88,7 +99,7 @@ export default function ProjectsDatesFooterLandscape({
         style={{
           position: "absolute",
           top: "15px",
-          left: `${lineStartX}px`,
+          left: "0px",
           width: `${lineWidth}px`,
           height: "15px",
           borderBottom: "2px dotted var(--h2Color)",
@@ -123,10 +134,13 @@ export default function ProjectsDatesFooterLandscape({
 
         if (!firstButton || !lastButton) return null;
 
-        const buttonWidth = firstButton.width || 60;
-        const leftPosition = firstButton.x - buttonWidth / 2;
-        const rightPosition = lastButton.x + buttonWidth / 2;
+        const btnWidth = firstButton.width || 60;
+        // Utiliser les positions absolues des colonnes
+        const leftPosition = buttonPositions[buttonIndices[0]].x - btnWidth / 2;
+        const rightPosition = buttonPositions[buttonIndices[buttonIndices.length - 1]].x + btnWidth / 2;
         const centerPosition = (leftPosition + rightPosition) / 2;
+        // Convertir en position relative au wrapper
+        const relativeCenterPosition = centerPosition - lineStartX;
 
         return (
           <div
@@ -134,7 +148,7 @@ export default function ProjectsDatesFooterLandscape({
             style={{
               position: "absolute",
               top: "30px",
-              left: `${centerPosition}px`,
+              left: `${relativeCenterPosition}px`,
               transform: "translateX(-50%)",
               pointerEvents: "none",
             }}

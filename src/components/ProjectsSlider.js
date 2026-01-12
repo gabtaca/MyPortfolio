@@ -219,14 +219,18 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
   const updateButtonPositionsDesktop = useCallback(() => {
     if (!sliderRef.current) return;
     const projects = Array.from(sliderRef.current.children);
+    const sliderRect = sliderRef.current.getBoundingClientRect();
+    const sliderLeft = sliderRect.left;
     const newPositions = {};
 
     projects.forEach((proj, i) => {
       const rect = proj.getBoundingClientRect();
-      const sliderLeft = sliderRef.current.getBoundingClientRect().left;
       const xOffset = rect.left + rect.width / 2 - sliderLeft;
-      newPositions[i] = { x: xOffset, y: rect.top };
+      newPositions[i] = { x: xOffset, y: rect.top, width: rect.width };
     });
+    
+    // Ajouter l'offset du slider lui-même
+    newPositions.sliderOffset = sliderLeft;
     setButtonPositions(newPositions);
   }, []);
 
@@ -544,6 +548,18 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLandscape, isDesktop, highlightedIndex, startProjectIndex]);
 
+  // Effet spécifique : recalculer les positions quand isDesktop change
+  useEffect(() => {
+    if (!hasInitialized.current) return;
+    
+    if (isDesktop && sliderRef.current) {
+      // Délai pour laisser le DOM se mettre à jour (bookends retirés)
+      setTimeout(() => {
+        updateButtonPositionsDesktop();
+      }, 200);
+    }
+  }, [isDesktop, updateButtonPositionsDesktop]);
+
   // Decide which footer
   const shouldUseLandscapeFooter = isDesktop || isLandscape;
 
@@ -709,6 +725,7 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
           scrollLeft={sliderRef.current?.scrollLeft || 0}
           isLandscape={isLandscape}
           isDesktop={isDesktop}
+          indexOffset={0}
         />
       ) : (
         <ProjectsDatesFooterPortrait
