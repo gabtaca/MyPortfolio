@@ -16,6 +16,10 @@ export default function ProjectsModalV2({
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [animationClass, setAnimationClass] = useState("modal-initial-open");
   const [borderSide, setBorderSide] = useState("");
+
+  // Use the first available link (github, figma, etc.)
+  const linkUrl = project.lien ? Object.values(project.lien)[0] : null;
+  const linkType = project.lien ? Object.keys(project.lien)[0] : null;
   const modalRef = useRef(null);
   const swipeThreshold = 40;
   const dragLimits = { x: 200, y: 200 };
@@ -264,14 +268,14 @@ export default function ProjectsModalV2({
                   ))}
                 </ul>
                 <a
-                  href={project.lien?.github}
+                  href={linkUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="project-link"
                   onClick={(e) => {
                     e.preventDefault();
                     closeModalWithAnimation();
-                    window.open(project.lien?.github, "_blank");
+                    window.open(linkUrl, "_blank");
                   }}
                 >
                   Voir le projet

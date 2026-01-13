@@ -76,8 +76,49 @@ export default function ProjectsModalDesktop({
     ? "/images/btnmodalDesktopDarkmode.svg"
     : "/images/btnmodalDesktop.svg";
 
-  // Use the project.lien.github property as the website URL
-  const iframeSrc = project.lien?.github;
+  // Use the first available link (github, figma, etc.)
+  const linkUrl = project.lien ? Object.values(project.lien)[0] : null;
+  const linkType = project.lien ? Object.keys(project.lien)[0] : null;
+  
+  // Détection intelligente du type de contenu
+  const getIframeConfig = () => {
+    // Si figmaEmbed existe, c'est un projet Figma
+    if (project.figmaEmbed) {
+      return {
+        src: project.figmaEmbed,
+        canDisplay: true,
+        type: 'figma'
+      };
+    }
+    
+    // Si c'est un lien Figma mais pas d'embed, ne pas afficher d'iframe
+    if (linkType === 'figma' || linkUrl?.includes('figma.com')) {
+      return {
+        src: null,
+        canDisplay: false,
+        type: 'figma-link'
+      };
+    }
+    
+    // Si c'est un repo GitHub (pas un GitHub Pages), ne pas afficher d'iframe
+    if (linkUrl?.includes('github.com') && !linkUrl?.includes('.github.io') && !linkUrl?.includes('vercel.app')) {
+      return {
+        src: null,
+        canDisplay: false,
+        type: 'repo'
+      };
+    }
+    
+    // Sinon, c'est probablement un site web hébergé → afficher iframe
+    return {
+      src: linkUrl,
+      canDisplay: true,
+      type: 'website'
+    };
+  };
+  
+  const iframeConfig = getIframeConfig();
+  const iframeSrc = iframeConfig.src;
 
   const iframeClass = `modal_iframe ${iframeMode}`;
 
@@ -92,21 +133,24 @@ export default function ProjectsModalDesktop({
           <div className="modal_content-desktop">
             {/* Left: Iframe displaying the project website */}
             <div className="modal_ctrl-infos">
-              <div className="modal_iframe-container">
-                <iframe
-                  className={iframeClass}
-                  src={iframeSrc}
-                  title={project.name}
-                  // Remove inline width/height: CSS should now control the ratio.
-                ></iframe>
-                {iframeMode === "iframe_mobile" && (
-                  <div 
-                    className="iframe-touch-layer"
-                    onMouseMove={handleMouseMove}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                    onClick={handleTap}
-                  >
+              {iframeConfig.canDisplay ? (
+                <div className="modal_iframe-container">
+                  <iframe
+                    className={iframeClass}
+                    src={iframeSrc}
+                    title={project.name}
+                    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                    loading="lazy"
+                    // Remove inline width/height: CSS should now control the ratio.
+                  ></iframe>
+                  {iframeMode === "iframe_mobile" && (
+                    <div 
+                      className="iframe-touch-layer"
+                      onMouseMove={handleMouseMove}
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
+                      onClick={handleTap}
+                    >
                     {showCursor && (
                       <div 
                         className="custom-touch-cursor"
@@ -128,6 +172,20 @@ export default function ProjectsModalDesktop({
                   </div>
                 )}
               </div>
+              ) : (
+                <div className="modal_no-iframe">
+                  <img 
+                    src={project.img} 
+                    alt={project.imgAlt}
+                    className="modal_preview-image"
+                  />
+                  <p className="modal_no-iframe-text">
+                    {iframeConfig.type === 'repo' 
+                      ? 'Code repository - Cliquez sur "Voir le projet" pour accéder au code'
+                      : 'Aperçu non disponible - Cliquez sur "Voir le projet"'}
+                  </p>
+                </div>
+              )}
 
               {/* Right: Project information */}
               <div className="modal_text-informations-desktop">
@@ -140,14 +198,14 @@ export default function ProjectsModalDesktop({
                   ))}
                 </ul>
                 <a
-                  href={project.lien?.github}
+                  href={linkUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="project-link"
                   onClick={(e) => {
                     e.preventDefault();
                     onClose();
-                    window.open(project.lien?.github, "_blank");
+                    window.open(linkUrl, "_blank");
                   }}
                 >
                   Voir le projet

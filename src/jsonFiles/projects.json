@@ -113,27 +113,28 @@
   },
   {
     "id": "9",
-    "name": "Projet 9",
-    "still": "/images/projects/project9.jpg",
-    "img": "/images/projects/project9.gif",
-    "imgAlt": "image du projet 9",
-    "description": "Ce projet vise à développer une application web moderne et intuitive permettant aux utilisateurs d'interagir facilement avec les dernieres technologies.",
+    "name": "VuGroove",
+    "still": "/images/projects/vuGroove.jpg",
+    "img": "/images/projects/vuGroove.gif",
+    "imgAlt": "image du projet VuGroove",
+    "description": "Voici le design d'une application de visualisation de musique analogique. À l'air du numérique, j'ai voulu joindre les fonctionnalités avancée et l'expérience visuelle moderne associée à la musique aujourd'hui avec l'écoute sur disques vinyles.",
     "date": "2024",
-    "type": "SiteWeb",
+    "type": "App",
     "lien": {
-      "github": "https://betterplaceholder.com/"
+      "figma": "https://www.figma.com/design/zXloQyOQgALMXxcBtQX9Dy/UI-KIT---Partie-2-Gabriel-Taca?node-id=101-589&t=gEVILaK59tEmC3Mq-1"
     },
-    "stack": ["HTML", "SASS", "Javascript", "Npm"]
+    "figmaEmbed": "https://embed.figma.com/design/zXloQyOQgALMXxcBtQX9Dy/UI-KIT---Partie-2-Gabriel-Taca?node-id=101-589&embed-host=share",
+    "stack": ["Figma"]
   },
   {
     "id": "10",
-    "name": "Projet 10",
+    "name": "Portfolio",
     "still": "/images/projects/portfolio.png",
     "img": "/images/projects/portfolio.gif",
-    "imgAlt": "image du projet 10",
-    "description": "Je met ici mon portfolio car c'est un projet où beaucoup de réflexion a été fait sur l'UX et l'UI. Je suis plus que fier du résultat.",
+    "imgAlt": "image du projet Portfolio",
+    "description": "Un de mes projet les plus ambitieux. Le but premier était de créer une façon innovative de présenter le contenu d'un site web. De garder l'expérience utilisateur simple et intuitive. Créer une harmonie entre le design et le code. J'ai utilisé React.js pour la flexibilité et la rapidité qu'il offre, ainsi que SASS pour un style modulaire et maintenable.",
     "date": "2025",
-    "type": "App",
+    "type": "SiteWeb",
     "lien": {
       "github": "https://my-portfolio-alpha-ecru-38.vercel.app/"
     },

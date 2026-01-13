@@ -222,7 +222,7 @@
   .modal {
     display: flex;
     justify-content: center;
-    width: 90vw;
+    width: 95vw;
     height: 70vh;
     top: -1%;
 
@@ -322,7 +322,7 @@
     }
 
     .close_btn {
-      top: -40px;
+      top: -30px;
       right: -10px;
     }
 
@@ -383,7 +383,7 @@
         align-items: center;
         position: relative;
         width: 60%;
-        height: 60vh;
+        height: 65vh;
         padding-left: 20px;
         &::before {
           content: "";
@@ -592,9 +592,9 @@
 
 .iframe_mobile {
   max-width: 375px !important; /* iPhone SE width */
-  width: 100% !important;
-  height: 667px !important; /* iPhone SE height */
-  aspect-ratio: 375 / 667;
+  height: 100% !important; /* iPhone SE height */
+
+  aspect-ratio: 37.5 / 66.7;
   margin: 0 auto;
   pointer-events: auto; /* Permet les interactions avec l'iframe */
 }
@@ -604,8 +604,8 @@
     padding: 0px;
   }
   .iframe_mobile {
-    max-width: 375px !important;
-    height: 667px !important;
+    max-width: 500px !important;
+    height: 800px !important;
   }
 }
 

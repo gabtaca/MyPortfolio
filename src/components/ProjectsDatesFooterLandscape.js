@@ -36,14 +36,18 @@ export default function ProjectsDatesFooterLandscape({
 
   if (!firstButton || !lastButton) return null;
 
+  // Utiliser le nombre de colonnes pour calculer des positions relatives
+  const totalColumns = maxIndex - minIndex + 1;
+  const columnGap = 100 / totalColumns; // Pourcentage par colonne
+
   const buttonWidth = firstButton.width || 60;
-  // Utiliser les positions absolues des colonnes (comme en mobile)
+  // Utilise les positions absolues des colonnes (comme en mobile)
   const lineStartX = firstButton.x - buttonWidth / 2;
   const lineEndX = lastButton.x + buttonWidth / 2;
   const lineWidth = lineEndX - lineStartX;
 
   // ENSUITE définir les styles qui utilisent ces valeurs
-  // En landscape mobile : utiliser transform pour suivre le scroll
+  // En landscape mobile : utilise transform pour suivre le scroll
   // En desktop : wrapper de largeur fixe centré
   const containerStyle = {
     position: "relative",
@@ -59,11 +63,12 @@ export default function ProjectsDatesFooterLandscape({
     WebkitTouchCallout: "none",
   };
 
-  // En desktop : wrapper de largeur fixe
+  // En desktop : wrapper de largeur fixe (même largeur que le slider)
   // En landscape : transform suivant le scroll
   const contentStyle = isDesktop ? {
     position: "relative",
-    width: `${lineWidth}px`,
+    width: `${lineWidth}px`, // Largeur exacte du slider
+    flexShrink: 0, // Empêche le wrapper de rétrécir
   } : (isLandscape ? {
     position: "relative",
     width: "100%",
@@ -72,7 +77,7 @@ export default function ProjectsDatesFooterLandscape({
     willChange: "transform",
   } : {});
 
-  // Calculer les positions des séparateurs entre les groupes
+  // Calcule les positions des séparateurs entre les groupes de dates
   const separators = [];
   const groupEntries = Object.entries(groupedDates);
   for (let i = 0; i < groupEntries.length - 1; i++) {
@@ -86,21 +91,23 @@ export default function ProjectsDatesFooterLandscape({
       // Position du séparateur au milieu entre les deux groupes
       const btnWidth = lastOfCurrent.width || 60;
       const separatorX = (lastOfCurrent.x + btnWidth / 2 + firstOfNext.x - btnWidth / 2) / 2;
-      // Convertir en position relative au wrapper
-      separators.push(separatorX - lineStartX);
+      // En desktop : position relative au wrapper centré
+      // En mobile : position absolue
+      separators.push(isDesktop ? (separatorX - lineStartX) : separatorX);
     }
   }
 
   return (
     <div className="projects-dates-footer-landscape" style={containerStyle}>
-      <div style={contentStyle}>
+      <div className="footer-content-wrapper" style={contentStyle}>
         {/* Ligne horizontale continue de pointillés */}
         <div
+        className="footer-horizontal-line"
         style={{
           position: "absolute",
           top: "15px",
-          left: "0px",
-          width: `${lineWidth}px`,
+          left: isDesktop ? "0px" : `${lineStartX}px`,
+          width: isDesktop ? "100%" : `${lineWidth}px`,
           height: "15px",
           borderBottom: "2px dotted var(--h2Color)",
           borderLeft: "2px dotted var(--h2Color)",
@@ -110,20 +117,26 @@ export default function ProjectsDatesFooterLandscape({
       />
 
       {/* Séparateurs verticaux entre les groupes */}
-      {separators.map((x, index) => (
-        <div
-          key={`separator-${index}`}
-          style={{
-            position: "absolute",
-            top: "15px",
-            left: `${x}px`,
-            width: "0px",
-            height: "15px",
-            borderLeft: "2px dotted var(--h2Color)",
-            pointerEvents: "none",
-          }}
-        />
-      ))}
+      {separators.map((x, index) => {
+        // En desktop : position relative au wrapper (soustraire lineStartX déjà fait)
+        const separatorPos = isDesktop ? `${x}px` : `${x}px`;
+        
+        return (
+          <div
+            key={`separator-${index}`}
+            className="footer-date-separator"
+            style={{
+              position: "absolute",
+              top: "15px",
+              left: separatorPos,
+              width: "0px",
+              height: "15px",
+              borderLeft: "2px dotted var(--h2Color)",
+              pointerEvents: "none",
+            }}
+          />
+        );
+      })}
 
       {/* Les dates individuelles */}
       {Object.entries(groupedDates).map(([date, buttonIndices]) => {
@@ -135,25 +148,29 @@ export default function ProjectsDatesFooterLandscape({
         if (!firstButton || !lastButton) return null;
 
         const btnWidth = firstButton.width || 60;
-        // Utiliser les positions absolues des colonnes
         const leftPosition = buttonPositions[buttonIndices[0]].x - btnWidth / 2;
         const rightPosition = buttonPositions[buttonIndices[buttonIndices.length - 1]].x + btnWidth / 2;
         const centerPosition = (leftPosition + rightPosition) / 2;
-        // Convertir en position relative au wrapper
-        const relativeCenterPosition = centerPosition - lineStartX;
+        // En desktop : position relative au wrapper (soustraire lineStartX déjà fait)
+        // En mobile : position absolue
+        const finalCenterPosition = isDesktop 
+          ? `${centerPosition - lineStartX}px`
+          : `${centerPosition}px`;
 
         return (
           <div
             key={date}
+            className="footer-date-container"
             style={{
               position: "absolute",
               top: "30px",
-              left: `${relativeCenterPosition}px`,
+              left: finalCenterPosition,
               transform: "translateX(-50%)",
               pointerEvents: "none",
             }}
           >
             <p
+              className="footer-date-text"
               style={{
                 margin: 0,
                 fontFamily: "Jockey One",

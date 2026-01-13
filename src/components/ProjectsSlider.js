@@ -215,22 +215,18 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
    * We define updateButtonPositions BEFORE using it in handleScroll, handleResize
    * -------------
    */
-  // Méthode desktop : positions statiques avec getBoundingClientRect
+  // Méthode desktop : utiliser offsetLeft comme mobile pour stabilité
   const updateButtonPositionsDesktop = useCallback(() => {
     if (!sliderRef.current) return;
     const projects = Array.from(sliderRef.current.children);
-    const sliderRect = sliderRef.current.getBoundingClientRect();
-    const sliderLeft = sliderRect.left;
     const newPositions = {};
 
     projects.forEach((proj, i) => {
-      const rect = proj.getBoundingClientRect();
-      const xOffset = rect.left + rect.width / 2 - sliderLeft;
-      newPositions[i] = { x: xOffset, y: rect.top, width: rect.width };
+      // Utiliser offsetLeft au lieu de getBoundingClientRect pour éviter les problèmes de viewport
+      const xOffset = proj.offsetLeft + proj.offsetWidth / 2;
+      newPositions[i] = { x: xOffset, y: 0, width: proj.offsetWidth };
     });
     
-    // Ajouter l'offset du slider lui-même
-    newPositions.sliderOffset = sliderLeft;
     setButtonPositions(newPositions);
   }, []);
 
@@ -352,6 +348,7 @@ const ProjectsSlider = forwardRef(({ setHighlightedDate, isDarkMode, onProjectHo
 
   // RESIZE for mobile and desktop
   const handleResize = useCallback(() => {
+    // Recalcul immédiat pour éviter le décalage du footer
     if (isDesktop) {
       updateButtonPositionsDesktop();
     } else if (isLandscape) {
