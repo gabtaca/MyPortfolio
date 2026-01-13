@@ -114,8 +114,8 @@
   {
     "id": "9",
     "name": "VuGroove",
-    "still": "/images/projects/vuGroove.jpg",
-    "img": "/images/projects/vuGroove.gif",
+    "still": "/images/projects/VuGroove.jpg",
+    "img": "/images/projects/VuGroove.gif",
     "imgAlt": "image du projet VuGroove",
     "description": "Voici le design d'une application de visualisation de musique analogique. À l'air du numérique, j'ai voulu joindre les fonctionnalités avancée et l'expérience visuelle moderne associée à la musique aujourd'hui avec l'écoute sur disques vinyles.",
     "date": "2024",
