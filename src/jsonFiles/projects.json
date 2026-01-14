@@ -48,7 +48,7 @@
     "still": "/images/projects/portfolio.png",
     "img": "/images/projects/portfolio.gif",
     "imgAlt": "image du projet Portfolio",
-    "description": "Un de mes projet les plus ambitieux. Le but premier était de créer une façon innovative de présenter le contenu d'un site web. De garder l'expérience utilisateur simple et intuitive. Créer une harmonie entre le design et le code. J'ai utilisé React.js pour la flexibilité et la rapidité qu'il offre, ainsi que SASS pour un style modulaire et maintenable.",
+    "description": "Un de mes projet les plus ambitieux. Le but premier était de créer une façon innovative de présenter le contenu d'un site web. De garder l'expérience utilisateur simple et intuitive. Créer une harmonie entre le design et le code.",
     "date": "2025",
     "type": "SiteWeb",
     "lien": {
