@@ -10,7 +10,7 @@ const HomeDesktop = dynamic(() => import('../components/HomeDesktop'), { ssr: fa
 
 const HomePage = () => {
   const width = useWindowWidth();
-  const breakpoint = 1200;
+  const breakpoint = 1024;
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {

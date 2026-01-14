@@ -44,8 +44,8 @@ const IdeesMobile = ({
   const windowWidth = useWindowWidth();
   // Détecter l'orientation : en paysage si la largeur est supérieure à la hauteur
   const isLandscape = window.innerWidth > window.innerHeight;
-  // On active le mode dropdown si la largeur est >= 1200px OU si l'appareil mobile est en paysage
-  const isDropdownMode = windowWidth >= 1200 || isLandscape;
+  // On active le mode dropdown si la largeur est >= 1024px OU si l'appareil mobile est en paysage
+  const isDropdownMode = windowWidth >= 1024 || isLandscape;
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // États pour le mode mobile portrait
