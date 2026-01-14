@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ideesData from "../jsonFiles/ideesData.json";
 import useTheme from "../hooks/useTheme";
+import IdeaGalleryModal from "./IdeaGalleryModal";
 
 
 const IdeesDesktop = () => {
@@ -10,6 +11,9 @@ const IdeesDesktop = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [activeCategory, setActiveCategory] = useState(null);
+  
+  // State pour gérer le modal de galerie
+  const [selectedIdea, setSelectedIdea] = useState(null);
 
   const handleButtonClick = () => {
     setDropdownOpen((prev) => !prev);
@@ -94,7 +98,20 @@ const IdeesDesktop = () => {
                   "--post-it-color": postItColor,
                   transform: `rotate(${randomRotation}deg)`,
                 }}
+                onClick={() => idea.images && idea.images.length > 0 && setSelectedIdea(idea)}
               >
+                {idea.images && idea.images.length > 0 && (
+                  <button 
+                    className="post-it-image-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedIdea(idea);
+                    }}
+                    aria-label="View gallery"
+                  >
+                    📷
+                  </button>
+                )}
                 <div className="post-it-content">
                   <h3>{idea.title}</h3>
                   <div className="post-it_descCTRL">
@@ -102,6 +119,17 @@ const IdeesDesktop = () => {
                       <span className="postit_description">Description</span>
                       {idea.description}
                     </p>
+                    {idea.description && idea.description.length > 100 && (
+                      <button 
+                        className="post-it-see-more-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedIdea(idea);
+                        }}
+                      >
+                        Voir plus
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -109,6 +137,12 @@ const IdeesDesktop = () => {
           })}
         </div>
       )}
+      
+      {/* Modal de galerie */}
+      <IdeaGalleryModal 
+        idea={selectedIdea} 
+        onClose={() => setSelectedIdea(null)} 
+      />
     </div>
   );
 };

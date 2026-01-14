@@ -161,9 +161,18 @@
   touch-action: none;
 
   .footer-content-wrapper {
-
-
     .footer-horizontal-line {
+      -webkit-border-bottom-right-radius: 8px;
+      -webkit-border-bottom-left-radius: 8px;
+      -moz-border-radius-bottomright: 8px;
+      -moz-border-radius-bottomleft: 8px;
+      border-bottom-right-radius: 8px;
+      border-bottom-left-radius: 8px;
+      box-shadow: 0px 2px 3px var(--invertedShadow);
+    }
+
+    .footer-date-container {
+      text-shadow: 0px 1px 2px var(--invertedShadow);
     }
   }
 }
@@ -196,7 +205,7 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
-  background-color: #fff;
+  background-color: var(--bgBody);
   padding: 10px 20px;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);

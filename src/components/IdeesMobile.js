@@ -6,6 +6,7 @@ import ideesData from "../jsonFiles/ideesData.json"; // Données JSON des idées
 import CategoryButton from "./CategoryButton";
 import DashedArrow from "./DashedArrow";
 import useTheme from "../hooks/useTheme";
+import IdeaGalleryModal from "./IdeaGalleryModal";
 
 // Hook personnalisé pour obtenir la largeur de la fenêtre
 const useWindowWidth = () => {
@@ -51,6 +52,9 @@ const IdeesMobile = ({
   const [arrowExpanded, setArrowExpanded] = useState(false);
   const [visibleCategories, setVisibleCategories] = useState([]);
   const [showSubtitle, setShowSubtitle] = useState(false);
+  
+  // State pour gérer le modal de galerie
+  const [selectedIdea, setSelectedIdea] = useState(null);
 
   // Pas d'état pour toggler le dropdown en mode dropdown : il est affiché dès l'ouverture
 
@@ -186,16 +190,40 @@ const IdeesMobile = ({
                               "--post-it-color": postItColor,
                               transform: `rotate(${randomRotation}deg)`,
                             }}
+                            onClick={() => idea.images && idea.images.length > 0 && setSelectedIdea(idea)}
                           >
+                            {idea.images && idea.images.length > 0 && (
+                              <button 
+                                className="post-it-image-btn"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSelectedIdea(idea);
+                                }}
+                                aria-label="View gallery"
+                              >
+                                📷
+                              </button>
+                            )}
                             <div className="post-it-content">
                               <h3>{idea.title}</h3>
                               <div className="post-it_descCTRL">
                                 <p>
                                   <span className="postit_description">
-                                    Description
+                                    
                                   </span>
                                   {idea.description}
                                 </p>
+                                {idea.description && idea.description.length > 100 && (
+                                  <button 
+                                    className="post-it-see-more-btn"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setSelectedIdea(idea);
+                                    }}
+                                  >
+                                    Voir plus
+                                  </button>
+                                )}
                               </div>
                             </div>
                           </div>
@@ -216,12 +244,19 @@ const IdeesMobile = ({
           ></footer>
         </motion.div>
       </div>
+      
+      {/* Modal de galerie */}
+      <IdeaGalleryModal 
+        idea={selectedIdea} 
+        onClose={() => setSelectedIdea(null)} 
+      />
       </>
     );
   } else {
     // Mode Dropdown (Desktop / Mobile en paysage)
     // Dans cette version, le dropdown est affiché automatiquement lorsque le tiroir d'idées est ouvert.
     return (
+      <>
       <div className="idees-desktop-container" ref={ideesContainerRef}>
         <motion.div
           className="idees-desktop-dropdown"
@@ -288,14 +323,38 @@ const IdeesMobile = ({
                     duration: showContent ? 0.3 : 0.1,
                     delay: showContent ? 0.3 + index * 0.05 : 0,
                   }}
+                  onClick={() => idea.images && idea.images.length > 0 && setSelectedIdea(idea)}
                 >
+                  {idea.images && idea.images.length > 0 && (
+                    <button 
+                      className="post-it-image-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedIdea(idea);
+                      }}
+                      aria-label="View gallery"
+                    >
+                      📷
+                    </button>
+                  )}
                   <div className="post-it-content">
                     <h3>{idea.title}</h3>
                     <div className="post-it_descCTRL">
                       <p>
-                        <span className="postit_description">Description</span>
+                        <span className="postit_description"></span>
                         {idea.description}
                       </p>
+                      {idea.description && idea.description.length > 100 && (
+                        <button 
+                          className="post-it-see-more-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedIdea(idea);
+                          }}
+                        >
+                          Voir plus
+                        </button>
+                      )}
                     </div>
                   </div>
                 </motion.div>
@@ -304,6 +363,13 @@ const IdeesMobile = ({
           </motion.div>
         )}
       </div>
+      
+      {/* Modal de galerie */}
+      <IdeaGalleryModal 
+        idea={selectedIdea} 
+        onClose={() => setSelectedIdea(null)} 
+      />
+      </>
     );
   }
 };

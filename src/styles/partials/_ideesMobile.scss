@@ -287,7 +287,7 @@
 
 /* Style textPath elements */
 .textPathRef {
-  text-anchor: middle; /* Centrer le texte sur le chemin */
+  text-anchor: middle; 
   overflow: visible;
 }
 
@@ -302,10 +302,10 @@
   margin-top: 10px;
   margin-bottom: 10px;
   padding-top: 10px;
-  padding-bottom: 10px; /* Espace pour éviter que le contenu soit caché par le footer */
+  padding-bottom: 10px; 
   justify-items: center;
   width: 100%;
-  overflow: visible; /* Permet aux post-its de déborder légèrement */
+  overflow: visible;
 }
 
 .post-it {
@@ -326,6 +326,37 @@
     transparent 30%,
     var(--post-it-color) 100%
   );
+  cursor: pointer;
+}
+
+/* Bouton image sur les post-it */
+.post-it-image-btn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid var(--h2Color);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  
+  &:hover {
+    transform: scale(1.15);
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
 }
 
 .post-it-content {
@@ -342,38 +373,86 @@
   justify-content: flex-start;
   align-items: center;
   text-align: left;
+  overflow: hidden; /* Empêche le débordement */
 
   h3 {
     align-self: flex-start;
-    font-size: 20px;
+    font-size: 16px;
+    width: 80%;
     font-weight: bold;
+    margin-top: 10px;
     margin-bottom: 5px;
     padding-left: 15px;
+    flex-shrink: 0; /* Le titre ne rétrécit pas */
+    z-index: 2; /* Toujours au-dessus */
   }
 
   .post-it_descCTRL {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     width: 100%;
-    height: 100%;
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    max-height: calc(100% - 40px); /* Laisser de l'espace pour le titre */
 
     p {
       display: flex;
       flex-direction: column;
       width: 90%;
-      display: flex;
       font-size: 18px;
       text-align: center;
-      font-family: "PlaywriteCA", normal;
+      font-family: "Special Elite", normal;
       font-weight: 400;
+      overflow: hidden;
+      position: relative;
+      padding-bottom: 40px; /* Espace pour le gradient et le bouton */
 
       .postit_description {
         font-family: "Inter";
         font-weight: bolder;
+        margin-bottom: 8px;
       }
     }
+    
+    /* Gradient de fade en bas */
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: linear-gradient(to bottom, transparent, var(--post-it-color));
+      pointer-events: none;
+      z-index: 1;
+    }
+  }
+}
+
+/* Bouton "Voir plus" pour les post-it avec beaucoup de texte */
+.post-it-see-more-btn {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 15px;
+  padding: 5px 15px;
+  font-size: 12px;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+  z-index: 2;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  
+  &:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: translateX(-50%) scale(1.05);
   }
 }
 

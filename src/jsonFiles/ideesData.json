@@ -1,66 +1,72 @@
 {
-    "Art": [
-      {
-        "id": 1,
-        "title": "Art-Idee-01",
-        "description": "Créer des sculptures en mouvement grâce à l'énergie solaire.",
-        "image": "/images//idees_img_refs/demande_famille.png"
-      },
-      {
-        "id": 2,
-        "title": "Art-Idee-02",
-        "description": "Utiliser des matériaux recyclés pour peindre des fresques géantes."
-      },
-      {
-        "id": 3,
-        "title": "Art-Idee-03",
-        "description": "Créer des installations interactives avec des capteurs de mouvement."
-      },
-      {
-        "id": 4,
-        "title": "Art-Idee-03",
-        "description": "Créer des installations interactives avec des capteurs de mouvement."
-      },
-      {
-        "id": 5,
-        "title": "Art-Idee-03",
-        "description": "Créer des installations interactives avec des capteurs de mouvement."
-      }
-    ],
-    "Société": [
-      {
-        "id": 1,
-        "title": "Société-Idee-01",
-        "description": "Plateforme d'échange pour services locaux gratuits."
-      }
-    ],
-    "Produits": [
-      {
-        "id": 1,
-        "title": "Produit-Idee-01",
-        "description": "Un parapluie pliable à une main."
-      }
-    ],
-    "Applications": [
-      {
-        "id": 1,
-        "title": "Application-Idee-01",
-        "description": "Application de suivi des habitudes positives."
-      }
-    ],
-    "Jouets & Jeux": [
-      {
-        "id": 1,
-        "title": "Jeu-Idee-01",
-        "description": "Puzzle en réalité augmentée."
-      }
-    ],
-    "Design & Architecture": [
-      {
-        "id": 1,
-        "title": "Design-Idee-01",
-        "description": "Maisons modulaires pour des espaces flexibles."
-      }
-    ]
-  }
-  
+  "Art": [
+    {
+      "id": 1,
+      "title": "Sculpture Demande de famille",
+      "description": "Dans une relation serieuse, la tradition est de demander à son partenaire en mariage en offrant une bague. Je trouves que cette tradition perd de plus en plus de signification. Je me suis rendu compte qu'il n'y avait aucun geste équivalent pour un engagement encore plus grand qui est de fonder une famille. Cette sculpture répond à ce besoin de façon humoristique.",
+      "images": ["/images/idees_img_refs/demande_famille.png"]
+    },
+    {
+      "id": 2,
+      "title": "Art-Idee-02",
+      "description": "Utiliser des matériaux recyclés pour peindre des fresques géantes."
+    },
+    {
+      "id": 3,
+      "title": "Sketch Chien fou",
+      "description": "Après avoir observé mon bébé et mon chien se planter l'un sur l'autre un nombre incalculable de fois, une idée de sketch humoristique est apparue: Un golden retreiver qui découvre accidentellement qu'il adore le goût des larmes de l'enfant qui partage sa vie. Le dès lors, trouve des moyens de faire pleurer l'enfant ingénieux pour se régaler de ses larmes.",
+      "images": ["/images/idees_img_refs/crazydog.png"]
+    }
+  ],
+  "Société": [
+    {
+      "id": 1,
+      "title": "Société-Idee-01",
+      "description": "Plateforme d'échange pour services locaux gratuits."
+    }
+  ],
+  "Produits": [
+    {
+      "id": 1,
+      "title": "Parapluie interlockable",
+      "description": "Un parapluie qui possède une paroie retroussée qui permet de s'accrocher à un autre parapluie. Pouvant créer une chaine de parapluies interlockables pour protéger joliment un chemin pitoresque.",
+            "images": [
+        "/images/idees_img_refs/parapluie.jpg",
+        "/images/idees_img_refs/parapluie_road.png"
+      ]
+    }
+  ],
+  "Applications": [
+    {
+      "id": 1,
+      "title": "VUGroove",
+      "description": "Application de suivi des habitudes positives."
+    }
+  ],
+  "Jouets & Jeux": [
+    {
+      "id": 1,
+      "title": "QA game",
+      "description": "Un jeu pour enfant qui est basé sur le travail de Qualité Assurance en jeux vidéo. Un jeu pour dévélopper la résolution de problème chez les enfants en bas age. Apprendre a identifier les bugs. À les répertorier. Chaques tableaux est de plus en plus dur avec des bugs plus subtils. En coopération avec le parent, l'enfant doit expliquer la nature du bug et comment le reproduire. Le parent, satisfait de l'explication du joueur peux corriger le bug avec une application a distance et ainsi faire avancer la complétion du jeu et tranquillement arriver à un jeu complet."
+    },
+    {
+      "id": 2,
+      "title": "Goldie",
+      "description": "Le joueur est un poisson rouge situé dans un aquarium à l'intérieur de la maison de son propriétaire. Le joueur doit trouver des moyens pour attirer l'attention du propriétaire et améliorer sa situation. Tranquillement, une relation s'installe entre le poisson et le propriétaire. Le joueur découvre la relation entre le propriétaire du point de vue de l'animal de compagnie.",
+      "images": [
+        "/images/idees_img_refs/Goldie.png"
+      ]
+    }
+  ],
+  "Design & Architecture": [
+    {
+      "id": 1,
+      "title": "Pierre tombale interactive",
+      "description": "Avec plusieurs amis incroyablement créatifs autour de moi, dont plusieurs dans l'univers du jeu vidéo, je me suis posé la question sur une façon d'immortaliser leurs idées et créations de manière significative et perpétuelle. Une manière qui ne serait pas simplement éffacée en échappant un disque dur. L'arcade sert aussi de lieu de communions. Je ne me rappelle plus la dernière fois que j'ai eu envie de visiter une tombe. L'arcade répond à tout ces questions. -Oh! Quand est-ce que le dernier lieu de repos de mon ami a été visité? -Check highscores....Ahhh, PlayerSon12's beat my score!!",
+      "images": [
+        "/images/idees_img_refs/DeathGame.png",
+        "/images/idees_img_refs/DeathGame02.png"
+      ]
+    }
+  ]
+}

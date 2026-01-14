@@ -9,6 +9,7 @@
 @use "partials/projectsSlider";
 @use "partials/cv";
 @use "partials/ideesMobile";
+@use "partials/ideaGalleryModal";
 @use "partials/LightningHeader"; 
 
 /* Déclaration de la police Italiana */
@@ -116,6 +117,12 @@
   font-style: normal;
 }
 
+/* Déclaration de la police special (Regular) */
+.special-elite-regular {
+  font-family: "Special Elite", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
 
 nav {
   margin: 0;
