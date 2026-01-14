@@ -1,6 +1,6 @@
 {
   "Art": [
-    {
+        {
       "id": 1,
       "title": "Sculpture Demande de famille",
       "description": "Dans une relation serieuse, la tradition est de demander à son partenaire en mariage en offrant une bague. Je trouves que cette tradition perd de plus en plus de signification. Je me suis rendu compte qu'il n'y avait aucun geste équivalent pour un engagement encore plus grand qui est de fonder une famille. Cette sculpture répond à ce besoin de façon humoristique.",
@@ -8,11 +8,17 @@
     },
     {
       "id": 2,
+      "title": "Sculpture Demande de famille",
+      "description": "Dans une relation serieuse, la tradition est de demander à son partenaire en mariage en offrant une bague. Je trouves que cette tradition perd de plus en plus de signification. Je me suis rendu compte qu'il n'y avait aucun geste équivalent pour un engagement encore plus grand qui est de fonder une famille. Cette sculpture répond à ce besoin de façon humoristique.",
+      "images": ["/images/idees_img_refs/demande_famille.png"]
+    },
+    {
+      "id": 3,
       "title": "Art-Idee-02",
       "description": "Utiliser des matériaux recyclés pour peindre des fresques géantes."
     },
     {
-      "id": 3,
+      "id": 4,
       "title": "Sketch Chien fou",
       "description": "Après avoir observé mon bébé et mon chien se planter l'un sur l'autre un nombre incalculable de fois, une idée de sketch humoristique est apparue: Un golden retreiver qui découvre accidentellement qu'il adore le goût des larmes de l'enfant qui partage sa vie. Dès lors, trouve des moyens ingénieux de faire pleurer l'enfant pour se régaler de ses larmes.",
       "images": ["/images/idees_img_refs/crazydog.png"]
@@ -21,8 +27,16 @@
   "Société": [
     {
       "id": 1,
-      "title": "Société-Idee-01",
-      "description": "Plateforme d'échange pour services locaux gratuits."
+      "title": "Recyclage de plastique communautaire",
+      "description": "Créer un département de recyclage de plastique avec le but de créer des éléments imprimés en 3D et réduire les coûts de maintient des infrastructures."
+    },
+    {
+      "id": 2,
+      "title": "Idée de mariage pour une amie",
+      "description": "Lors de la cérémonie de mariage, les mariés sont surpris par les invités déguisés en zombies. Les deux mariés maintenant dans le rôle de survivants, en compagnie du célébrant, se défendent avec des paintballs? contre la horde de mort vivants qui les assaillent et se sauvent vers le lieu où la cérémonie finale prendra place."
+    , "images": [
+        "/images/idees_img_refs/happy_couple.png"
+      ]
     }
   ],
   "Produits": [
@@ -34,13 +48,29 @@
         "/images/idees_img_refs/parapluie.jpg",
         "/images/idees_img_refs/parapluie_road.png"
       ]
+    },
+    {
+      "id": 2,
+      "title": "Speed ball de boxe transparent avec extra motivation",
+      "description": "Speed ball de boxe offrant une vue imprenable sur les cendres d'un défunt sur lequel vous voulez vous défouler.",
+      "images": [
+        "/images/idees_img_refs/ash_speedball.png"
+      ]
+    },
+        {
+      "id": 3,
+      "title": "Contrôleur robotisé de contrôle de volume sonore",
+      "description": "Sur les amplificateurs vintages, le control du volume se fait à la mains. Une bande robotisée contrôlée à distance aiderait à adoucir l'expérience pour certaines personnes.",
+      "images": [
+        "/images/idees_img_refs/robot_volume.png"
+      ]
     }
   ],
   "Applications": [
     {
       "id": 1,
       "title": "VUGroove",
-      "description": "Application de suivi des habitudes positives."
+      "description": "L'application écoutera la musique jouée et afficheras sur le téléviseur ,selon leurs préférences des utilisateurs, une représentation de la pochette, des informations de toutes sortes sur tout ce qui entoure l'album (enregistrements, band, période historique etc.). De la visualisation de la musique ainsi que des informations sur l'usure de leurs aiguilles et des disques, ainsi que des pop up sur combien de d'utilisateurs écoutent le même album au même moment."
     }
   ],
   "Jouets & Jeux": [
@@ -67,6 +97,23 @@
         "/images/idees_img_refs/DeathGame.png",
         "/images/idees_img_refs/DeathGame02.png"
       ]
+    },
+    {
+      "id": 2,
+      "title": "Slider en colonne sur mobile",
+      "description": "Slider avec des colonnes verticales pour mobile. Permettant de voir plus de contenu en un coup d'oeil tout en gardant une expérience utilisateur fluide et intuitive.",
+      "images": [
+        "/images/idees_img_refs/slider_colonne.jpg"
+      ]
+    },
+        {
+      "id": 3,
+      "title": "Design visuel pour food truck",
+      "description": "Visuel de burger pour un food truck casse-croute.",
+      "images": [
+        "/images/idees_img_refs/burger_joint.jpg"
+      ]
     }
-  ]
+  
+      ]
 }
