@@ -1,10 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function IdeaGalleryModal({ idea, onClose }) {
   const [fullscreenImage, setFullscreenImage] = useState(null);
+  const [mounted, setMounted] = useState(false);
   
-  if (!idea) return null;
+  // S'assurer que le composant est monté côté client
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
+  // Bloquer le scroll du body quand le modal est ouvert
+  useEffect(() => {
+    if (idea && mounted) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [idea, mounted]);
+  
+  // Ne rien afficher si pas d'idée ou pas encore monté
+  if (!idea || !mounted) return null;
 
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -12,7 +33,7 @@ export default function IdeaGalleryModal({ idea, onClose }) {
     }
   };
 
-  return (
+  const modalContent = (
     <AnimatePresence>
       <motion.div
         className="idea-gallery-modal-overlay"
@@ -94,4 +115,7 @@ export default function IdeaGalleryModal({ idea, onClose }) {
       </AnimatePresence>
     </AnimatePresence>
   );
+  
+  // Utiliser createPortal pour rendre le modal directement dans le body
+  return createPortal(modalContent, document.body);
 }

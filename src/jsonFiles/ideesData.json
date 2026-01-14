@@ -1,10 +1,10 @@
 {
   "Art": [
-        {
+    {
       "id": 1,
-      "title": "Sculpture Demande de famille",
-      "description": "Dans une relation serieuse, la tradition est de demander à son partenaire en mariage en offrant une bague. Je trouves que cette tradition perd de plus en plus de signification. Je me suis rendu compte qu'il n'y avait aucun geste équivalent pour un engagement encore plus grand qui est de fonder une famille. Cette sculpture répond à ce besoin de façon humoristique.",
-      "images": ["/images/idees_img_refs/demande_famille.png"]
+      "title": "Concept de murale avec la progression de grossesse ",
+      "description": "Pendant la grossesse, j'ai gardé une trace visuelle de la progression de grossesse. Mon but est d'en faire une murale peinturée et souligner la vie qu'il y a dans la maison.",
+      "images": ["/images/idees_img_refs/murale_grossesse.jpg", "/images/idees_img_refs/murale_grossesse2.jpg",  "/images/idees_img_refs/image_grossesse3.png"]
     },
     {
       "id": 2,
@@ -33,10 +33,8 @@
     {
       "id": 2,
       "title": "Idée de mariage pour une amie",
-      "description": "Lors de la cérémonie de mariage, les mariés sont surpris par les invités déguisés en zombies. Les deux mariés maintenant dans le rôle de survivants, en compagnie du célébrant, se défendent avec des paintballs? contre la horde de mort vivants qui les assaillent et se sauvent vers le lieu où la cérémonie finale prendra place."
-    , "images": [
-        "/images/idees_img_refs/happy_couple.png"
-      ]
+      "description": "Cette idée provient d'une demande d'une amie qui voulais que je conceptualise un thème pour son mariage. Lors de la cérémonie de mariage, les mariés sont surpris par les invités déguisés en zombies. Les deux mariés maintenant dans le rôle de survivants, en compagnie du célébrant, se défendent avec des paintballs? contre la horde de mort vivants qui les assaillent et se sauvent vers le lieu où la cérémonie finale prendra place.",
+      "images": ["/images/idees_img_refs/happy_couple.png"]
     }
   ],
   "Produits": [
@@ -44,7 +42,7 @@
       "id": 1,
       "title": "Parapluie interlockable",
       "description": "Un parapluie qui possède une paroie retroussée qui permet de s'accrocher à un autre parapluie. Pouvant créer une chaine de parapluies interlockables pour protéger joliment un chemin pitoresque.",
-            "images": [
+      "images": [
         "/images/idees_img_refs/parapluie.jpg",
         "/images/idees_img_refs/parapluie_road.png"
       ]
@@ -53,17 +51,13 @@
       "id": 2,
       "title": "Speed ball de boxe transparent avec extra motivation",
       "description": "Speed ball de boxe offrant une vue imprenable sur les cendres d'un défunt sur lequel vous voulez vous défouler.",
-      "images": [
-        "/images/idees_img_refs/ash_speedball.png"
-      ]
+      "images": ["/images/idees_img_refs/ash_speedball.png"]
     },
-        {
+    {
       "id": 3,
       "title": "Contrôleur robotisé de contrôle de volume sonore",
       "description": "Sur les amplificateurs vintages, le control du volume se fait à la mains. Une bande robotisée contrôlée à distance aiderait à adoucir l'expérience pour certaines personnes.",
-      "images": [
-        "/images/idees_img_refs/robot_volume.png"
-      ]
+      "images": ["/images/idees_img_refs/robot_volume.png"]
     }
   ],
   "Applications": [
@@ -71,6 +65,12 @@
       "id": 1,
       "title": "VUGroove",
       "description": "L'application écoutera la musique jouée et afficheras sur le téléviseur ,selon leurs préférences des utilisateurs, une représentation de la pochette, des informations de toutes sortes sur tout ce qui entoure l'album (enregistrements, band, période historique etc.). De la visualisation de la musique ainsi que des informations sur l'usure de leurs aiguilles et des disques, ainsi que des pop up sur combien de d'utilisateurs écoutent le même album au même moment."
+    },
+    {
+      "id": 2,
+      "title": "Bülb",
+      "description": "Programme de structuration et gestion d'idées. Une inteface visuelle intuitive pour organiser, catégoriser et prioriser des idées. Permettre de relier des idées entre elles, de créer des mind maps, et d'ajouter des notes ou des rappels. Intégration avec des outils de productivité existants pour une gestion fluide des projets basés sur ces idées.",
+      "images": ["/images/idees_img_refs/app_gestion_didees.jpg"]
     }
   ],
   "Jouets & Jeux": [
@@ -83,37 +83,36 @@
       "id": 2,
       "title": "Goldie",
       "description": "Le joueur est un poisson rouge situé dans un aquarium à l'intérieur de la maison de son propriétaire. Le joueur doit trouver des moyens pour attirer l'attention du propriétaire et améliorer sa situation. Tranquillement, une relation s'installe entre le poisson et le propriétaire. Le joueur découvre la relation entre le propriétaire du point de vue de l'animal de compagnie.",
-      "images": [
-        "/images/idees_img_refs/Goldie.png"
-      ]
+      "images": ["/images/idees_img_refs/Goldie.png"]
     }
   ],
   "Design & Architecture": [
     {
       "id": 1,
+      "title": "Concept Réfrigérateur-Garde-mangé hybride",
+      "description": "Ce concept propose une intégration hybride entre réfrigérateur et garde-mangé, où la façade du frigo agit comme une porte dissimulant un espace de rangement pleine grandeur. L'idée est de modulariser le rangement des biens réfrigérés en laissant aussi plus de place dans le réfrigérateur plus classique. Derrière les portes de réfrigération classiques se trouve un garde-mangé structuré, fermé par des portes vitrées permettant de protéger le contenu tout en le laissant perceptible.",
+      "images": ["/images/idees_img_refs/smallfridge.png"]
+    },
+    {
+      "id": 2,
+      "title": "Slider en colonne sur mobile",
+      "description": "Slider avec des colonnes verticales pour mobile. Permettant de voir plus de contenu en un coup d'oeil tout en gardant une expérience utilisateur fluide et intuitive.",
+      "images": ["/images/idees_img_refs/slider_colonne.jpg"]
+    },
+    {
+      "id": 3,
+      "title": "Design visuel pour food truck",
+      "description": "Visuel de burger pour un food truck casse-croute.",
+      "images": ["/images/idees_img_refs/burger_joint.jpg"]
+    },
+    {
+      "id": 4,
       "title": "Pierre tombale interactive",
       "description": "Avec plusieurs amis incroyablement créatifs autour de moi, dont plusieurs dans l'univers du jeu vidéo, je me suis posé la question sur une façon d'immortaliser leurs idées et créations de manière significative et perpétuelle. Une manière qui ne serait pas simplement éffacée en échappant un disque dur. L'arcade sert aussi de lieu de communions. Je ne me rappelle plus la dernière fois que j'ai eu envie de visiter une tombe. L'arcade répond à tout ces questions. -Oh! Quand est-ce que le dernier lieu de repos de mon ami a été visité? -Check highscores....Ahhh, PlayerSon12's beat my score!!",
       "images": [
         "/images/idees_img_refs/DeathGame.png",
         "/images/idees_img_refs/DeathGame02.png"
       ]
-    },
-    {
-      "id": 2,
-      "title": "Slider en colonne sur mobile",
-      "description": "Slider avec des colonnes verticales pour mobile. Permettant de voir plus de contenu en un coup d'oeil tout en gardant une expérience utilisateur fluide et intuitive.",
-      "images": [
-        "/images/idees_img_refs/slider_colonne.jpg"
-      ]
-    },
-        {
-      "id": 3,
-      "title": "Design visuel pour food truck",
-      "description": "Visuel de burger pour un food truck casse-croute.",
-      "images": [
-        "/images/idees_img_refs/burger_joint.jpg"
-      ]
     }
-  
-      ]
+  ]
 }

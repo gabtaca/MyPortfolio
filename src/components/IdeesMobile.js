@@ -146,8 +146,7 @@ const IdeesMobile = ({
         <p 
           className={`idees-subtitle ${showSubtitle ? 'visible' : ''}`} 
         >
-          Un fourre-tout d'idées. Pas toujours de logique entre l'une et
-          l'autre, mais un bel endroit pour relancer l'inspiration au
+          Un fourre-tout d'idées. Pas de logique ou d'ordre, mais un bel endroit pour relancer l'inspiration au
           besoin
         </p>
         <div className="idees-container" ref={ideesContainerRef}>
