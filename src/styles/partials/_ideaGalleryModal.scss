@@ -106,7 +106,7 @@
 /* Responsive adjustments */
 @media screen and (max-width: 768px) {
   .idea-gallery-modal {
-    margin-top: -30%;
+    
     padding: 20px;
     max-height: 90vh;
     overflow-y: auto;
@@ -122,6 +122,10 @@
   .idea-gallery-grid {
     grid-template-columns: 1fr;
     gap: 10px;
+  }
+    .idea-gallery-close-btn {
+    top:0px !important;
+    right: 0px;
   }
 }
 
@@ -198,4 +202,5 @@
   &:hover .idea-gallery-image {
     opacity: 0.9;
   }
+
 }
