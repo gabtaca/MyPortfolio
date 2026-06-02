@@ -87,7 +87,7 @@
     {
     "id": "7",
     "name": "Bijouterie Joaillerie PB",
-    "still": "/images/projects/bp.jpg",
+    "still": "/images/projects/pb.jpg",
     "img": "/images/projects/bp.gif",
     "imgAlt": "image du projet 7",
     "description": "Plateforme e-commerce offrant gestion d'inventaire, suivi des commandes et intégration de paiements. Conçue pour une bijouterie qui investit dans ses produits et son service à la clientèle, plutôt que dans des infrastructures coûteuses.",
