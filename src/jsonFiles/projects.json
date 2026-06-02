@@ -59,7 +59,7 @@
   {
     "id": "5",
     "name": "Icitte CLOUD",
-    "still": "/images/projects/icitte_landing.jpg",
+    "still": "/images/projects/pb.jpg",
     "img": "/images/projects/icitte_landing.gif",
     "imgAlt": "image du projet de landing page de Icitte CLOUD",
     "description": "Landing page pour un site de stockage infonuagique 100% québécois.",
@@ -81,6 +81,20 @@
     "type": "WIP",
     "lien": {
       "github": "https://placeholder.pics/"
+    },
+    "stack": ["HTML", "SASS", "Typescript", "Supabase"]
+  },
+    {
+    "id": "7",
+    "name": "Bijouterie Joaillerie PB",
+    "still": "/images/projects/Bijouterie PB.jpg",
+    "img": "/images/projects/pb.gif",
+    "imgAlt": "image du projet 7",
+    "description": "Plateforme e-commerce offrant gestion d'inventaire, suivi des commandes et intégration de paiements. Conçue pour une bijouterie qui investit dans ses produits et son service à la clientèle, plutôt que dans des infrastructures coûteuses.",
+    "date": "2026",
+    "type": "Platforme e-commerce",
+    "lien": {
+      "github": "https://www.bijouteriepb.com/"
     },
     "stack": ["HTML", "SASS", "Typescript", "Supabase"]
   }
